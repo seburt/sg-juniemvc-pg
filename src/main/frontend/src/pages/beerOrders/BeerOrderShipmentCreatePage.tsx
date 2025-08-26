@@ -7,8 +7,8 @@ import { Input } from '@components/ui';
 import { Button } from '@components/ui';
 import { useForm, useToast } from '../../hooks';
 import { validationRules } from '../../utils/validation';
-import beerOrderService from '../../services/beerOrderService';
-import type { BeerOrderShipmentDto } from '../../types/beerOrder';
+import apparelOrderService from '../../services/apparelOrderService';
+import type { ApparelOrderShipmentDto } from '../../types/apparelOrder';
 
 interface ShipmentFormData extends Record<string, unknown> {
   shipmentDate: string;
@@ -17,10 +17,10 @@ interface ShipmentFormData extends Record<string, unknown> {
 }
 
 /**
- * Beer Order Shipment Create page component
- * Allows users to create a new shipment for a beer order
+ * Apparel Order Shipment Create page component
+ * Allows users to create a new shipment for a apparel order
  */
-const BeerOrderShipmentCreatePage: React.FC = () => {
+const ApparelOrderShipmentCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const { orderId } = useParams<{ orderId: string }>();
   const { success, error } = useToast();
@@ -52,7 +52,7 @@ const BeerOrderShipmentCreatePage: React.FC = () => {
 
       try {
         const shipmentData: Omit<
-          BeerOrderShipmentDto,
+          ApparelOrderShipmentDto,
           'id' | 'version' | 'createdDate' | 'updateDate'
         > = {
           shipmentDate: formData.shipmentDate,
@@ -60,9 +60,9 @@ const BeerOrderShipmentCreatePage: React.FC = () => {
           trackingNumber: formData.trackingNumber,
         };
 
-        await beerOrderService.createBeerOrderShipment(parseInt(orderId), shipmentData);
+        await apparelOrderService.createApparelOrderShipment(parseInt(orderId), shipmentData);
         success('Shipment created successfully');
-        navigate(`/beer-orders/${orderId}`);
+        navigate(`/apparel-orders/${orderId}`);
       } catch (err) {
         error('Failed to create shipment. Please try again.');
         console.error('Error creating shipment:', err);
@@ -71,7 +71,7 @@ const BeerOrderShipmentCreatePage: React.FC = () => {
   });
 
   const handleCancel = () => {
-    navigate(`/beer-orders/${orderId}`);
+    navigate(`/apparel-orders/${orderId}`);
   };
 
   // Common carrier options
@@ -156,4 +156,4 @@ const BeerOrderShipmentCreatePage: React.FC = () => {
   );
 };
 
-export default BeerOrderShipmentCreatePage;
+export default ApparelOrderShipmentCreatePage;

@@ -1,8 +1,8 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.entities.BeerOrderLine;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -11,61 +11,61 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BeerOrderLineMapperTest {
+class ApparelOrderLineMapperTest {
 
-    private BeerOrderLineMapper beerOrderLineMapper;
-    private BeerOrderLine testBeerOrderLine;
-    private Beer testBeer;
+    private ApparelOrderLineMapper apparelOrderLineMapper;
+    private ApparelOrderLine testApparelOrderLine;
+    private Apparel testApparel;
 
     @BeforeEach
     void setUp() {
-        beerOrderLineMapper = Mappers.getMapper(BeerOrderLineMapper.class);
+        apparelOrderLineMapper = Mappers.getMapper(ApparelOrderLineMapper.class);
         
-        // Create test beer
-        testBeer = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        // Create test apparel
+        testApparel = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
-        testBeer.setId(1);
+        testApparel.setId(1);
         
-        // Create test beer order line
-        testBeerOrderLine = BeerOrderLine.builder()
+        // Create test apparel order line
+        testApparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(2)
                 .status("ALLOCATED")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
-        testBeerOrderLine.setId(1);
+        testApparelOrderLine.setId(1);
     }
 
     @Test
-    void testBeerOrderLineToBeerOrderLineDto() {
+    void testApparelOrderLineToApparelOrderLineDto() {
         // When
-        BeerOrderLineDto beerOrderLineDto = beerOrderLineMapper.beerOrderLineToBeerOrderLineDto(testBeerOrderLine);
+        ApparelOrderLineDto apparelOrderLineDto = apparelOrderLineMapper.apparelOrderLineToApparelOrderLineDto(testApparelOrderLine);
         
         // Then
-        assertThat(beerOrderLineDto).isNotNull();
-        assertThat(beerOrderLineDto.getId()).isEqualTo(testBeerOrderLine.getId());
-        assertThat(beerOrderLineDto.getBeerId()).isEqualTo(testBeer.getId());
-        assertThat(beerOrderLineDto.getBeerName()).isEqualTo(testBeer.getBeerName());
-        assertThat(beerOrderLineDto.getBeerStyle()).isEqualTo(testBeer.getBeerStyle());
-        assertThat(beerOrderLineDto.getUpc()).isEqualTo(testBeer.getUpc());
-        assertThat(beerOrderLineDto.getOrderQuantity()).isEqualTo(testBeerOrderLine.getOrderQuantity());
-        assertThat(beerOrderLineDto.getQuantityAllocated()).isEqualTo(testBeerOrderLine.getQuantityAllocated());
-        assertThat(beerOrderLineDto.getStatus()).isEqualTo(testBeerOrderLine.getStatus());
+        assertThat(apparelOrderLineDto).isNotNull();
+        assertThat(apparelOrderLineDto.getId()).isEqualTo(testApparelOrderLine.getId());
+        assertThat(apparelOrderLineDto.getApparelId()).isEqualTo(testApparel.getId());
+        assertThat(apparelOrderLineDto.getApparelName()).isEqualTo(testApparel.getApparelName());
+        assertThat(apparelOrderLineDto.getApparelStyle()).isEqualTo(testApparel.getApparelStyle());
+        assertThat(apparelOrderLineDto.getUpc()).isEqualTo(testApparel.getUpc());
+        assertThat(apparelOrderLineDto.getOrderQuantity()).isEqualTo(testApparelOrderLine.getOrderQuantity());
+        assertThat(apparelOrderLineDto.getQuantityAllocated()).isEqualTo(testApparelOrderLine.getQuantityAllocated());
+        assertThat(apparelOrderLineDto.getStatus()).isEqualTo(testApparelOrderLine.getStatus());
     }
 
     @Test
-    void testBeerOrderLineDtoToBeerOrderLine() {
+    void testApparelOrderLineDtoToApparelOrderLine() {
         // Given
-        BeerOrderLineDto beerOrderLineDto = BeerOrderLineDto.builder()
+        ApparelOrderLineDto apparelOrderLineDto = ApparelOrderLineDto.builder()
                 .id(2)
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(3)
                 .quantityAllocated(0)
@@ -73,14 +73,14 @@ class BeerOrderLineMapperTest {
                 .build();
         
         // When
-        BeerOrderLine beerOrderLine = beerOrderLineMapper.beerOrderLineDtoToBeerOrderLine(beerOrderLineDto);
+        ApparelOrderLine apparelOrderLine = apparelOrderLineMapper.apparelOrderLineDtoToApparelOrderLine(apparelOrderLineDto);
         
         // Then
-        assertThat(beerOrderLine).isNotNull();
-        assertThat(beerOrderLine.getId()).isNull(); // ID should be ignored in mapping
-        assertThat(beerOrderLine.getBeer()).isNull(); // Beer should be ignored in mapping
-        assertThat(beerOrderLine.getOrderQuantity()).isEqualTo(beerOrderLineDto.getOrderQuantity());
-        assertThat(beerOrderLine.getQuantityAllocated()).isEqualTo(beerOrderLineDto.getQuantityAllocated());
-        assertThat(beerOrderLine.getStatus()).isEqualTo(beerOrderLineDto.getStatus());
+        assertThat(apparelOrderLine).isNotNull();
+        assertThat(apparelOrderLine.getId()).isNull(); // ID should be ignored in mapping
+        assertThat(apparelOrderLine.getApparel()).isNull(); // Apparel should be ignored in mapping
+        assertThat(apparelOrderLine.getOrderQuantity()).isEqualTo(apparelOrderLineDto.getOrderQuantity());
+        assertThat(apparelOrderLine.getQuantityAllocated()).isEqualTo(apparelOrderLineDto.getQuantityAllocated());
+        assertThat(apparelOrderLine.getStatus()).isEqualTo(apparelOrderLineDto.getStatus());
     }
 }

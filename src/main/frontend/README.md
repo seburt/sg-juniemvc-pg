@@ -1,6 +1,6 @@
-# Beer Service Frontend
+# Apparel Service Frontend
 
-This is the React frontend for the Spring Boot Beer Service application. It provides a user interface for managing beers, beer orders, and customers.
+This is the React frontend for the Spring Boot Apparel Service application. It provides a user interface for managing apparels, apparel orders, and customers.
 
 ## Technology Stack
 

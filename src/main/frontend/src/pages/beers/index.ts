@@ -1,10 +1,10 @@
 /**
- * Beer-related page components
+ * Apparel-related page components
  *
- * This module re-exports all beer-related page components from the beers directory.
+ * This module re-exports all apparel-related page components from the apparels directory.
  */
 
-export { default as BeerListPage } from './BeerListPage';
-export { default as BeerDetailPage } from './BeerDetailPage';
-export { default as BeerCreatePage } from './BeerCreatePage';
-export { default as BeerEditPage } from './BeerEditPage';
+export { default as ApparelListPage } from './ApparelListPage';
+export { default as ApparelDetailPage } from './ApparelDetailPage';
+export { default as ApparelCreatePage } from './ApparelCreatePage';
+export { default as ApparelEditPage } from './ApparelEditPage';

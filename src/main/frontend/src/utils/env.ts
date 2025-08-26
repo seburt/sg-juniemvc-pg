@@ -38,7 +38,7 @@ export const isProduction = (): boolean => {
  * Get the application name
  */
 export const getAppName = (): string => {
-  return import.meta.env.VITE_APP_NAME || 'Beer Service';
+  return import.meta.env.VITE_APP_NAME || 'Apparel Service';
 };
 
 /**

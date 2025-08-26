@@ -1,7 +1,7 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.models.BeerPatchDto;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -9,38 +9,38 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BeerMapperTest {
+class ApparelMapperTest {
 
-    private final BeerMapper beerMapper = Mappers.getMapper(BeerMapper.class);
+    private final ApparelMapper apparelMapper = Mappers.getMapper(ApparelMapper.class);
 
     @Test
-    void updateBeerFromPatchDto_ShouldUpdateOnlyNonNullFields() {
+    void updateApparelFromPatchDto_ShouldUpdateOnlyNonNullFields() {
         // Given
-        Beer beer = Beer.builder()
+        Apparel apparel = Apparel.builder()
                 .id(1)
-                .beerName("Original Beer")
-                .beerStyle("IPA")
+                .apparelName("Original Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .description("Original description")
                 .build();
 
-        BeerPatchDto patchDto = BeerPatchDto.builder()
-                .beerName("Updated Beer")
+        ApparelPatchDto patchDto = ApparelPatchDto.builder()
+                .apparelName("Updated Apparel")
                 .price(new BigDecimal("14.99"))
                 .build();
 
         // When
-        beerMapper.updateBeerFromPatchDto(patchDto, beer);
+        apparelMapper.updateApparelFromPatchDto(patchDto, apparel);
 
         // Then
-        assertThat(beer.getId()).isEqualTo(1); // Should not change
-        assertThat(beer.getBeerName()).isEqualTo("Updated Beer"); // Should be updated
-        assertThat(beer.getBeerStyle()).isEqualTo("IPA"); // Should not change
-        assertThat(beer.getUpc()).isEqualTo("123456"); // Should not change
-        assertThat(beer.getPrice()).isEqualTo(new BigDecimal("14.99")); // Should be updated
-        assertThat(beer.getQuantityOnHand()).isEqualTo(100); // Should not change
-        assertThat(beer.getDescription()).isEqualTo("Original description"); // Should not change
+        assertThat(apparel.getId()).isEqualTo(1); // Should not change
+        assertThat(apparel.getApparelName()).isEqualTo("Updated Apparel"); // Should be updated
+        assertThat(apparel.getApparelStyle()).isEqualTo("IPA"); // Should not change
+        assertThat(apparel.getUpc()).isEqualTo("123456"); // Should not change
+        assertThat(apparel.getPrice()).isEqualTo(new BigDecimal("14.99")); // Should be updated
+        assertThat(apparel.getQuantityOnHand()).isEqualTo(100); // Should not change
+        assertThat(apparel.getDescription()).isEqualTo("Original description"); // Should not change
     }
 }

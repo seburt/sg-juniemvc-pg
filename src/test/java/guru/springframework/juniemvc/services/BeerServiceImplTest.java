@@ -1,10 +1,10 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.mappers.BeerMapper;
-import guru.springframework.juniemvc.models.BeerDto;
-import guru.springframework.juniemvc.models.BeerPatchDto;
-import guru.springframework.juniemvc.repositories.BeerRepository;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.mappers.ApparelMapper;
+import guru.springframework.juniemvc.models.ApparelDto;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
+import guru.springframework.juniemvc.repositories.ApparelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,35 +27,35 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class BeerServiceImplTest {
+class ApparelServiceImplTest {
 
     @Mock
-    BeerRepository beerRepository;
+    ApparelRepository apparelRepository;
 
     @Mock
-    BeerMapper beerMapper;
+    ApparelMapper apparelMapper;
 
     @InjectMocks
-    BeerServiceImpl beerService;
+    ApparelServiceImpl apparelService;
 
-    Beer testBeer;
-    BeerDto testBeerDto;
+    Apparel testApparel;
+    ApparelDto testApparelDto;
 
     @BeforeEach
     void setUp() {
-        testBeer = Beer.builder()
+        testApparel = Apparel.builder()
                 .id(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
 
-        testBeerDto = BeerDto.builder()
+        testApparelDto = ApparelDto.builder()
                 .id(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
@@ -63,329 +63,329 @@ class BeerServiceImplTest {
     }
 
     @Test
-    void getAllBeers() {
+    void getAllApparels() {
         // Given
-        when(beerRepository.findAll()).thenReturn(Arrays.asList(testBeer));
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findAll()).thenReturn(Arrays.asList(testApparel));
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        List<BeerDto> beers = beerService.getAllBeers();
+        List<ApparelDto> apparels = apparelService.getAllApparels();
 
         // Then
-        assertThat(beers).hasSize(1);
-        assertThat(beers.get(0).getBeerName()).isEqualTo("Test Beer");
-        verify(beerRepository, times(1)).findAll();
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        assertThat(apparels).hasSize(1);
+        assertThat(apparels.get(0).getApparelName()).isEqualTo("Test Apparel");
+        verify(apparelRepository, times(1)).findAll();
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getAllBeersWithPagination() {
+    void getAllApparelsWithPagination() {
         // Given
         Pageable pageable = PageRequest.of(0, 20);
-        List<Beer> beers = Arrays.asList(testBeer);
-        Page<Beer> beerPage = new PageImpl<>(beers, pageable, 1);
+        List<Apparel> apparels = Arrays.asList(testApparel);
+        Page<Apparel> apparelPage = new PageImpl<>(apparels, pageable, 1);
 
-        when(beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", "", pageable)).thenReturn(beerPage);
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", "", pageable)).thenReturn(apparelPage);
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        Page<BeerDto> result = beerService.getAllBeers(null, null, pageable);
+        Page<ApparelDto> result = apparelService.getAllApparels(null, null, pageable);
 
         // Then
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getBeerName()).isEqualTo("Test Beer");
+        assertThat(result.getContent().get(0).getApparelName()).isEqualTo("Test Apparel");
         assertThat(result.getTotalElements()).isEqualTo(1);
-        verify(beerRepository, times(1)).findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", "", pageable);
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        verify(apparelRepository, times(1)).findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", "", pageable);
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getAllBeersWithBeerNameFilter() {
+    void getAllApparelsWithApparelNameFilter() {
         // Given
-        String beerName = "Test";
+        String apparelName = "Test";
         Pageable pageable = PageRequest.of(0, 20);
-        List<Beer> beers = Arrays.asList(testBeer);
-        Page<Beer> beerPage = new PageImpl<>(beers, pageable, 1);
+        List<Apparel> apparels = Arrays.asList(testApparel);
+        Page<Apparel> apparelPage = new PageImpl<>(apparels, pageable, 1);
 
-        when(beerRepository.findAllByBeerNameContainingIgnoreCase(beerName, pageable)).thenReturn(beerPage);
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findAllByApparelNameContainingIgnoreCase(apparelName, pageable)).thenReturn(apparelPage);
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        Page<BeerDto> result = beerService.getAllBeers(beerName, null, pageable);
+        Page<ApparelDto> result = apparelService.getAllApparels(apparelName, null, pageable);
 
         // Then
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getBeerName()).isEqualTo("Test Beer");
+        assertThat(result.getContent().get(0).getApparelName()).isEqualTo("Test Apparel");
         assertThat(result.getTotalElements()).isEqualTo(1);
-        verify(beerRepository, times(1)).findAllByBeerNameContainingIgnoreCase(beerName, pageable);
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        verify(apparelRepository, times(1)).findAllByApparelNameContainingIgnoreCase(apparelName, pageable);
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getAllBeersWithBeerStyleFilter() {
+    void getAllApparelsWithApparelStyleFilter() {
         // Given
-        String beerStyle = "IPA";
+        String apparelStyle = "IPA";
         Pageable pageable = PageRequest.of(0, 20);
-        List<Beer> beers = Arrays.asList(testBeer);
-        Page<Beer> beerPage = new PageImpl<>(beers, pageable, 1);
+        List<Apparel> apparels = Arrays.asList(testApparel);
+        Page<Apparel> apparelPage = new PageImpl<>(apparels, pageable, 1);
 
-        when(beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", beerStyle, pageable)).thenReturn(beerPage);
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", apparelStyle, pageable)).thenReturn(apparelPage);
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        Page<BeerDto> result = beerService.getAllBeers(null, beerStyle, pageable);
+        Page<ApparelDto> result = apparelService.getAllApparels(null, apparelStyle, pageable);
 
         // Then
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getBeerName()).isEqualTo("Test Beer");
-        assertThat(result.getContent().get(0).getBeerStyle()).isEqualTo("IPA");
+        assertThat(result.getContent().get(0).getApparelName()).isEqualTo("Test Apparel");
+        assertThat(result.getContent().get(0).getApparelStyle()).isEqualTo("IPA");
         assertThat(result.getTotalElements()).isEqualTo(1);
-        verify(beerRepository, times(1)).findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", beerStyle, pageable);
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        verify(apparelRepository, times(1)).findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", apparelStyle, pageable);
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getAllBeersWithBeerNameAndBeerStyleFilter() {
+    void getAllApparelsWithApparelNameAndApparelStyleFilter() {
         // Given
-        String beerName = "Test";
-        String beerStyle = "IPA";
+        String apparelName = "Test";
+        String apparelStyle = "IPA";
         Pageable pageable = PageRequest.of(0, 20);
-        List<Beer> beers = Arrays.asList(testBeer);
-        Page<Beer> beerPage = new PageImpl<>(beers, pageable, 1);
+        List<Apparel> apparels = Arrays.asList(testApparel);
+        Page<Apparel> apparelPage = new PageImpl<>(apparels, pageable, 1);
 
-        when(beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(beerName, beerStyle, pageable)).thenReturn(beerPage);
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase(apparelName, apparelStyle, pageable)).thenReturn(apparelPage);
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        Page<BeerDto> result = beerService.getAllBeers(beerName, beerStyle, pageable);
+        Page<ApparelDto> result = apparelService.getAllApparels(apparelName, apparelStyle, pageable);
 
         // Then
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getBeerName()).isEqualTo("Test Beer");
-        assertThat(result.getContent().get(0).getBeerStyle()).isEqualTo("IPA");
+        assertThat(result.getContent().get(0).getApparelName()).isEqualTo("Test Apparel");
+        assertThat(result.getContent().get(0).getApparelStyle()).isEqualTo("IPA");
         assertThat(result.getTotalElements()).isEqualTo(1);
-        verify(beerRepository, times(1)).findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(beerName, beerStyle, pageable);
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        verify(apparelRepository, times(1)).findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase(apparelName, apparelStyle, pageable);
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getBeerById() {
+    void getApparelById() {
         // Given
-        when(beerRepository.findById(1)).thenReturn(Optional.of(testBeer));
-        when(beerMapper.beerToBeerDto(testBeer)).thenReturn(testBeerDto);
+        when(apparelRepository.findById(1)).thenReturn(Optional.of(testApparel));
+        when(apparelMapper.apparelToApparelDto(testApparel)).thenReturn(testApparelDto);
 
         // When
-        Optional<BeerDto> beerOptional = beerService.getBeerById(1);
+        Optional<ApparelDto> apparelOptional = apparelService.getApparelById(1);
 
         // Then
-        assertThat(beerOptional).isPresent();
-        assertThat(beerOptional.get().getBeerName()).isEqualTo("Test Beer");
-        verify(beerRepository, times(1)).findById(1);
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        assertThat(apparelOptional).isPresent();
+        assertThat(apparelOptional.get().getApparelName()).isEqualTo("Test Apparel");
+        verify(apparelRepository, times(1)).findById(1);
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void getBeerByIdNotFound() {
+    void getApparelByIdNotFound() {
         // Given
-        when(beerRepository.findById(1)).thenReturn(Optional.empty());
+        when(apparelRepository.findById(1)).thenReturn(Optional.empty());
 
         // When
-        Optional<BeerDto> beerOptional = beerService.getBeerById(1);
+        Optional<ApparelDto> apparelOptional = apparelService.getApparelById(1);
 
         // Then
-        assertThat(beerOptional).isEmpty();
-        verify(beerRepository, times(1)).findById(1);
+        assertThat(apparelOptional).isEmpty();
+        verify(apparelRepository, times(1)).findById(1);
     }
 
     @Test
-    void saveBeer() {
+    void saveApparel() {
         // Given
-        BeerDto beerDtoToSave = BeerDto.builder()
-                .beerName("New Beer")
-                .beerStyle("Stout")
+        ApparelDto apparelDtoToSave = ApparelDto.builder()
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        Beer beerToSave = Beer.builder()
-                .beerName("New Beer")
-                .beerStyle("Stout")
+        Apparel apparelToSave = Apparel.builder()
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        Beer savedBeer = Beer.builder()
+        Apparel savedApparel = Apparel.builder()
                 .id(2)
-                .beerName("New Beer")
-                .beerStyle("Stout")
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        BeerDto savedBeerDto = BeerDto.builder()
+        ApparelDto savedApparelDto = ApparelDto.builder()
                 .id(2)
-                .beerName("New Beer")
-                .beerStyle("Stout")
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        when(beerMapper.beerDtoToBeer(beerDtoToSave)).thenReturn(beerToSave);
-        when(beerRepository.save(any(Beer.class))).thenReturn(savedBeer);
-        when(beerMapper.beerToBeerDto(savedBeer)).thenReturn(savedBeerDto);
+        when(apparelMapper.apparelDtoToApparel(apparelDtoToSave)).thenReturn(apparelToSave);
+        when(apparelRepository.save(any(Apparel.class))).thenReturn(savedApparel);
+        when(apparelMapper.apparelToApparelDto(savedApparel)).thenReturn(savedApparelDto);
 
         // When
-        BeerDto result = beerService.saveBeer(beerDtoToSave);
+        ApparelDto result = apparelService.saveApparel(apparelDtoToSave);
 
         // Then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(2);
-        assertThat(result.getBeerName()).isEqualTo("New Beer");
-        verify(beerMapper, times(1)).beerDtoToBeer(any(BeerDto.class));
-        verify(beerRepository, times(1)).save(any(Beer.class));
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        assertThat(result.getApparelName()).isEqualTo("New Apparel");
+        verify(apparelMapper, times(1)).apparelDtoToApparel(any(ApparelDto.class));
+        verify(apparelRepository, times(1)).save(any(Apparel.class));
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void updateBeer() {
+    void updateApparel() {
         // Given
-        BeerDto beerDtoToUpdate = BeerDto.builder()
+        ApparelDto apparelDtoToUpdate = ApparelDto.builder()
                 .id(1)
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        Beer beerToUpdate = Beer.builder()
+        Apparel apparelToUpdate = Apparel.builder()
                 .id(1)
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        Beer updatedBeer = Beer.builder()
+        Apparel updatedApparel = Apparel.builder()
                 .id(1)
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        BeerDto updatedBeerDto = BeerDto.builder()
+        ApparelDto updatedApparelDto = ApparelDto.builder()
                 .id(1)
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        when(beerMapper.beerDtoToBeer(beerDtoToUpdate)).thenReturn(beerToUpdate);
-        when(beerRepository.save(any(Beer.class))).thenReturn(updatedBeer);
-        when(beerMapper.beerToBeerDto(updatedBeer)).thenReturn(updatedBeerDto);
+        when(apparelMapper.apparelDtoToApparel(apparelDtoToUpdate)).thenReturn(apparelToUpdate);
+        when(apparelRepository.save(any(Apparel.class))).thenReturn(updatedApparel);
+        when(apparelMapper.apparelToApparelDto(updatedApparel)).thenReturn(updatedApparelDto);
 
         // When
-        BeerDto result = beerService.saveBeer(beerDtoToUpdate);
+        ApparelDto result = apparelService.saveApparel(apparelDtoToUpdate);
 
         // Then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1);
-        assertThat(result.getBeerName()).isEqualTo("Updated Beer");
-        verify(beerMapper, times(1)).beerDtoToBeer(any(BeerDto.class));
-        verify(beerRepository, times(1)).save(any(Beer.class));
-        verify(beerMapper, times(1)).beerToBeerDto(any(Beer.class));
+        assertThat(result.getApparelName()).isEqualTo("Updated Apparel");
+        verify(apparelMapper, times(1)).apparelDtoToApparel(any(ApparelDto.class));
+        verify(apparelRepository, times(1)).save(any(Apparel.class));
+        verify(apparelMapper, times(1)).apparelToApparelDto(any(Apparel.class));
     }
 
     @Test
-    void deleteBeerById() {
+    void deleteApparelById() {
         // Given
-        doNothing().when(beerRepository).deleteById(anyInt());
+        doNothing().when(apparelRepository).deleteById(anyInt());
 
         // When
-        beerService.deleteBeerById(1);
+        apparelService.deleteApparelById(1);
 
         // Then
-        verify(beerRepository, times(1)).deleteById(1);
+        verify(apparelRepository, times(1)).deleteById(1);
     }
 
     @Test
-    void patchBeerFound() {
+    void patchApparelFound() {
         // Given
-        BeerPatchDto beerPatchDto = BeerPatchDto.builder()
-                .beerName("Patched Beer")
+        ApparelPatchDto apparelPatchDto = ApparelPatchDto.builder()
+                .apparelName("Patched Apparel")
                 .price(new BigDecimal("15.99"))
                 .build();
 
-        Beer existingBeer = Beer.builder()
+        Apparel existingApparel = Apparel.builder()
                 .id(1)
-                .beerName("Original Beer")
-                .beerStyle("IPA")
+                .apparelName("Original Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
 
-        Beer patchedBeer = Beer.builder()
+        Apparel patchedApparel = Apparel.builder()
                 .id(1)
-                .beerName("Patched Beer")
-                .beerStyle("IPA")
+                .apparelName("Patched Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("15.99"))
                 .quantityOnHand(100)
                 .build();
 
-        BeerDto patchedBeerDto = BeerDto.builder()
+        ApparelDto patchedApparelDto = ApparelDto.builder()
                 .id(1)
-                .beerName("Patched Beer")
-                .beerStyle("IPA")
+                .apparelName("Patched Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("15.99"))
                 .quantityOnHand(100)
                 .build();
 
-        when(beerRepository.findById(1)).thenReturn(Optional.of(existingBeer));
-        doNothing().when(beerMapper).updateBeerFromPatchDto(beerPatchDto, existingBeer);
-        when(beerRepository.save(existingBeer)).thenReturn(patchedBeer);
-        when(beerMapper.beerToBeerDto(patchedBeer)).thenReturn(patchedBeerDto);
+        when(apparelRepository.findById(1)).thenReturn(Optional.of(existingApparel));
+        doNothing().when(apparelMapper).updateApparelFromPatchDto(apparelPatchDto, existingApparel);
+        when(apparelRepository.save(existingApparel)).thenReturn(patchedApparel);
+        when(apparelMapper.apparelToApparelDto(patchedApparel)).thenReturn(patchedApparelDto);
 
         // When
-        Optional<BeerDto> result = beerService.patchBeer(1, beerPatchDto);
+        Optional<ApparelDto> result = apparelService.patchApparel(1, apparelPatchDto);
 
         // Then
         assertThat(result).isPresent();
-        assertThat(result.get().getBeerName()).isEqualTo("Patched Beer");
+        assertThat(result.get().getApparelName()).isEqualTo("Patched Apparel");
         assertThat(result.get().getPrice()).isEqualTo(new BigDecimal("15.99"));
-        verify(beerRepository, times(1)).findById(1);
-        verify(beerMapper, times(1)).updateBeerFromPatchDto(beerPatchDto, existingBeer);
-        verify(beerRepository, times(1)).save(existingBeer);
-        verify(beerMapper, times(1)).beerToBeerDto(patchedBeer);
+        verify(apparelRepository, times(1)).findById(1);
+        verify(apparelMapper, times(1)).updateApparelFromPatchDto(apparelPatchDto, existingApparel);
+        verify(apparelRepository, times(1)).save(existingApparel);
+        verify(apparelMapper, times(1)).apparelToApparelDto(patchedApparel);
     }
 
     @Test
-    void patchBeerNotFound() {
+    void patchApparelNotFound() {
         // Given
-        BeerPatchDto beerPatchDto = BeerPatchDto.builder()
-                .beerName("Patched Beer")
+        ApparelPatchDto apparelPatchDto = ApparelPatchDto.builder()
+                .apparelName("Patched Apparel")
                 .build();
 
-        when(beerRepository.findById(1)).thenReturn(Optional.empty());
+        when(apparelRepository.findById(1)).thenReturn(Optional.empty());
 
         // When
-        Optional<BeerDto> result = beerService.patchBeer(1, beerPatchDto);
+        Optional<ApparelDto> result = apparelService.patchApparel(1, apparelPatchDto);
 
         // Then
         assertThat(result).isEmpty();
-        verify(beerRepository, times(1)).findById(1);
-        verify(beerMapper, never()).updateBeerFromPatchDto(any(), any());
-        verify(beerRepository, never()).save(any());
+        verify(apparelRepository, times(1)).findById(1);
+        verify(apparelMapper, never()).updateApparelFromPatchDto(any(), any());
+        verify(apparelRepository, never()).save(any());
     }
 }

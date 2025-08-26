@@ -1,19 +1,19 @@
 /**
- * Beer Order-related type definitions
+ * Apparel Order-related type definitions
  */
 
 /**
- * Beer Order Line DTO interface
- * Represents a line item in a beer order
+ * Apparel Order Line DTO interface
+ * Represents a line item in a apparel order
  */
-export interface BeerOrderLineDto {
+export interface ApparelOrderLineDto {
   id?: number;
   version?: number;
   createdDate?: string;
   updateDate?: string;
-  beerId: number;
-  beerName: string;
-  beerStyle: string;
+  apparelId: number;
+  apparelName: string;
+  apparelStyle: string;
   upc: string;
   orderQuantity: number;
   quantityAllocated?: number;
@@ -21,10 +21,10 @@ export interface BeerOrderLineDto {
 }
 
 /**
- * Beer Order Shipment DTO interface
- * Represents a shipment for a beer order
+ * Apparel Order Shipment DTO interface
+ * Represents a shipment for a apparel order
  */
-export interface BeerOrderShipmentDto {
+export interface ApparelOrderShipmentDto {
   id?: number;
   version?: number;
   createdDate?: string;
@@ -35,10 +35,10 @@ export interface BeerOrderShipmentDto {
 }
 
 /**
- * Beer Order DTO interface
- * Represents a beer order entity in the system
+ * Apparel Order DTO interface
+ * Represents a apparel order entity in the system
  */
-export interface BeerOrderDto {
+export interface ApparelOrderDto {
   id?: number;
   version?: number;
   createdDate?: string;
@@ -46,15 +46,15 @@ export interface BeerOrderDto {
   customerRef?: string;
   paymentAmount: number;
   status?: string;
-  beerOrderLines: BeerOrderLineDto[];
-  shipments?: BeerOrderShipmentDto[];
+  apparelOrderLines: ApparelOrderLineDto[];
+  shipments?: ApparelOrderShipmentDto[];
 }
 
 /**
- * Beer Order Patch DTO interface
- * Used for partial updates to a beer order entity
+ * Apparel Order Patch DTO interface
+ * Used for partial updates to a apparel order entity
  */
-export interface BeerOrderPatchDto {
+export interface ApparelOrderPatchDto {
   id?: number;
   version?: number;
   createdDate?: string;
@@ -62,18 +62,18 @@ export interface BeerOrderPatchDto {
   customerRef?: string;
   paymentAmount?: number;
   status?: string;
-  beerOrderLines?: BeerOrderLineDto[];
-  shipments?: BeerOrderShipmentDto[];
+  apparelOrderLines?: ApparelOrderLineDto[];
+  shipments?: ApparelOrderShipmentDto[];
 }
 
 /**
- * Page of Beer Order DTO interface
- * Represents a paginated list of beer orders
+ * Page of Apparel Order DTO interface
+ * Represents a paginated list of apparel orders
  */
-export type PageOfBeerOrderDto = Page<BeerOrderDto>;
+export type PageOfApparelOrderDto = Page<ApparelOrderDto>;
 
 /**
- * Import the Page interface from beer.ts
+ * Import the Page interface from apparel.ts
  * This is a workaround until we move the Page interface to a common location
  */
-import type { Page } from './beer';
+import type { Page } from './apparel';

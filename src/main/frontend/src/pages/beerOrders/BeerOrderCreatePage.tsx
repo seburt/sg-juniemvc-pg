@@ -21,7 +21,7 @@ interface CustomerOption {
   email: string;
 }
 
-interface BeerOption {
+interface ApparelOption {
   id: number;
   name: string;
   style: string;
@@ -31,31 +31,31 @@ interface BeerOption {
 
 interface LineItem {
   id: number;
-  beerId: string | number;
-  beerName: string;
+  apparelId: string | number;
+  apparelName: string;
   quantity: number;
   price: number;
 }
 
 /**
- * Beer Order Create page component
- * Allows users to create a new beer order
+ * Apparel Order Create page component
+ * Allows users to create a new apparel order
  */
-const BeerOrderCreatePage: React.FC = () => {
+const ApparelOrderCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [customers, setCustomers] = useState<CustomerOption[]>([]);
-  const [beers, setBeers] = useState<BeerOption[]>([]);
+  const [apparels, setApparels] = useState<ApparelOption[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [customerRef, setCustomerRef] = useState('');
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { id: 1, beerId: '', beerName: '', quantity: 1, price: 0 },
+    { id: 1, apparelId: '', apparelName: '', quantity: 1, price: 0 },
   ]);
 
-  // Simulate fetching customers and beers data
+  // Simulate fetching customers and apparels data
   useEffect(() => {
-    // In a real application, you would fetch the customers and beers data from the API
+    // In a real application, you would fetch the customers and apparels data from the API
     // For now, we'll use mock data
     const mockCustomers = [
       { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
@@ -63,7 +63,7 @@ const BeerOrderCreatePage: React.FC = () => {
       { id: 3, name: 'Bob Johnson', email: 'bob.johnson@example.com' },
     ];
 
-    const mockBeers = [
+    const mockApparels = [
       { id: 1, name: 'Mango Bobs', style: 'IPA', price: 12.99, quantityOnHand: 100 },
       { id: 2, name: 'Galaxy Cat', style: 'PALE_ALE', price: 11.99, quantityOnHand: 75 },
       { id: 3, name: 'Pinball Porter', style: 'PORTER', price: 13.99, quantityOnHand: 50 },
@@ -73,7 +73,7 @@ const BeerOrderCreatePage: React.FC = () => {
     // Simulate API call delay
     const timer = setTimeout(() => {
       setCustomers(mockCustomers);
-      setBeers(mockBeers);
+      setApparels(mockApparels);
       setLoading(false);
     }, 500);
 
@@ -92,16 +92,16 @@ const BeerOrderCreatePage: React.FC = () => {
     }
   };
 
-  const handleBeerChange = (beerId: string, index: number) => {
-    const beer = beers.find(b => b.id.toString() === beerId);
+  const handleApparelChange = (apparelId: string, index: number) => {
+    const apparel = apparels.find(b => b.id.toString() === apparelId);
 
-    if (beer) {
+    if (apparel) {
       const updatedLineItems = [...lineItems];
       updatedLineItems[index] = {
         ...updatedLineItems[index],
-        beerId: beer.id,
-        beerName: beer.name,
-        price: beer.price,
+        apparelId: apparel.id,
+        apparelName: apparel.name,
+        price: apparel.price,
       };
       setLineItems(updatedLineItems);
     }
@@ -119,7 +119,7 @@ const BeerOrderCreatePage: React.FC = () => {
   const addLineItem = () => {
     setLineItems([
       ...lineItems,
-      { id: lineItems.length + 1, beerId: '', beerName: '', quantity: 1, price: 0 },
+      { id: lineItems.length + 1, apparelId: '', apparelName: '', quantity: 1, price: 0 },
     ]);
   };
 
@@ -139,8 +139,8 @@ const BeerOrderCreatePage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedCustomerId || lineItems.some(item => !item.beerId)) {
-      alert('Please select a customer and beer for each line item');
+    if (!selectedCustomerId || lineItems.some(item => !item.apparelId)) {
+      alert('Please select a customer and apparel for each line item');
       return;
     }
 
@@ -150,12 +150,12 @@ const BeerOrderCreatePage: React.FC = () => {
     // For now, we'll just simulate a successful submission
     setTimeout(() => {
       setSubmitting(false);
-      navigate('/beer-orders');
+      navigate('/apparel-orders');
     }, 1000);
   };
 
   const handleCancel = () => {
-    navigate('/beer-orders');
+    navigate('/apparel-orders');
   };
 
   if (loading) {
@@ -169,7 +169,7 @@ const BeerOrderCreatePage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Create New Beer Order</h1>
+        <h1 className="text-3xl font-bold">Create New Apparel Order</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -218,19 +218,19 @@ const BeerOrderCreatePage: React.FC = () => {
               {lineItems.map((item, index) => (
                 <div key={index} className="grid gap-4 rounded-md border p-4 md:grid-cols-4">
                   <div className="space-y-2">
-                    <Label htmlFor={`beer-${index}`}>Beer</Label>
+                    <Label htmlFor={`apparel-${index}`}>Apparel</Label>
                     <Select
-                      value={item.beerId.toString()}
-                      onValueChange={value => handleBeerChange(value, index)}
+                      value={item.apparelId.toString()}
+                      onValueChange={value => handleApparelChange(value, index)}
                       required
                     >
-                      <SelectTrigger id={`beer-${index}`}>
-                        <SelectValue placeholder="Select a beer" />
+                      <SelectTrigger id={`apparel-${index}`}>
+                        <SelectValue placeholder="Select a apparel" />
                       </SelectTrigger>
                       <SelectContent>
-                        {beers.map(beer => (
-                          <SelectItem key={beer.id} value={beer.id.toString()}>
-                            {beer.name} ({beer.style})
+                        {apparels.map(apparel => (
+                          <SelectItem key={apparel.id} value={apparel.id.toString()}>
+                            {apparel.name} ({apparel.style})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -309,4 +309,4 @@ const BeerOrderCreatePage: React.FC = () => {
   );
 };
 
-export default BeerOrderCreatePage;
+export default ApparelOrderCreatePage;

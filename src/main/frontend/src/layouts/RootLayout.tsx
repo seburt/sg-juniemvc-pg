@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Button } from '@components/ui';
-import { Menu, X, Home, Beer, Users, ShoppingCart } from 'lucide-react';
+import { Menu, X, Home, Apparel, Users, ShoppingCart } from 'lucide-react';
 
 /**
  * Root layout component that wraps all pages
@@ -19,9 +19,9 @@ const RootLayout: React.FC = () => {
   // Navigation items
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/beers', label: 'Beers', icon: Beer },
+    { path: '/apparels', label: 'Apparels', icon: Apparel },
     { path: '/customers', label: 'Customers', icon: Users },
-    { path: '/beer-orders', label: 'Beer Orders', icon: ShoppingCart },
+    { path: '/apparel-orders', label: 'Apparel Orders', icon: ShoppingCart },
   ];
 
   return (
@@ -37,7 +37,7 @@ const RootLayout: React.FC = () => {
         <div className="flex h-full flex-col">
           {/* Sidebar header */}
           <div className="flex h-16 items-center justify-between px-4 border-b">
-            <h1 className="text-xl font-bold text-gray-900">Beer Service</h1>
+            <h1 className="text-xl font-bold text-gray-900">Apparel Service</h1>
             <Button
               variant="ghost"
               size="sm"
@@ -116,7 +116,7 @@ const RootLayout: React.FC = () => {
         {/* Footer */}
         <footer className="border-t bg-white py-6">
           <div className="px-6 text-center text-sm text-gray-600">
-            &copy; {new Date().getFullYear()} Beer Service. All rights reserved.
+            &copy; {new Date().getFullYear()} Apparel Service. All rights reserved.
           </div>
         </footer>
       </div>

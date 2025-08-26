@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@components/ui';
 import { useToast, useConfirmationDialog } from '../../hooks';
 import customerService from '../../services/customerService';
-import type { CustomerDto, BeerOrderDto } from '../../api';
+import type { CustomerDto, ApparelOrderDto } from '../../api';
 
 /**
  * Customer Detail page component
@@ -56,7 +56,7 @@ const CustomerDetailPage: React.FC = () => {
 
   // Handle view all orders
   const handleViewOrders = () => {
-    navigate(`/beer-orders?customerId=${customer?.id}`);
+    navigate(`/apparel-orders?customerId=${customer?.id}`);
   };
 
   if (loading) {
@@ -166,11 +166,11 @@ const CustomerDetailPage: React.FC = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Beer Orders</CardTitle>
+          <CardTitle>Apparel Orders</CardTitle>
           <CardDescription>Recent orders placed by this customer</CardDescription>
         </CardHeader>
         <CardContent>
-          {customer?.beerOrders && customer.beerOrders.length > 0 ? (
+          {customer?.apparelOrders && customer.apparelOrders.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -183,7 +183,7 @@ const CustomerDetailPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {customer?.beerOrders?.map((order: BeerOrderDto) => (
+                  {customer?.apparelOrders?.map((order: ApparelOrderDto) => (
                     <tr key={order.id} className="border-b">
                       <td className="p-2">{order.id}</td>
                       <td className="p-2">
@@ -203,7 +203,7 @@ const CustomerDetailPage: React.FC = () => {
                       <td className="p-2">${order.paymentAmount.toFixed(2)}</td>
                       <td className="p-2">
                         <button
-                          onClick={() => navigate(`/beer-orders/${order.id}`)}
+                          onClick={() => navigate(`/apparel-orders/${order.id}`)}
                           className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white"
                         >
                           View

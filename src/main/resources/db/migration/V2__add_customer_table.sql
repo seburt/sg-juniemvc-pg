@@ -14,15 +14,15 @@ CREATE TABLE customer (
     postal_code VARCHAR(255) NOT NULL
 );
 
--- Alter beer_order table to add customer_id column and foreign key
--- ALTER TABLE beer_order
+-- Alter apparel_order table to add customer_id column and foreign key
+-- ALTER TABLE apparel_order
 --     ADD COLUMN customer_id INT,
---     ADD CONSTRAINT fk_beer_order_customer FOREIGN KEY (customer_id) REFERENCES customer(id);
+--     ADD CONSTRAINT fk_apparel_order_customer FOREIGN KEY (customer_id) REFERENCES customer(id);
 
-ALTER TABLE beer_order
+ALTER TABLE apparel_order
     ADD COLUMN customer_id INT;
 
-ALTER TABLE beer_order ADD CONSTRAINT fk_beer_order_customer
+ALTER TABLE apparel_order ADD CONSTRAINT fk_apparel_order_customer
     FOREIGN KEY (customer_id) REFERENCES customer(id);
 
 -- Copy data from customer_ref to a temporary column if needed
@@ -30,5 +30,5 @@ ALTER TABLE beer_order ADD CONSTRAINT fk_beer_order_customer
 -- In a real-world scenario, you might need to migrate existing customer references to the new customer table
 
 -- Drop the customer_ref column
-ALTER TABLE beer_order
+ALTER TABLE apparel_order
     DROP COLUMN customer_ref;

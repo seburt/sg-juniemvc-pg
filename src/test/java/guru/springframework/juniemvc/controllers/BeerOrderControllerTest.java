@@ -1,10 +1,10 @@
 package guru.springframework.juniemvc.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.juniemvc.models.BeerOrderDto;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
 import guru.springframework.juniemvc.models.CustomerDto;
-import guru.springframework.juniemvc.services.BeerOrderService;
+import guru.springframework.juniemvc.services.ApparelOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(BeerOrderController.class)
-class BeerOrderControllerTest {
+@WebMvcTest(ApparelOrderController.class)
+class ApparelOrderControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -39,10 +39,10 @@ class BeerOrderControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    BeerOrderService beerOrderService;
+    ApparelOrderService apparelOrderService;
 
-    BeerOrderDto testBeerOrder;
-    BeerOrderLineDto testBeerOrderLine;
+    ApparelOrderDto testApparelOrder;
+    ApparelOrderLineDto testApparelOrderLine;
     CustomerDto testCustomerDto;
 
     @BeforeEach
@@ -59,37 +59,37 @@ class BeerOrderControllerTest {
                 .postalCode("62701")
                 .build();
 
-        // Create test beer order line
-        testBeerOrderLine = BeerOrderLineDto.builder()
+        // Create test apparel order line
+        testApparelOrderLine = ApparelOrderLineDto.builder()
                 .id(1)
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(2)
                 .quantityAllocated(2)
                 .status("ALLOCATED")
                 .build();
 
-        // Create test beer order
-        Set<BeerOrderLineDto> lines = new HashSet<>();
-        lines.add(testBeerOrderLine);
-        testBeerOrder = BeerOrderDto.builder()
+        // Create test apparel order
+        Set<ApparelOrderLineDto> lines = new HashSet<>();
+        lines.add(testApparelOrderLine);
+        testApparelOrder = ApparelOrderDto.builder()
                 .id(1)
                 .customer(testCustomerDto)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
-                .beerOrderLines(lines)
+                .apparelOrderLines(lines)
                 .build();
     }
 
     @Test
-    void testGetAllBeerOrders() throws Exception {
+    void testGetAllApparelOrders() throws Exception {
         // Given
-        given(beerOrderService.getAllBeerOrders()).willReturn(Arrays.asList(testBeerOrder));
+        given(apparelOrderService.getAllApparelOrders()).willReturn(Arrays.asList(testApparelOrder));
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beer-orders")
+        mockMvc.perform(get("/api/v1/apparel-orders")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,33 +99,33 @@ class BeerOrderControllerTest {
     }
 
     @Test
-    void testGetBeerOrderById() throws Exception {
+    void testGetApparelOrderById() throws Exception {
         // Given
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.of(testBeerOrder));
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.of(testApparelOrder));
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beer-orders/1")
+        mockMvc.perform(get("/api/v1/apparel-orders/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.customer.name", is("Test Customer")))
-                .andExpect(jsonPath("$.beerOrderLines", hasSize(1)));
+                .andExpect(jsonPath("$.apparelOrderLines", hasSize(1)));
     }
 
     @Test
-    void testGetBeerOrderByIdNotFound() throws Exception {
+    void testGetApparelOrderByIdNotFound() throws Exception {
         // Given
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.empty());
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beer-orders/1")
+        mockMvc.perform(get("/api/v1/apparel-orders/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testCreateBeerOrder() throws Exception {
+    void testCreateApparelOrder() throws Exception {
         // Given
         CustomerDto newCustomerDto = CustomerDto.builder()
                 .id(2)
@@ -138,46 +138,46 @@ class BeerOrderControllerTest {
                 .postalCode("62565")
                 .build();
 
-        BeerOrderDto beerOrderToCreate = BeerOrderDto.builder()
+        ApparelOrderDto apparelOrderToCreate = ApparelOrderDto.builder()
                 .customer(newCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("NEW")
-                .beerOrderLines(new HashSet<>())
+                .apparelOrderLines(new HashSet<>())
                 .build();
 
-        BeerOrderLineDto lineDto = BeerOrderLineDto.builder()
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        ApparelOrderLineDto lineDto = ApparelOrderLineDto.builder()
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(3)
                 .quantityAllocated(0)
                 .status("NEW")
                 .build();
 
-        beerOrderToCreate.getBeerOrderLines().add(lineDto);
+        apparelOrderToCreate.getApparelOrderLines().add(lineDto);
 
-        BeerOrderDto savedBeerOrder = BeerOrderDto.builder()
+        ApparelOrderDto savedApparelOrder = ApparelOrderDto.builder()
                 .id(2)
                 .customer(newCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("NEW")
-                .beerOrderLines(beerOrderToCreate.getBeerOrderLines())
+                .apparelOrderLines(apparelOrderToCreate.getApparelOrderLines())
                 .build();
 
-        given(beerOrderService.saveBeerOrder(any(BeerOrderDto.class))).willReturn(savedBeerOrder);
+        given(apparelOrderService.saveApparelOrder(any(ApparelOrderDto.class))).willReturn(savedApparelOrder);
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beer-orders")
+        mockMvc.perform(post("/api/v1/apparel-orders")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerOrderToCreate)))
+                .content(objectMapper.writeValueAsString(apparelOrderToCreate)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(2)))
                 .andExpect(jsonPath("$.customer.name", is("New Customer")));
     }
 
     @Test
-    void testUpdateBeerOrder() throws Exception {
+    void testUpdateApparelOrder() throws Exception {
         // Given
         CustomerDto updatedCustomerDto = CustomerDto.builder()
                 .id(1)
@@ -190,40 +190,40 @@ class BeerOrderControllerTest {
                 .postalCode("62701")
                 .build();
 
-        BeerOrderDto beerOrderToUpdate = BeerOrderDto.builder()
+        ApparelOrderDto apparelOrderToUpdate = ApparelOrderDto.builder()
                 .customer(updatedCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("PROCESSING")
-                .beerOrderLines(new HashSet<>())
+                .apparelOrderLines(new HashSet<>())
                 .build();
 
-        BeerOrderLineDto lineDto = BeerOrderLineDto.builder()
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        ApparelOrderLineDto lineDto = ApparelOrderLineDto.builder()
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(3)
                 .quantityAllocated(3)
                 .status("ALLOCATED")
                 .build();
 
-        beerOrderToUpdate.getBeerOrderLines().add(lineDto);
+        apparelOrderToUpdate.getApparelOrderLines().add(lineDto);
 
-        BeerOrderDto updatedBeerOrder = BeerOrderDto.builder()
+        ApparelOrderDto updatedApparelOrder = ApparelOrderDto.builder()
                 .id(1)
                 .customer(updatedCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("PROCESSING")
-                .beerOrderLines(beerOrderToUpdate.getBeerOrderLines())
+                .apparelOrderLines(apparelOrderToUpdate.getApparelOrderLines())
                 .build();
 
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.of(testBeerOrder));
-        given(beerOrderService.saveBeerOrder(any(BeerOrderDto.class))).willReturn(updatedBeerOrder);
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.of(testApparelOrder));
+        given(apparelOrderService.saveApparelOrder(any(ApparelOrderDto.class))).willReturn(updatedApparelOrder);
 
         // When/Then
-        mockMvc.perform(put("/api/v1/beer-orders/1")
+        mockMvc.perform(put("/api/v1/apparel-orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerOrderToUpdate)))
+                .content(objectMapper.writeValueAsString(apparelOrderToUpdate)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.customer.name", is("Updated Customer")))
@@ -231,7 +231,7 @@ class BeerOrderControllerTest {
     }
 
     @Test
-    void testUpdateBeerOrderNotFound() throws Exception {
+    void testUpdateApparelOrderNotFound() throws Exception {
         // Given
         CustomerDto updatedCustomerDto = CustomerDto.builder()
                 .id(1)
@@ -244,54 +244,54 @@ class BeerOrderControllerTest {
                 .postalCode("62701")
                 .build();
 
-        BeerOrderDto beerOrderToUpdate = BeerOrderDto.builder()
+        ApparelOrderDto apparelOrderToUpdate = ApparelOrderDto.builder()
                 .customer(updatedCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("PROCESSING")
-                .beerOrderLines(new HashSet<>())
+                .apparelOrderLines(new HashSet<>())
                 .build();
 
-        // Add a beer order line to pass validation
-        BeerOrderLineDto lineDto = BeerOrderLineDto.builder()
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        // Add a apparel order line to pass validation
+        ApparelOrderLineDto lineDto = ApparelOrderLineDto.builder()
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(3)
                 .quantityAllocated(0)
                 .status("NEW")
                 .build();
-        beerOrderToUpdate.getBeerOrderLines().add(lineDto);
+        apparelOrderToUpdate.getApparelOrderLines().add(lineDto);
 
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.empty());
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(put("/api/v1/beer-orders/1")
+        mockMvc.perform(put("/api/v1/apparel-orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerOrderToUpdate)))
+                .content(objectMapper.writeValueAsString(apparelOrderToUpdate)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testDeleteBeerOrder() throws Exception {
+    void testDeleteApparelOrder() throws Exception {
         // Given
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.of(testBeerOrder));
-        doNothing().when(beerOrderService).deleteBeerOrderById(1);
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.of(testApparelOrder));
+        doNothing().when(apparelOrderService).deleteApparelOrderById(1);
 
         // When/Then
-        mockMvc.perform(delete("/api/v1/beer-orders/1"))
+        mockMvc.perform(delete("/api/v1/apparel-orders/1"))
                 .andExpect(status().isNoContent());
 
-        verify(beerOrderService).deleteBeerOrderById(1);
+        verify(apparelOrderService).deleteApparelOrderById(1);
     }
 
     @Test
-    void testDeleteBeerOrderNotFound() throws Exception {
+    void testDeleteApparelOrderNotFound() throws Exception {
         // Given
-        given(beerOrderService.getBeerOrderById(1)).willReturn(Optional.empty());
+        given(apparelOrderService.getApparelOrderById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(delete("/api/v1/beer-orders/1"))
+        mockMvc.perform(delete("/api/v1/apparel-orders/1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -309,17 +309,17 @@ class BeerOrderControllerTest {
                 .postalCode("99999")
                 .build();
 
-        BeerOrderDto invalidBeerOrder = BeerOrderDto.builder()
+        ApparelOrderDto invalidApparelOrder = ApparelOrderDto.builder()
                 .customer(invalidCustomerDto)
                 .paymentAmount(new BigDecimal("-10.00")) // Invalid: negative amount
                 .status("NEW")
-                .beerOrderLines(new HashSet<>()) // Invalid: empty order lines
+                .apparelOrderLines(new HashSet<>()) // Invalid: empty order lines
                 .build();
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beer-orders")
+        mockMvc.perform(post("/api/v1/apparel-orders")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalidBeerOrder)))
+                .content(objectMapper.writeValueAsString(invalidApparelOrder)))
                 .andExpect(status().isBadRequest());
     }
 }

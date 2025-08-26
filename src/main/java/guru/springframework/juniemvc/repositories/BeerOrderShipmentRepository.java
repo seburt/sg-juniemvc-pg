@@ -1,19 +1,19 @@
 package guru.springframework.juniemvc.repositories;
 
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
- * Repository for BeerOrderShipment entity
+ * Repository for ApparelOrderShipment entity
  */
-public interface BeerOrderShipmentRepository extends JpaRepository<BeerOrderShipment, Integer> {
+public interface ApparelOrderShipmentRepository extends JpaRepository<ApparelOrderShipment, Integer> {
 
     /**
-     * Find shipments by beer order id
-     * @param beerOrderId the beer order id
+     * Find shipments by apparel order id
+     * @param apparelOrderId the apparel order id
      * @return the list of shipments
      */
-    List<BeerOrderShipment> findByBeerOrderId(Integer beerOrderId);
+    List<ApparelOrderShipment> findByApparelOrderId(Integer apparelOrderId);
 }

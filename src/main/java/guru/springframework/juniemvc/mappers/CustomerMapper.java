@@ -12,15 +12,15 @@ import org.mapstruct.MappingTarget;
 @Mapper
 public interface CustomerMapper {
 
-    @Mapping(target = "beerOrders", ignore = true)
+    @Mapping(target = "apparelOrders", ignore = true)
     CustomerDto customerToCustomerDto(Customer customer);
 
-    @Mapping(target = "beerOrders", ignore = true)
+    @Mapping(target = "apparelOrders", ignore = true)
     Customer customerDtoToCustomer(CustomerDto customerDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updateDate", ignore = true)
-    @Mapping(target = "beerOrders", ignore = true)
+    @Mapping(target = "apparelOrders", ignore = true)
     void updateCustomerFromDto(CustomerDto customerDto, @MappingTarget Customer customer);
 }

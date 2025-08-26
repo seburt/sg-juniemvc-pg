@@ -21,13 +21,13 @@ public class GlobalExceptionHandler {
     private static final String PROBLEM_BASE_URL = "https://juniemvc.springframework.guru/problems";
 
     /**
-     * Handle BeerOrderException
+     * Handle ApparelOrderException
      */
-    @ExceptionHandler(BeerOrderException.class)
-    public ResponseEntity<ProblemDetails> handleBeerOrderException(BeerOrderException ex, WebRequest request) {
+    @ExceptionHandler(ApparelOrderException.class)
+    public ResponseEntity<ProblemDetails> handleApparelOrderException(ApparelOrderException ex, WebRequest request) {
         ProblemDetails problemDetails = ProblemDetails.builder()
-                .type(URI.create(PROBLEM_BASE_URL + "/beer-order-error"))
-                .title("Beer Order Error")
+                .type(URI.create(PROBLEM_BASE_URL + "/apparel-order-error"))
+                .title("Apparel Order Error")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .detail(ex.getMessage())
                 .instance(URI.create(request.getContextPath()))

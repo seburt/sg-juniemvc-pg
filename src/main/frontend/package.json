@@ -1,8 +1,8 @@
 {
-  "name": "beer-service-frontend",
+  "name": "apparel-service-frontend",
   "private": true,
   "version": "0.1.0",
-  "description": "React frontend for Spring Boot Beer Service",
+  "description": "React frontend for Spring Boot Apparel Service",
   "author": "Spring Framework Guru",
   "license": "MIT",
   "type": "module",

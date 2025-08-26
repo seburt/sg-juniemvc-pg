@@ -1,22 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui';
 
 /**
- * Beers page component
- * Displays a list of beers and provides functionality to manage them
+ * Apparels page component
+ * Displays a list of apparels and provides functionality to manage them
  */
-const BeersPage = () => {
+const ApparelsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Beer Management</h1>
+        <h1 className="text-3xl font-bold">Apparel Management</h1>
         <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
-          Add New Beer
+          Add New Apparel
         </button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Beer Inventory</CardTitle>
+          <CardTitle>Apparel Inventory</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -75,4 +75,4 @@ const BeersPage = () => {
   );
 };
 
-export default BeersPage;
+export default ApparelsPage;

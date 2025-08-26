@@ -116,16 +116,16 @@ export const validationRules = {
 };
 
 /**
- * Beer-specific validation rules
+ * Apparel-specific validation rules
  */
-export const beerValidationRules = {
-  beerName: [
-    validationRules.required('Beer name is required'),
-    validationRules.minLength(2, 'Beer name must be at least 2 characters'),
-    validationRules.maxLength(100, 'Beer name must be no more than 100 characters'),
+export const apparelValidationRules = {
+  apparelName: [
+    validationRules.required('Apparel name is required'),
+    validationRules.minLength(2, 'Apparel name must be at least 2 characters'),
+    validationRules.maxLength(100, 'Apparel name must be no more than 100 characters'),
   ],
 
-  beerStyle: [validationRules.required('Beer style is required')],
+  apparelStyle: [validationRules.required('Apparel style is required')],
 
   price: [
     validationRules.required('Price is required'),

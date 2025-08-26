@@ -2,40 +2,40 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BeerOrderDto } from '../models/BeerOrderDto';
-import type { BeerOrderShipmentDto } from '../models/BeerOrderShipmentDto';
+import type { ApparelOrderDto } from '../models/ApparelOrderDto';
+import type { ApparelOrderShipmentDto } from '../models/ApparelOrderShipmentDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class BeerOrderService {
+export class ApparelOrderService {
     /**
-     * Get all beer orders
-     * Returns a list of all beer orders in the system.
-     * @returns BeerOrderDto Successfully retrieved the list of beer orders
+     * Get all apparel orders
+     * Returns a list of all apparel orders in the system.
+     * @returns ApparelOrderDto Successfully retrieved the list of apparel orders
      * @throws ApiError
      */
-    public static getAllBeerOrders(): CancelablePromise<Array<BeerOrderDto>> {
+    public static getAllApparelOrders(): CancelablePromise<Array<ApparelOrderDto>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/beer-orders',
+            url: '/api/v1/apparel-orders',
             errors: {
                 401: `Unauthorized`,
             },
         });
     }
     /**
-     * Create a new beer order
-     * Creates a new beer order in the system. The ID, version, createdDate, and updateDate fields will be ignored if provided.
-     * @param requestBody Beer order object to be created
-     * @returns BeerOrderDto Successfully created a new beer order
+     * Create a new apparel order
+     * Creates a new apparel order in the system. The ID, version, createdDate, and updateDate fields will be ignored if provided.
+     * @param requestBody Apparel order object to be created
+     * @returns ApparelOrderDto Successfully created a new apparel order
      * @throws ApiError
      */
-    public static createBeerOrder(
-        requestBody: BeerOrderDto,
-    ): CancelablePromise<BeerOrderDto> {
+    public static createApparelOrder(
+        requestBody: ApparelOrderDto,
+    ): CancelablePromise<ApparelOrderDto> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/beer-orders',
+            url: '/api/v1/apparel-orders',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -45,42 +45,42 @@ export class BeerOrderService {
         });
     }
     /**
-     * Get a beer order by ID
-     * Returns a beer order by its ID.
-     * @param id ID of the beer order
-     * @returns BeerOrderDto Successfully retrieved the beer order
+     * Get a apparel order by ID
+     * Returns a apparel order by its ID.
+     * @param id ID of the apparel order
+     * @returns ApparelOrderDto Successfully retrieved the apparel order
      * @throws ApiError
      */
-    public static getBeerOrderById(
+    public static getApparelOrderById(
         id: number,
-    ): CancelablePromise<BeerOrderDto> {
+    ): CancelablePromise<ApparelOrderDto> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/beer-orders/{id}',
+            url: '/api/v1/apparel-orders/{id}',
             path: {
                 'id': id,
             },
             errors: {
                 401: `Unauthorized`,
-                404: `Beer order not found`,
+                404: `Apparel order not found`,
             },
         });
     }
     /**
-     * Update a beer order
-     * Updates an existing beer order. The ID in the path must match the ID in the request body.
-     * @param id ID of the beer order
-     * @param requestBody Beer order object with updated information
-     * @returns BeerOrderDto Successfully updated the beer order
+     * Update a apparel order
+     * Updates an existing apparel order. The ID in the path must match the ID in the request body.
+     * @param id ID of the apparel order
+     * @param requestBody Apparel order object with updated information
+     * @returns ApparelOrderDto Successfully updated the apparel order
      * @throws ApiError
      */
-    public static updateBeerOrder(
+    public static updateApparelOrder(
         id: number,
-        requestBody: BeerOrderDto,
-    ): CancelablePromise<BeerOrderDto> {
+        requestBody: ApparelOrderDto,
+    ): CancelablePromise<ApparelOrderDto> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/v1/beer-orders/{id}',
+            url: '/api/v1/apparel-orders/{id}',
             path: {
                 'id': id,
             },
@@ -89,125 +89,125 @@ export class BeerOrderService {
             errors: {
                 400: `Bad request - validation error`,
                 401: `Unauthorized`,
-                404: `Beer order not found`,
+                404: `Apparel order not found`,
             },
         });
     }
     /**
-     * Delete a beer order
-     * Deletes a beer order by its ID.
-     * @param id ID of the beer order
+     * Delete a apparel order
+     * Deletes a apparel order by its ID.
+     * @param id ID of the apparel order
      * @returns void
      * @throws ApiError
      */
-    public static deleteBeerOrder(
+    public static deleteApparelOrder(
         id: number,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/v1/beer-orders/{id}',
+            url: '/api/v1/apparel-orders/{id}',
             path: {
                 'id': id,
             },
             errors: {
                 401: `Unauthorized`,
-                404: `Beer order not found`,
+                404: `Apparel order not found`,
             },
         });
     }
     /**
-     * Get all shipments for a beer order
-     * Returns a list of all shipments for a specific beer order.
-     * @param beerOrderId ID of the beer order to get shipments for
-     * @returns BeerOrderShipmentDto Successfully retrieved the list of shipments
+     * Get all shipments for a apparel order
+     * Returns a list of all shipments for a specific apparel order.
+     * @param apparelOrderId ID of the apparel order to get shipments for
+     * @returns ApparelOrderShipmentDto Successfully retrieved the list of shipments
      * @throws ApiError
      */
     public static getAllShipments(
-        beerOrderId: number,
-    ): CancelablePromise<Array<BeerOrderShipmentDto>> {
+        apparelOrderId: number,
+    ): CancelablePromise<Array<ApparelOrderShipmentDto>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/beer-orders/{beerOrderId}/shipments',
+            url: '/api/v1/apparel-orders/{apparelOrderId}/shipments',
             path: {
-                'beerOrderId': beerOrderId,
+                'apparelOrderId': apparelOrderId,
             },
             errors: {
                 401: `Unauthorized`,
-                404: `Beer order not found`,
+                404: `Apparel order not found`,
             },
         });
     }
     /**
-     * Create a new shipment for a beer order
-     * Creates a new shipment for a specific beer order. The ID, version, createdDate, and updateDate fields will be ignored if provided.
-     * @param beerOrderId ID of the beer order to create a shipment for
+     * Create a new shipment for a apparel order
+     * Creates a new shipment for a specific apparel order. The ID, version, createdDate, and updateDate fields will be ignored if provided.
+     * @param apparelOrderId ID of the apparel order to create a shipment for
      * @param requestBody Shipment object to be created
-     * @returns BeerOrderShipmentDto Successfully created a new shipment
+     * @returns ApparelOrderShipmentDto Successfully created a new shipment
      * @throws ApiError
      */
     public static createShipment(
-        beerOrderId: number,
-        requestBody: BeerOrderShipmentDto,
-    ): CancelablePromise<BeerOrderShipmentDto> {
+        apparelOrderId: number,
+        requestBody: ApparelOrderShipmentDto,
+    ): CancelablePromise<ApparelOrderShipmentDto> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/beer-orders/{beerOrderId}/shipments',
+            url: '/api/v1/apparel-orders/{apparelOrderId}/shipments',
             path: {
-                'beerOrderId': beerOrderId,
+                'apparelOrderId': apparelOrderId,
             },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
                 400: `Bad request - validation error`,
                 401: `Unauthorized`,
-                404: `Beer order not found`,
+                404: `Apparel order not found`,
             },
         });
     }
     /**
-     * Get a specific shipment for a beer order
-     * Returns a specific shipment for a beer order.
-     * @param beerOrderId ID of the beer order
+     * Get a specific shipment for a apparel order
+     * Returns a specific shipment for a apparel order.
+     * @param apparelOrderId ID of the apparel order
      * @param shipmentId ID of the shipment to get
-     * @returns BeerOrderShipmentDto Successfully retrieved the shipment
+     * @returns ApparelOrderShipmentDto Successfully retrieved the shipment
      * @throws ApiError
      */
     public static getShipmentById(
-        beerOrderId: number,
+        apparelOrderId: number,
         shipmentId: number,
-    ): CancelablePromise<BeerOrderShipmentDto> {
+    ): CancelablePromise<ApparelOrderShipmentDto> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/beer-orders/{beerOrderId}/shipments/{shipmentId}',
+            url: '/api/v1/apparel-orders/{apparelOrderId}/shipments/{shipmentId}',
             path: {
-                'beerOrderId': beerOrderId,
+                'apparelOrderId': apparelOrderId,
                 'shipmentId': shipmentId,
             },
             errors: {
                 401: `Unauthorized`,
-                404: `Beer order or shipment not found`,
+                404: `Apparel order or shipment not found`,
             },
         });
     }
     /**
-     * Update a specific shipment for a beer order
-     * Updates a specific shipment for a beer order. The ID, version, createdDate, and updateDate fields will be ignored if provided.
-     * @param beerOrderId ID of the beer order
+     * Update a specific shipment for a apparel order
+     * Updates a specific shipment for a apparel order. The ID, version, createdDate, and updateDate fields will be ignored if provided.
+     * @param apparelOrderId ID of the apparel order
      * @param shipmentId ID of the shipment to update
      * @param requestBody Shipment object to be updated
-     * @returns BeerOrderShipmentDto Successfully updated the shipment
+     * @returns ApparelOrderShipmentDto Successfully updated the shipment
      * @throws ApiError
      */
     public static updateShipment(
-        beerOrderId: number,
+        apparelOrderId: number,
         shipmentId: number,
-        requestBody: BeerOrderShipmentDto,
-    ): CancelablePromise<BeerOrderShipmentDto> {
+        requestBody: ApparelOrderShipmentDto,
+    ): CancelablePromise<ApparelOrderShipmentDto> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/v1/beer-orders/{beerOrderId}/shipments/{shipmentId}',
+            url: '/api/v1/apparel-orders/{apparelOrderId}/shipments/{shipmentId}',
             path: {
-                'beerOrderId': beerOrderId,
+                'apparelOrderId': apparelOrderId,
                 'shipmentId': shipmentId,
             },
             body: requestBody,
@@ -215,32 +215,32 @@ export class BeerOrderService {
             errors: {
                 400: `Bad request - validation error`,
                 401: `Unauthorized`,
-                404: `Beer order or shipment not found`,
+                404: `Apparel order or shipment not found`,
             },
         });
     }
     /**
-     * Delete a specific shipment for a beer order
-     * Deletes a specific shipment for a beer order.
-     * @param beerOrderId ID of the beer order
+     * Delete a specific shipment for a apparel order
+     * Deletes a specific shipment for a apparel order.
+     * @param apparelOrderId ID of the apparel order
      * @param shipmentId ID of the shipment to delete
      * @returns void
      * @throws ApiError
      */
     public static deleteShipment(
-        beerOrderId: number,
+        apparelOrderId: number,
         shipmentId: number,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/v1/beer-orders/{beerOrderId}/shipments/{shipmentId}',
+            url: '/api/v1/apparel-orders/{apparelOrderId}/shipments/{shipmentId}',
             path: {
-                'beerOrderId': beerOrderId,
+                'apparelOrderId': apparelOrderId,
                 'shipmentId': shipmentId,
             },
             errors: {
                 401: `Unauthorized`,
-                404: `Beer order or shipment not found`,
+                404: `Apparel order or shipment not found`,
             },
         });
     }

@@ -5,6 +5,6 @@
  */
 
 export { default as apiService } from './api';
-export { default as beerService } from './beerService';
+export { default as apparelService } from './apparelService';
 export { default as customerService } from './customerService';
-export { default as beerOrderService } from './beerOrderService';
+export { default as apparelOrderService } from './apparelOrderService';

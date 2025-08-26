@@ -5,20 +5,20 @@ import { PageContainer, PageHeader, PageContent } from '@components/layout';
 import { DataTable, TableFilters, TableActions, createCommonActions } from '@components/tables';
 import { Button } from '@components/ui';
 import { useToast, useConfirmationDialog } from '../../hooks';
-import beerOrderService from '../../services/beerOrderService';
-import type { BeerOrderDto } from '../../api';
+import apparelOrderService from '../../services/apparelOrderService';
+import type { ApparelOrderDto } from '../../api';
 import type { Column, FilterValue, SortConfig } from '@components/tables';
 
 /**
- * Beer order listing page with pagination, filtering, and actions
+ * Apparel order listing page with pagination, filtering, and actions
  */
-const BeerOrderListPage: React.FC = () => {
+const ApparelOrderListPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { success, error } = useToast();
   const { confirmDelete } = useConfirmationDialog();
 
-  const [beerOrders, setBeerOrders] = useState<BeerOrderDto[]>([]);
+  const [apparelOrders, setApparelOrders] = useState<ApparelOrderDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -34,20 +34,20 @@ const BeerOrderListPage: React.FC = () => {
   // Get customerId from URL query params if it exists
   const customerId = searchParams.get('customerId');
 
-  // Load beer orders data
-  const loadBeerOrders = useCallback(async () => {
+  // Load apparel orders data
+  const loadApparelOrders = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await beerOrderService.getBeerOrders();
+      const response = await apparelOrderService.getApparelOrders();
 
-      setBeerOrders(response || []);
+      setApparelOrders(response || []);
       setPagination(prev => ({
         ...prev,
         total: response?.length || 0,
       }));
     } catch (err) {
-      error('Failed to load beer orders');
-      console.error('Error loading beer orders:', err);
+      error('Failed to load apparel orders');
+      console.error('Error loading apparel orders:', err);
     } finally {
       setLoading(false);
     }
@@ -55,8 +55,8 @@ const BeerOrderListPage: React.FC = () => {
 
   // Load data on component mount and when dependencies change
   useEffect(() => {
-    loadBeerOrders();
-  }, [loadBeerOrders]);
+    loadApparelOrders();
+  }, [loadApparelOrders]);
 
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -74,22 +74,22 @@ const BeerOrderListPage: React.FC = () => {
     setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
   };
 
-  // Handle beer order deletion
-  const handleDeleteBeerOrder = async (beerOrder: BeerOrderDto) => {
-    confirmDelete(`Order #${beerOrder.id}`, async () => {
+  // Handle apparel order deletion
+  const handleDeleteApparelOrder = async (apparelOrder: ApparelOrderDto) => {
+    confirmDelete(`Order #${apparelOrder.id}`, async () => {
       try {
-        await beerOrderService.deleteBeerOrder(beerOrder.id!);
-        success(`Beer order #${beerOrder.id} deleted successfully`);
-        loadBeerOrders(); // Reload the list
+        await apparelOrderService.deleteApparelOrder(apparelOrder.id!);
+        success(`Apparel order #${apparelOrder.id} deleted successfully`);
+        loadApparelOrders(); // Reload the list
       } catch (err) {
-        error('Failed to delete beer order');
-        console.error('Error deleting beer order:', err);
+        error('Failed to delete apparel order');
+        console.error('Error deleting apparel order:', err);
       }
     });
   };
 
   // Define table columns
-  const columns: Column<BeerOrderDto>[] = [
+  const columns: Column<ApparelOrderDto>[] = [
     {
       key: 'id',
       header: 'Order ID',
@@ -97,7 +97,7 @@ const BeerOrderListPage: React.FC = () => {
       render: (value, order) => (
         <div className="font-medium">
           <button
-            onClick={() => navigate(`/beer-orders/${order.id}`)}
+            onClick={() => navigate(`/apparel-orders/${order.id}`)}
             className="text-primary hover:underline"
           >
             #{String(value)}
@@ -164,9 +164,9 @@ const BeerOrderListPage: React.FC = () => {
         <TableActions
           row={order}
           actions={createCommonActions({
-            onView: (order: BeerOrderDto) => navigate(`/beer-orders/${order.id}`),
-            onEdit: (order: BeerOrderDto) => navigate(`/beer-orders/${order.id}/edit`),
-            onDelete: (order: BeerOrderDto) => handleDeleteBeerOrder(order),
+            onView: (order: ApparelOrderDto) => navigate(`/apparel-orders/${order.id}`),
+            onEdit: (order: ApparelOrderDto) => navigate(`/apparel-orders/${order.id}/edit`),
+            onDelete: (order: ApparelOrderDto) => handleDeleteApparelOrder(order),
           })}
         />
       ),
@@ -195,18 +195,18 @@ const BeerOrderListPage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader
-        title={customerId ? `Beer Orders for Customer ${customerId}` : 'Beer Orders'}
+        title={customerId ? `Apparel Orders for Customer ${customerId}` : 'Apparel Orders'}
         subtitle={
-          customerId ? 'Manage beer orders for this customer' : 'Manage your beer order inventory'
+          customerId ? 'Manage apparel orders for this customer' : 'Manage your apparel order inventory'
         }
         actions={
           <div className="flex gap-2">
             {customerId && (
-              <Button variant="outline" onClick={() => navigate('/beer-orders')}>
+              <Button variant="outline" onClick={() => navigate('/apparel-orders')}>
                 Show All Orders
               </Button>
             )}
-            <Button onClick={() => navigate('/beer-orders/new')}>
+            <Button onClick={() => navigate('/apparel-orders/new')}>
               <Plus className="h-4 w-4 mr-2" />
               Create Order
             </Button>
@@ -226,7 +226,7 @@ const BeerOrderListPage: React.FC = () => {
 
           {/* Data Table */}
           <DataTable
-            data={beerOrders}
+            data={apparelOrders}
             columns={columns}
             loading={loading}
             sortConfig={sortConfig}
@@ -234,7 +234,7 @@ const BeerOrderListPage: React.FC = () => {
             pagination={pagination}
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
-            emptyMessage="No beer orders found. Create your first order to get started."
+            emptyMessage="No apparel orders found. Create your first order to get started."
           />
         </div>
       </PageContent>
@@ -242,4 +242,4 @@ const BeerOrderListPage: React.FC = () => {
   );
 };
 
-export default BeerOrderListPage;
+export default ApparelOrderListPage;

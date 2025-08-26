@@ -1,18 +1,18 @@
 /**
- * Beer-related type definitions
+ * Apparel-related type definitions
  */
 
 /**
- * Beer DTO interface
- * Represents a beer entity in the system
+ * Apparel DTO interface
+ * Represents a apparel entity in the system
  */
-export interface BeerDto {
+export interface ApparelDto {
   id?: number;
   version?: number;
   createdDate?: string;
   updateDate?: string;
-  beerName: string;
-  beerStyle: string;
+  apparelName: string;
+  apparelStyle: string;
   upc: string;
   quantityOnHand: number;
   price: number;
@@ -21,16 +21,16 @@ export interface BeerDto {
 }
 
 /**
- * Beer Patch DTO interface
- * Used for partial updates to a beer entity
+ * Apparel Patch DTO interface
+ * Used for partial updates to a apparel entity
  */
-export interface BeerPatchDto {
+export interface ApparelPatchDto {
   id?: number;
   version?: number;
   createdDate?: string;
   updateDate?: string;
-  beerName?: string;
-  beerStyle?: string;
+  apparelName?: string;
+  apparelStyle?: string;
   upc?: string;
   quantityOnHand?: number;
   price?: number;
@@ -72,7 +72,7 @@ export interface Page<T> {
 }
 
 /**
- * Page of Beer DTO interface
- * Represents a paginated list of beers
+ * Page of Apparel DTO interface
+ * Represents a paginated list of apparels
  */
-export type PageOfBeerDto = Page<BeerDto>;
+export type PageOfApparelDto = Page<ApparelDto>;

@@ -1,12 +1,12 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
 import guru.springframework.juniemvc.exceptions.NotFoundException;
-import guru.springframework.juniemvc.mappers.BeerOrderShipmentMapper;
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
-import guru.springframework.juniemvc.repositories.BeerOrderRepository;
-import guru.springframework.juniemvc.repositories.BeerOrderShipmentRepository;
+import guru.springframework.juniemvc.mappers.ApparelOrderShipmentMapper;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
+import guru.springframework.juniemvc.repositories.ApparelOrderRepository;
+import guru.springframework.juniemvc.repositories.ApparelOrderShipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,74 +15,74 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of BeerOrderShipmentService
+ * Implementation of ApparelOrderShipmentService
  */
 @Service
 @RequiredArgsConstructor
-public class BeerOrderShipmentServiceImpl implements BeerOrderShipmentService {
+public class ApparelOrderShipmentServiceImpl implements ApparelOrderShipmentService {
 
-    private final BeerOrderRepository beerOrderRepository;
-    private final BeerOrderShipmentRepository beerOrderShipmentRepository;
-    private final BeerOrderShipmentMapper beerOrderShipmentMapper;
+    private final ApparelOrderRepository apparelOrderRepository;
+    private final ApparelOrderShipmentRepository apparelOrderShipmentRepository;
+    private final ApparelOrderShipmentMapper apparelOrderShipmentMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<BeerOrderShipmentDto> getAllShipments(Integer beerOrderId) {
-        return beerOrderShipmentRepository.findByBeerOrderId(beerOrderId)
+    public List<ApparelOrderShipmentDto> getAllShipments(Integer apparelOrderId) {
+        return apparelOrderShipmentRepository.findByApparelOrderId(apparelOrderId)
                 .stream()
-                .map(beerOrderShipmentMapper::beerOrderShipmentToBeerOrderShipmentDto)
+                .map(apparelOrderShipmentMapper::apparelOrderShipmentToApparelOrderShipmentDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public BeerOrderShipmentDto getShipmentById(Integer beerOrderId, Integer shipmentId) {
-        BeerOrderShipment shipment = getShipmentEntity(beerOrderId, shipmentId);
-        return beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(shipment);
+    public ApparelOrderShipmentDto getShipmentById(Integer apparelOrderId, Integer shipmentId) {
+        ApparelOrderShipment shipment = getShipmentEntity(apparelOrderId, shipmentId);
+        return apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(shipment);
     }
 
     @Override
     @Transactional
-    public BeerOrderShipmentDto createShipment(Integer beerOrderId, BeerOrderShipmentDto shipmentDto) {
-        BeerOrder beerOrder = beerOrderRepository.findById(beerOrderId)
-                .orElseThrow(() -> new NotFoundException("Beer Order not found with id: " + beerOrderId));
+    public ApparelOrderShipmentDto createShipment(Integer apparelOrderId, ApparelOrderShipmentDto shipmentDto) {
+        ApparelOrder apparelOrder = apparelOrderRepository.findById(apparelOrderId)
+                .orElseThrow(() -> new NotFoundException("Apparel Order not found with id: " + apparelOrderId));
 
-        BeerOrderShipment shipment = beerOrderShipmentMapper.beerOrderShipmentDtoToBeerOrderShipment(shipmentDto);
-        beerOrder.addShipment(shipment);
+        ApparelOrderShipment shipment = apparelOrderShipmentMapper.apparelOrderShipmentDtoToApparelOrderShipment(shipmentDto);
+        apparelOrder.addShipment(shipment);
         
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
-        return beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(savedShipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
+        return apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(savedShipment);
     }
 
     @Override
     @Transactional
-    public BeerOrderShipmentDto updateShipment(Integer beerOrderId, Integer shipmentId, BeerOrderShipmentDto shipmentDto) {
-        BeerOrderShipment shipment = getShipmentEntity(beerOrderId, shipmentId);
+    public ApparelOrderShipmentDto updateShipment(Integer apparelOrderId, Integer shipmentId, ApparelOrderShipmentDto shipmentDto) {
+        ApparelOrderShipment shipment = getShipmentEntity(apparelOrderId, shipmentId);
         
         // Update fields
         shipment.setShipmentDate(shipmentDto.getShipmentDate());
         shipment.setCarrier(shipmentDto.getCarrier());
         shipment.setTrackingNumber(shipmentDto.getTrackingNumber());
         
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
-        return beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(savedShipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
+        return apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(savedShipment);
     }
 
     @Override
     @Transactional
-    public void deleteShipment(Integer beerOrderId, Integer shipmentId) {
-        BeerOrderShipment shipment = getShipmentEntity(beerOrderId, shipmentId);
-        BeerOrder beerOrder = shipment.getBeerOrder();
-        beerOrder.removeShipment(shipment);
-        beerOrderShipmentRepository.delete(shipment);
+    public void deleteShipment(Integer apparelOrderId, Integer shipmentId) {
+        ApparelOrderShipment shipment = getShipmentEntity(apparelOrderId, shipmentId);
+        ApparelOrder apparelOrder = shipment.getApparelOrder();
+        apparelOrder.removeShipment(shipment);
+        apparelOrderShipmentRepository.delete(shipment);
     }
     
-    private BeerOrderShipment getShipmentEntity(Integer beerOrderId, Integer shipmentId) {
-        BeerOrderShipment shipment = beerOrderShipmentRepository.findById(shipmentId)
+    private ApparelOrderShipment getShipmentEntity(Integer apparelOrderId, Integer shipmentId) {
+        ApparelOrderShipment shipment = apparelOrderShipmentRepository.findById(shipmentId)
                 .orElseThrow(() -> new NotFoundException("Shipment not found with id: " + shipmentId));
         
-        if (!shipment.getBeerOrder().getId().equals(beerOrderId)) {
-            throw new NotFoundException("Shipment not found for Beer Order with id: " + beerOrderId);
+        if (!shipment.getApparelOrder().getId().equals(apparelOrderId)) {
+            throw new NotFoundException("Shipment not found for Apparel Order with id: " + apparelOrderId);
         }
         
         return shipment;

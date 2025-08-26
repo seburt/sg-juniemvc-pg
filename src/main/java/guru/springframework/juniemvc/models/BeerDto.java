@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class BeerDto extends BaseEntityDto {
+public class ApparelDto extends BaseEntityDto {
 
-    @NotBlank(message = "Beer name is required")
-    private String beerName;
+    @NotBlank(message = "Apparel name is required")
+    private String apparelName;
 
-    // style of the beer, ALE, PALE ALE, IPA, etc
-    @NotBlank(message = "Beer style is required")
-    private String beerStyle;
+    // style of the apparel, ALE, PALE ALE, IPA, etc
+    @NotBlank(message = "Apparel style is required")
+    private String apparelStyle;
 
-    // Universal Product Code, a 13-digit number assigned to each unique beer product by the Federal Bar Association
+    // Universal Product Code, a 13-digit number assigned to each unique apparel product by the Federal Bar Association
     @NotBlank(message = "UPC is required")
     private String upc;
 

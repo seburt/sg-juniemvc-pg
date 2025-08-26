@@ -1,69 +1,69 @@
 /**
- * Beer Order Service
+ * Apparel Order Service
  *
- * Service for managing beer order-related operations
+ * Service for managing apparel order-related operations
  */
 
 import type { AxiosRequestConfig } from 'axios';
 import apiService from './api';
 import type {
-  BeerOrderDto,
-  BeerOrderPatchDto,
-  BeerOrderShipmentDto,
-  PageOfBeerOrderDto,
-} from '../types/beerOrder';
+  ApparelOrderDto,
+  ApparelOrderPatchDto,
+  ApparelOrderShipmentDto,
+  PageOfApparelOrderDto,
+} from '../types/apparelOrder';
 import type { PaginationParams, SortParams, FilterParam } from '@utils/apiUtils';
 
 // API endpoints
-const BEER_ORDER_API_URL = '/api/v1/beer-orders';
-const BEER_ORDER_BY_ID_URL = '/api/v1/beer-orders/{id}';
-const BEER_ORDER_SHIPMENTS_URL = '/api/v1/beer-orders/{beerOrderId}/shipments';
-const BEER_ORDER_SHIPMENT_BY_ID_URL = '/api/v1/beer-orders/{beerOrderId}/shipments/{shipmentId}';
+const BEER_ORDER_API_URL = '/api/v1/apparel-orders';
+const BEER_ORDER_BY_ID_URL = '/api/v1/apparel-orders/{id}';
+const BEER_ORDER_SHIPMENTS_URL = '/api/v1/apparel-orders/{apparelOrderId}/shipments';
+const BEER_ORDER_SHIPMENT_BY_ID_URL = '/api/v1/apparel-orders/{apparelOrderId}/shipments/{shipmentId}';
 
 /**
- * Beer Order Service class
- * Provides methods for interacting with the Beer Order API
+ * Apparel Order Service class
+ * Provides methods for interacting with the Apparel Order API
  */
-class BeerOrderService {
+class ApparelOrderService {
   /**
-   * Get all beer orders
+   * Get all apparel orders
    *
    * @param config - Additional Axios request configuration
-   * @returns Promise with the list of beer orders
+   * @returns Promise with the list of apparel orders
    */
-  public async getBeerOrders(config?: AxiosRequestConfig): Promise<BeerOrderDto[]> {
-    return apiService.getWithNotification<BeerOrderDto[]>(BEER_ORDER_API_URL, config);
+  public async getApparelOrders(config?: AxiosRequestConfig): Promise<ApparelOrderDto[]> {
+    return apiService.getWithNotification<ApparelOrderDto[]>(BEER_ORDER_API_URL, config);
   }
 
   /**
-   * Get a paginated list of beer orders
-   * Note: The API doesn't natively support pagination for beer orders,
+   * Get a paginated list of apparel orders
+   * Note: The API doesn't natively support pagination for apparel orders,
    * so we implement client-side pagination
    *
    * @param pagination - Pagination parameters
    * @param sort - Sorting parameters
    * @param filters - Filter parameters
    * @param config - Additional Axios request configuration
-   * @returns Promise with the paginated beer order list
+   * @returns Promise with the paginated apparel order list
    */
-  public async getBeerOrdersPaginated(
+  public async getApparelOrdersPaginated(
     pagination?: PaginationParams,
     sort?: SortParams,
     filters?: FilterParam[],
     config?: AxiosRequestConfig
-  ): Promise<PageOfBeerOrderDto> {
-    // Get all beer orders
-    const beerOrders = await this.getBeerOrders(config);
+  ): Promise<PageOfApparelOrderDto> {
+    // Get all apparel orders
+    const apparelOrders = await this.getApparelOrders(config);
 
     // Apply filters if provided
-    let filteredBeerOrders = beerOrders;
+    let filteredApparelOrders = apparelOrders;
     if (filters && filters.length > 0) {
-      filteredBeerOrders = this.applyFilters(beerOrders, filters);
+      filteredApparelOrders = this.applyFilters(apparelOrders, filters);
     }
 
     // Apply sorting if provided
     if (sort && sort.sort) {
-      this.applySorting(filteredBeerOrders, sort);
+      this.applySorting(filteredApparelOrders, sort);
     }
 
     // Apply pagination if provided
@@ -71,11 +71,11 @@ class BeerOrderService {
     const size = pagination?.size || 20;
     const start = page * size;
     const end = start + size;
-    const paginatedBeerOrders = filteredBeerOrders.slice(start, end);
+    const paginatedApparelOrders = filteredApparelOrders.slice(start, end);
 
     // Create a paginated response
     return {
-      content: paginatedBeerOrders,
+      content: paginatedApparelOrders,
       pageable: {
         sort: {
           sorted: !!sort?.sort,
@@ -88,9 +88,9 @@ class BeerOrderService {
         paged: true,
         unpaged: false,
       },
-      totalPages: Math.ceil(filteredBeerOrders.length / size),
-      totalElements: filteredBeerOrders.length,
-      last: start + size >= filteredBeerOrders.length,
+      totalPages: Math.ceil(filteredApparelOrders.length / size),
+      totalElements: filteredApparelOrders.length,
+      last: start + size >= filteredApparelOrders.length,
       size: size,
       number: page,
       sort: {
@@ -98,31 +98,31 @@ class BeerOrderService {
         unsorted: !sort?.sort,
         empty: !sort?.sort,
       },
-      numberOfElements: paginatedBeerOrders.length,
+      numberOfElements: paginatedApparelOrders.length,
       first: page === 0,
-      empty: paginatedBeerOrders.length === 0,
+      empty: paginatedApparelOrders.length === 0,
     };
   }
 
   /**
-   * Apply filters to beer orders
+   * Apply filters to apparel orders
    *
-   * @param beerOrders - List of beer orders
+   * @param apparelOrders - List of apparel orders
    * @param filters - Filter parameters
-   * @returns Filtered list of beer orders
+   * @returns Filtered list of apparel orders
    */
-  private applyFilters(beerOrders: BeerOrderDto[], filters: FilterParam[]): BeerOrderDto[] {
-    return beerOrders.filter(beerOrder => {
+  private applyFilters(apparelOrders: ApparelOrderDto[], filters: FilterParam[]): ApparelOrderDto[] {
+    return apparelOrders.filter(apparelOrder => {
       return filters.every(filter => {
         const field = filter.field;
         const value = filter.value;
 
         if (field === 'customerRef' && typeof value === 'string') {
-          return beerOrder.customerRef?.toLowerCase().includes(value.toLowerCase());
+          return apparelOrder.customerRef?.toLowerCase().includes(value.toLowerCase());
         }
 
         if (field === 'status' && typeof value === 'string') {
-          return beerOrder.status?.toLowerCase() === value.toLowerCase();
+          return apparelOrder.status?.toLowerCase() === value.toLowerCase();
         }
 
         return true;
@@ -131,18 +131,18 @@ class BeerOrderService {
   }
 
   /**
-   * Apply sorting to beer orders
+   * Apply sorting to apparel orders
    *
-   * @param beerOrders - List of beer orders
+   * @param apparelOrders - List of apparel orders
    * @param sort - Sorting parameters
    */
-  private applySorting(beerOrders: BeerOrderDto[], sort: SortParams): void {
+  private applySorting(apparelOrders: ApparelOrderDto[], sort: SortParams): void {
     const field = sort.sort;
     const direction = sort.direction || 'asc';
 
     if (!field) return;
 
-    beerOrders.sort((a, b) => {
+    apparelOrders.sort((a, b) => {
       let valueA: string | number;
       let valueB: string | number;
 
@@ -184,158 +184,158 @@ class BeerOrderService {
   }
 
   /**
-   * Get a beer order by ID
+   * Get a apparel order by ID
    *
-   * @param id - Beer order ID
+   * @param id - Apparel order ID
    * @param config - Additional Axios request configuration
-   * @returns Promise with the beer order
+   * @returns Promise with the apparel order
    */
-  public async getBeerOrderById(id: number, config?: AxiosRequestConfig): Promise<BeerOrderDto> {
-    return apiService.getByIdWithNotification<BeerOrderDto>(BEER_ORDER_BY_ID_URL, id, config);
+  public async getApparelOrderById(id: number, config?: AxiosRequestConfig): Promise<ApparelOrderDto> {
+    return apiService.getByIdWithNotification<ApparelOrderDto>(BEER_ORDER_BY_ID_URL, id, config);
   }
 
   /**
-   * Create a new beer order
+   * Create a new apparel order
    *
-   * @param beerOrder - Beer order data
+   * @param apparelOrder - Apparel order data
    * @param config - Additional Axios request configuration
-   * @returns Promise with the created beer order
+   * @returns Promise with the created apparel order
    */
-  public async createBeerOrder(
-    beerOrder: BeerOrderDto,
+  public async createApparelOrder(
+    apparelOrder: ApparelOrderDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderDto> {
-    return apiService.createWithNotification<BeerOrderDto>(BEER_ORDER_API_URL, beerOrder, config);
+  ): Promise<ApparelOrderDto> {
+    return apiService.createWithNotification<ApparelOrderDto>(BEER_ORDER_API_URL, apparelOrder, config);
   }
 
   /**
-   * Update a beer order
+   * Update a apparel order
    *
-   * @param id - Beer order ID
-   * @param beerOrder - Updated beer order data
+   * @param id - Apparel order ID
+   * @param apparelOrder - Updated apparel order data
    * @param config - Additional Axios request configuration
-   * @returns Promise with the updated beer order
+   * @returns Promise with the updated apparel order
    */
-  public async updateBeerOrder(
+  public async updateApparelOrder(
     id: number,
-    beerOrder: BeerOrderDto,
+    apparelOrder: ApparelOrderDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderDto> {
-    return apiService.updateWithNotification<BeerOrderDto>(
+  ): Promise<ApparelOrderDto> {
+    return apiService.updateWithNotification<ApparelOrderDto>(
       BEER_ORDER_BY_ID_URL,
       id,
-      beerOrder,
+      apparelOrder,
       config
     );
   }
 
   /**
-   * Delete a beer order
+   * Delete a apparel order
    *
-   * @param id - Beer order ID
+   * @param id - Apparel order ID
    * @param config - Additional Axios request configuration
    * @returns Promise with the response
    */
-  public async deleteBeerOrder(id: number, config?: AxiosRequestConfig): Promise<void> {
+  public async deleteApparelOrder(id: number, config?: AxiosRequestConfig): Promise<void> {
     return apiService.deleteResourceWithNotification<void>(BEER_ORDER_BY_ID_URL, id, config);
   }
 
   /**
-   * Update beer order status
+   * Update apparel order status
    *
-   * @param id - Beer order ID
+   * @param id - Apparel order ID
    * @param status - New status
    * @param config - Additional Axios request configuration
-   * @returns Promise with the updated beer order
+   * @returns Promise with the updated apparel order
    */
-  public async updateBeerOrderStatus(
+  public async updateApparelOrderStatus(
     id: number,
     status: string,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderDto> {
-    const beerOrderPatch: BeerOrderPatchDto = {
+  ): Promise<ApparelOrderDto> {
+    const apparelOrderPatch: ApparelOrderPatchDto = {
       status,
     };
-    return apiService.partialUpdateWithNotification<BeerOrderDto>(
+    return apiService.partialUpdateWithNotification<ApparelOrderDto>(
       BEER_ORDER_BY_ID_URL,
       id,
-      beerOrderPatch,
+      apparelOrderPatch,
       config
     );
   }
 
   /**
-   * Get all shipments for a beer order
+   * Get all shipments for a apparel order
    *
-   * @param beerOrderId - Beer order ID
+   * @param apparelOrderId - Apparel order ID
    * @param config - Additional Axios request configuration
    * @returns Promise with the list of shipments
    */
-  public async getBeerOrderShipments(
-    beerOrderId: number,
+  public async getApparelOrderShipments(
+    apparelOrderId: number,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderShipmentDto[]> {
-    const url = BEER_ORDER_SHIPMENTS_URL.replace('{beerOrderId}', beerOrderId.toString());
-    return apiService.getWithNotification<BeerOrderShipmentDto[]>(url, config);
+  ): Promise<ApparelOrderShipmentDto[]> {
+    const url = BEER_ORDER_SHIPMENTS_URL.replace('{apparelOrderId}', apparelOrderId.toString());
+    return apiService.getWithNotification<ApparelOrderShipmentDto[]>(url, config);
   }
 
   /**
-   * Get a specific shipment for a beer order
+   * Get a specific shipment for a apparel order
    *
-   * @param beerOrderId - Beer order ID
+   * @param apparelOrderId - Apparel order ID
    * @param shipmentId - Shipment ID
    * @param config - Additional Axios request configuration
    * @returns Promise with the shipment
    */
-  public async getBeerOrderShipmentById(
-    beerOrderId: number,
+  public async getApparelOrderShipmentById(
+    apparelOrderId: number,
     shipmentId: number,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderShipmentDto> {
+  ): Promise<ApparelOrderShipmentDto> {
     const url = BEER_ORDER_SHIPMENT_BY_ID_URL.replace(
-      '{beerOrderId}',
-      beerOrderId.toString()
+      '{apparelOrderId}',
+      apparelOrderId.toString()
     ).replace('{shipmentId}', shipmentId.toString());
-    return apiService.getWithNotification<BeerOrderShipmentDto>(url, config);
+    return apiService.getWithNotification<ApparelOrderShipmentDto>(url, config);
   }
 
   /**
-   * Create a new shipment for a beer order
+   * Create a new shipment for a apparel order
    *
-   * @param beerOrderId - Beer order ID
+   * @param apparelOrderId - Apparel order ID
    * @param shipment - Shipment data
    * @param config - Additional Axios request configuration
    * @returns Promise with the created shipment
    */
-  public async createBeerOrderShipment(
-    beerOrderId: number,
-    shipment: BeerOrderShipmentDto,
+  public async createApparelOrderShipment(
+    apparelOrderId: number,
+    shipment: ApparelOrderShipmentDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderShipmentDto> {
-    const url = BEER_ORDER_SHIPMENTS_URL.replace('{beerOrderId}', beerOrderId.toString());
-    return apiService.createWithNotification<BeerOrderShipmentDto>(url, shipment, config);
+  ): Promise<ApparelOrderShipmentDto> {
+    const url = BEER_ORDER_SHIPMENTS_URL.replace('{apparelOrderId}', apparelOrderId.toString());
+    return apiService.createWithNotification<ApparelOrderShipmentDto>(url, shipment, config);
   }
 
   /**
-   * Update a shipment for a beer order
+   * Update a shipment for a apparel order
    *
-   * @param beerOrderId - Beer order ID
+   * @param apparelOrderId - Apparel order ID
    * @param shipmentId - Shipment ID
    * @param shipment - Updated shipment data
    * @param config - Additional Axios request configuration
    * @returns Promise with the updated shipment
    */
-  public async updateBeerOrderShipment(
-    beerOrderId: number,
+  public async updateApparelOrderShipment(
+    apparelOrderId: number,
     shipmentId: number,
-    shipment: BeerOrderShipmentDto,
+    shipment: ApparelOrderShipmentDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerOrderShipmentDto> {
+  ): Promise<ApparelOrderShipmentDto> {
     const url = BEER_ORDER_SHIPMENT_BY_ID_URL.replace(
-      '{beerOrderId}',
-      beerOrderId.toString()
+      '{apparelOrderId}',
+      apparelOrderId.toString()
     ).replace('{shipmentId}', shipmentId.toString());
-    return apiService.updateWithNotification<BeerOrderShipmentDto>(
+    return apiService.updateWithNotification<ApparelOrderShipmentDto>(
       url,
       shipmentId,
       shipment,
@@ -344,27 +344,27 @@ class BeerOrderService {
   }
 
   /**
-   * Delete a shipment for a beer order
+   * Delete a shipment for a apparel order
    *
-   * @param beerOrderId - Beer order ID
+   * @param apparelOrderId - Apparel order ID
    * @param shipmentId - Shipment ID
    * @param config - Additional Axios request configuration
    * @returns Promise with the response
    */
-  public async deleteBeerOrderShipment(
-    beerOrderId: number,
+  public async deleteApparelOrderShipment(
+    apparelOrderId: number,
     shipmentId: number,
     config?: AxiosRequestConfig
   ): Promise<void> {
     const url = BEER_ORDER_SHIPMENT_BY_ID_URL.replace(
-      '{beerOrderId}',
-      beerOrderId.toString()
+      '{apparelOrderId}',
+      apparelOrderId.toString()
     ).replace('{shipmentId}', shipmentId.toString());
     return apiService.deleteWithNotification<void>(url, config);
   }
 }
 
 // Create a singleton instance
-const beerOrderService = new BeerOrderService();
+const apparelOrderService = new ApparelOrderService();
 
-export default beerOrderService;
+export default apparelOrderService;

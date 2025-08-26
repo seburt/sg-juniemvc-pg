@@ -48,7 +48,7 @@ const CustomerCreatePage: React.FC = () => {
       try {
         const customerData: Omit<
           CustomerDto,
-          'id' | 'version' | 'createdDate' | 'updateDate' | 'beerOrders'
+          'id' | 'version' | 'createdDate' | 'updateDate' | 'apparelOrders'
         > = {
           name: formData.name,
           email: formData.email || undefined,

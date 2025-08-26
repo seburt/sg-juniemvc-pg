@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity representing a line item in a beer order
+ * Entity representing a line item in a apparel order
  */
 @Entity
 @Getter
@@ -18,15 +18,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BeerOrderLine extends BaseEntity {
+public class ApparelOrderLine extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "beer_order_id")
-    private BeerOrder beerOrder;
+    @JoinColumn(name = "apparel_order_id")
+    private ApparelOrder apparelOrder;
 
     @ManyToOne
-    @JoinColumn(name = "beer_id")
-    private Beer beer;
+    @JoinColumn(name = "apparel_id")
+    private Apparel apparel;
 
     private Integer orderQuantity;
     private Integer quantityAllocated;

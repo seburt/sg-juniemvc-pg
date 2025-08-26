@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui';
 
 /**
- * Beer Orders page component
- * Displays a list of beer orders and provides functionality to manage them
+ * Apparel Orders page component
+ * Displays a list of apparel orders and provides functionality to manage them
  */
-const BeerOrdersPage = () => {
+const ApparelOrdersPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Beer Order Management</h1>
+        <h1 className="text-3xl font-bold">Apparel Order Management</h1>
         <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
           Create New Order
         </button>
@@ -16,7 +16,7 @@ const BeerOrdersPage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Beer Orders</CardTitle>
+          <CardTitle>Apparel Orders</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -83,4 +83,4 @@ const BeerOrdersPage = () => {
   );
 };
 
-export default BeerOrdersPage;
+export default ApparelOrdersPage;

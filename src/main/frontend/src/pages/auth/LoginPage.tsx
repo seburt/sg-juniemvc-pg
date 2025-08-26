@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>
-            Enter your credentials to access the Beer Management System
+            Enter your credentials to access the Apparel Management System
           </CardDescription>
         </CardHeader>
         <CardContent>

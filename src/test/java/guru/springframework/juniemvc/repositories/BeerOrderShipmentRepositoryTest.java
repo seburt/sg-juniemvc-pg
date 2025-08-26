@@ -1,8 +1,8 @@
 package guru.springframework.juniemvc.repositories;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
 import guru.springframework.juniemvc.entities.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,21 +17,21 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for BeerOrderShipmentRepository
+ * Tests for ApparelOrderShipmentRepository
  */
 @DataJpaTest
-class BeerOrderShipmentRepositoryTest {
+class ApparelOrderShipmentRepositoryTest {
 
     @Autowired
-    BeerOrderShipmentRepository beerOrderShipmentRepository;
+    ApparelOrderShipmentRepository apparelOrderShipmentRepository;
 
     @Autowired
-    BeerOrderRepository beerOrderRepository;
+    ApparelOrderRepository apparelOrderRepository;
 
     @Autowired
     CustomerRepository customerRepository;
 
-    private BeerOrder testBeerOrder;
+    private ApparelOrder testApparelOrder;
     private Customer testCustomer;
 
     @BeforeEach
@@ -48,74 +48,74 @@ class BeerOrderShipmentRepositoryTest {
                 .build();
         testCustomer = customerRepository.save(testCustomer);
 
-        // Create and save a test beer order
-        testBeerOrder = BeerOrder.builder()
+        // Create and save a test apparel order
+        testApparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
-        testBeerOrder = beerOrderRepository.save(testBeerOrder);
+        testApparelOrder = apparelOrderRepository.save(testApparelOrder);
     }
 
     @Test
-    void testSaveBeerOrderShipment() {
+    void testSaveApparelOrderShipment() {
         // Given
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("FedEx")
                 .trackingNumber("123456789")
                 .build();
-        testBeerOrder.addShipment(shipment);
+        testApparelOrder.addShipment(shipment);
 
         // When
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
 
         // Then
         assertThat(savedShipment).isNotNull();
         assertThat(savedShipment.getId()).isNotNull();
-        assertThat(savedShipment.getBeerOrder().getId()).isEqualTo(testBeerOrder.getId());
+        assertThat(savedShipment.getApparelOrder().getId()).isEqualTo(testApparelOrder.getId());
         assertThat(savedShipment.getCarrier()).isEqualTo("FedEx");
         assertThat(savedShipment.getTrackingNumber()).isEqualTo("123456789");
     }
 
     @Test
-    void testGetBeerOrderShipmentById() {
+    void testGetApparelOrderShipmentById() {
         // Given
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("UPS")
                 .trackingNumber("987654321")
                 .build();
-        testBeerOrder.addShipment(shipment);
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
+        testApparelOrder.addShipment(shipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
 
         // When
-        Optional<BeerOrderShipment> fetchedShipmentOptional = beerOrderShipmentRepository.findById(savedShipment.getId());
+        Optional<ApparelOrderShipment> fetchedShipmentOptional = apparelOrderShipmentRepository.findById(savedShipment.getId());
 
         // Then
         assertThat(fetchedShipmentOptional).isPresent();
-        BeerOrderShipment fetchedShipment = fetchedShipmentOptional.get();
-        assertThat(fetchedShipment.getBeerOrder()).isNotNull();
-        assertThat(fetchedShipment.getBeerOrder().getId()).isEqualTo(testBeerOrder.getId());
+        ApparelOrderShipment fetchedShipment = fetchedShipmentOptional.get();
+        assertThat(fetchedShipment.getApparelOrder()).isNotNull();
+        assertThat(fetchedShipment.getApparelOrder().getId()).isEqualTo(testApparelOrder.getId());
         assertThat(fetchedShipment.getCarrier()).isEqualTo("UPS");
         assertThat(fetchedShipment.getTrackingNumber()).isEqualTo("987654321");
     }
 
     @Test
-    void testUpdateBeerOrderShipment() {
+    void testUpdateApparelOrderShipment() {
         // Given
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("DHL")
                 .trackingNumber("ABCDEF123")
                 .build();
-        testBeerOrder.addShipment(shipment);
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
+        testApparelOrder.addShipment(shipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
 
         // When
         savedShipment.setCarrier("USPS");
         savedShipment.setTrackingNumber("UPDATED123");
-        BeerOrderShipment updatedShipment = beerOrderShipmentRepository.save(savedShipment);
+        ApparelOrderShipment updatedShipment = apparelOrderShipmentRepository.save(savedShipment);
 
         // Then
         assertThat(updatedShipment.getCarrier()).isEqualTo("USPS");
@@ -123,67 +123,67 @@ class BeerOrderShipmentRepositoryTest {
     }
 
     @Test
-    void testDeleteBeerOrderShipment() {
+    void testDeleteApparelOrderShipment() {
         // Given
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("Amazon")
                 .trackingNumber("AMAZON123")
                 .build();
-        testBeerOrder.addShipment(shipment);
-        BeerOrderShipment savedShipment = beerOrderShipmentRepository.save(shipment);
+        testApparelOrder.addShipment(shipment);
+        ApparelOrderShipment savedShipment = apparelOrderShipmentRepository.save(shipment);
 
         // When
-        beerOrderShipmentRepository.deleteById(savedShipment.getId());
-        Optional<BeerOrderShipment> deletedShipment = beerOrderShipmentRepository.findById(savedShipment.getId());
+        apparelOrderShipmentRepository.deleteById(savedShipment.getId());
+        Optional<ApparelOrderShipment> deletedShipment = apparelOrderShipmentRepository.findById(savedShipment.getId());
 
         // Then
         assertThat(deletedShipment).isEmpty();
     }
 
     @Test
-    void testFindByBeerOrderId() {
+    void testFindByApparelOrderId() {
         // Given
-        beerOrderShipmentRepository.deleteAll(); // Clear any existing data
+        apparelOrderShipmentRepository.deleteAll(); // Clear any existing data
 
-        BeerOrderShipment shipment1 = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment1 = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("FedEx")
                 .trackingNumber("FEDEX123")
                 .build();
-        testBeerOrder.addShipment(shipment1);
-        beerOrderShipmentRepository.save(shipment1);
+        testApparelOrder.addShipment(shipment1);
+        apparelOrderShipmentRepository.save(shipment1);
 
-        BeerOrderShipment shipment2 = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment2 = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now().plusDays(1))
                 .carrier("UPS")
                 .trackingNumber("UPS456")
                 .build();
-        testBeerOrder.addShipment(shipment2);
-        beerOrderShipmentRepository.save(shipment2);
+        testApparelOrder.addShipment(shipment2);
+        apparelOrderShipmentRepository.save(shipment2);
 
-        // Create another beer order with a shipment
-        BeerOrder anotherBeerOrder = BeerOrder.builder()
+        // Create another apparel order with a shipment
+        ApparelOrder anotherApparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("50.00"))
                 .status("NEW")
                 .build();
-        anotherBeerOrder = beerOrderRepository.save(anotherBeerOrder);
+        anotherApparelOrder = apparelOrderRepository.save(anotherApparelOrder);
 
-        BeerOrderShipment shipment3 = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment3 = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("DHL")
                 .trackingNumber("DHL789")
                 .build();
-        anotherBeerOrder.addShipment(shipment3);
-        beerOrderShipmentRepository.save(shipment3);
+        anotherApparelOrder.addShipment(shipment3);
+        apparelOrderShipmentRepository.save(shipment3);
 
         // When
-        List<BeerOrderShipment> shipments = beerOrderShipmentRepository.findByBeerOrderId(testBeerOrder.getId());
+        List<ApparelOrderShipment> shipments = apparelOrderShipmentRepository.findByApparelOrderId(testApparelOrder.getId());
 
         // Then
         assertThat(shipments).hasSize(2);
-        assertThat(shipments.get(0).getBeerOrder().getId()).isEqualTo(testBeerOrder.getId());
-        assertThat(shipments.get(1).getBeerOrder().getId()).isEqualTo(testBeerOrder.getId());
+        assertThat(shipments.get(0).getApparelOrder().getId()).isEqualTo(testApparelOrder.getId());
+        assertThat(shipments.get(1).getApparelOrder().getId()).isEqualTo(testApparelOrder.getId());
     }
 }

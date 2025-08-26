@@ -19,7 +19,7 @@ export interface CustomerDto {
   city: string;
   state: string;
   postalCode: string;
-  beerOrders?: import('./beerOrder').BeerOrderDto[];
+  apparelOrders?: import('./apparelOrder').ApparelOrderDto[];
 }
 
 /**
@@ -48,7 +48,7 @@ export interface CustomerPatchDto {
 export type PageOfCustomerDto = Page<CustomerDto>;
 
 /**
- * Import the Page interface from beer.ts
+ * Import the Page interface from apparel.ts
  * This is a workaround until we move the Page interface to a common location
  */
-import type { Page } from './beer';
+import type { Page } from './apparel';

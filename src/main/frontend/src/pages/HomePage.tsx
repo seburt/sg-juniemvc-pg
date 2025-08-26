@@ -7,19 +7,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@comp
 const HomePage = () => {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Welcome to Beer Service</h1>
+      <h1 className="text-3xl font-bold">Welcome to Apparel Service</h1>
       <p className="text-muted-foreground">
-        Manage your beer inventory, customers, and orders with ease.
+        Manage your apparel inventory, customers, and orders with ease.
       </p>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Beer Management</CardTitle>
-            <CardDescription>Manage your beer inventory</CardDescription>
+            <CardTitle>Apparel Management</CardTitle>
+            <CardDescription>Manage your apparel inventory</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>View, create, update, and delete beers in your inventory.</p>
+            <p>View, create, update, and delete apparels in your inventory.</p>
           </CardContent>
         </Card>
 
@@ -35,11 +35,11 @@ const HomePage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Beer Order Management</CardTitle>
-            <CardDescription>Manage beer orders</CardDescription>
+            <CardTitle>Apparel Order Management</CardTitle>
+            <CardDescription>Manage apparel orders</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>View, create, update, and track beer orders and shipments.</p>
+            <p>View, create, update, and track apparel orders and shipments.</p>
           </CardContent>
         </Card>
       </div>

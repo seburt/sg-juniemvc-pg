@@ -2,12 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BeerDto } from './BeerDto';
+import type { ApparelDto } from './ApparelDto';
 import type { Page } from './Page';
-export type PageOfBeerDto = (Page & {
+export type PageOfApparelDto = (Page & {
     /**
      * The page content
      */
-    content?: Array<BeerDto>;
+    content?: Array<ApparelDto>;
 });
 

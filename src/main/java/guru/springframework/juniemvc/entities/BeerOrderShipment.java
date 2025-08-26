@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
- * Entity representing a shipment for a beer order
+ * Entity representing a shipment for a apparel order
  */
 @Entity
 @Getter
@@ -20,11 +20,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BeerOrderShipment extends BaseEntity {
+public class ApparelOrderShipment extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "beer_order_id")
-    private BeerOrder beerOrder;
+    @JoinColumn(name = "apparel_order_id")
+    private ApparelOrder apparelOrder;
 
     private LocalDateTime shipmentDate;
     private String carrier;

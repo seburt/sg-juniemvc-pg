@@ -1,23 +1,23 @@
 package guru.springframework.juniemvc.exceptions;
 
 /**
- * Exception thrown when there is an error related to beer orders
+ * Exception thrown when there is an error related to apparel orders
  */
-public class BeerOrderException extends RuntimeException {
+public class ApparelOrderException extends RuntimeException {
     
-    public BeerOrderException() {
+    public ApparelOrderException() {
         super();
     }
     
-    public BeerOrderException(String message) {
+    public ApparelOrderException(String message) {
         super(message);
     }
     
-    public BeerOrderException(String message, Throwable cause) {
+    public ApparelOrderException(String message, Throwable cause) {
         super(message, cause);
     }
     
-    public BeerOrderException(Throwable cause) {
+    public ApparelOrderException(Throwable cause) {
         super(cause);
     }
 }

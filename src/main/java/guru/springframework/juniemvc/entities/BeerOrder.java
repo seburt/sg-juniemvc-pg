@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Entity representing a beer order
+ * Entity representing a apparel order
  */
 @Entity
 @Getter
@@ -27,7 +27,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BeerOrder extends BaseEntity {
+public class ApparelOrder extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -38,57 +38,57 @@ public class BeerOrder extends BaseEntity {
 
     private String status;
 
-    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "apparelOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<BeerOrderLine> beerOrderLines = new HashSet<>();
+    private Set<ApparelOrderLine> apparelOrderLines = new HashSet<>();
 
-    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "apparelOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<BeerOrderShipment> shipments = new HashSet<>();
+    private Set<ApparelOrderShipment> shipments = new HashSet<>();
 
     /**
-     * Helper method to add a beer order line to this order
-     * @param line the beer order line to add
+     * Helper method to add a apparel order line to this order
+     * @param line the apparel order line to add
      */
-    public void addBeerOrderLine(BeerOrderLine line) {
-        if (beerOrderLines == null) {
-            beerOrderLines = new HashSet<>();
+    public void addApparelOrderLine(ApparelOrderLine line) {
+        if (apparelOrderLines == null) {
+            apparelOrderLines = new HashSet<>();
         }
-        beerOrderLines.add(line);
-        line.setBeerOrder(this);
+        apparelOrderLines.add(line);
+        line.setApparelOrder(this);
     }
 
     /**
-     * Helper method to remove a beer order line from this order
-     * @param line the beer order line to remove
+     * Helper method to remove a apparel order line from this order
+     * @param line the apparel order line to remove
      */
-    public void removeBeerOrderLine(BeerOrderLine line) {
-        beerOrderLines.remove(line);
-        line.setBeerOrder(null);
+    public void removeApparelOrderLine(ApparelOrderLine line) {
+        apparelOrderLines.remove(line);
+        line.setApparelOrder(null);
     }
 
     /**
      * Helper method to add a shipment to this order
      * @param shipment the shipment to add
      */
-    public void addShipment(BeerOrderShipment shipment) {
+    public void addShipment(ApparelOrderShipment shipment) {
         if (shipments == null) {
             shipments = new HashSet<>();
         }
         shipments.add(shipment);
-        shipment.setBeerOrder(this);
+        shipment.setApparelOrder(this);
     }
 
     /**
      * Helper method to remove a shipment from this order
      * @param shipment the shipment to remove
      */
-    public void removeShipment(BeerOrderShipment shipment) {
+    public void removeShipment(ApparelOrderShipment shipment) {
         shipments.remove(shipment);
-        shipment.setBeerOrder(null);
+        shipment.setApparelOrder(null);
     }
 }

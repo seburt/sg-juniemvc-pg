@@ -1,12 +1,12 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
 import guru.springframework.juniemvc.exceptions.NotFoundException;
-import guru.springframework.juniemvc.mappers.BeerOrderShipmentMapper;
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
-import guru.springframework.juniemvc.repositories.BeerOrderRepository;
-import guru.springframework.juniemvc.repositories.BeerOrderShipmentRepository;
+import guru.springframework.juniemvc.mappers.ApparelOrderShipmentMapper;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
+import guru.springframework.juniemvc.repositories.ApparelOrderRepository;
+import guru.springframework.juniemvc.repositories.ApparelOrderShipmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,26 +28,26 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for BeerOrderShipmentServiceImpl
+ * Tests for ApparelOrderShipmentServiceImpl
  */
 @ExtendWith(MockitoExtension.class)
-class BeerOrderShipmentServiceImplTest {
+class ApparelOrderShipmentServiceImplTest {
 
     @Mock
-    BeerOrderRepository beerOrderRepository;
+    ApparelOrderRepository apparelOrderRepository;
 
     @Mock
-    BeerOrderShipmentRepository beerOrderShipmentRepository;
+    ApparelOrderShipmentRepository apparelOrderShipmentRepository;
 
     @Mock
-    BeerOrderShipmentMapper beerOrderShipmentMapper;
+    ApparelOrderShipmentMapper apparelOrderShipmentMapper;
 
     @InjectMocks
-    BeerOrderShipmentServiceImpl beerOrderShipmentService;
+    ApparelOrderShipmentServiceImpl apparelOrderShipmentService;
 
-    BeerOrder testBeerOrder;
-    BeerOrderShipment testBeerOrderShipment;
-    BeerOrderShipmentDto testBeerOrderShipmentDto;
+    ApparelOrder testApparelOrder;
+    ApparelOrderShipment testApparelOrderShipment;
+    ApparelOrderShipmentDto testApparelOrderShipmentDto;
     LocalDateTime testShipmentDate;
 
     @BeforeEach
@@ -55,23 +55,23 @@ class BeerOrderShipmentServiceImplTest {
         // Create test shipment date
         testShipmentDate = LocalDateTime.now();
 
-        // Create test beer order
-        testBeerOrder = BeerOrder.builder()
+        // Create test apparel order
+        testApparelOrder = ApparelOrder.builder()
                 .status("COMPLETED")
                 .build();
-        testBeerOrder.setId(1);
+        testApparelOrder.setId(1);
 
-        // Create test beer order shipment
-        testBeerOrderShipment = BeerOrderShipment.builder()
+        // Create test apparel order shipment
+        testApparelOrderShipment = ApparelOrderShipment.builder()
                 .shipmentDate(testShipmentDate)
                 .carrier("FedEx")
                 .trackingNumber("123456789")
-                .beerOrder(testBeerOrder)
+                .apparelOrder(testApparelOrder)
                 .build();
-        testBeerOrderShipment.setId(1);
+        testApparelOrderShipment.setId(1);
 
-        // Create test beer order shipment DTO
-        testBeerOrderShipmentDto = BeerOrderShipmentDto.builder()
+        // Create test apparel order shipment DTO
+        testApparelOrderShipmentDto = ApparelOrderShipmentDto.builder()
                 .id(1)
                 .shipmentDate(testShipmentDate)
                 .carrier("FedEx")
@@ -82,111 +82,111 @@ class BeerOrderShipmentServiceImplTest {
     @Test
     void getAllShipments() {
         // Given
-        when(beerOrderShipmentRepository.findByBeerOrderId(1)).thenReturn(Arrays.asList(testBeerOrderShipment));
-        when(beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(testBeerOrderShipment)).thenReturn(testBeerOrderShipmentDto);
+        when(apparelOrderShipmentRepository.findByApparelOrderId(1)).thenReturn(Arrays.asList(testApparelOrderShipment));
+        when(apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(testApparelOrderShipment)).thenReturn(testApparelOrderShipmentDto);
 
         // When
-        List<BeerOrderShipmentDto> shipments = beerOrderShipmentService.getAllShipments(1);
+        List<ApparelOrderShipmentDto> shipments = apparelOrderShipmentService.getAllShipments(1);
 
         // Then
         assertThat(shipments).hasSize(1);
         assertThat(shipments.get(0).getCarrier()).isEqualTo("FedEx");
         assertThat(shipments.get(0).getTrackingNumber()).isEqualTo("123456789");
-        verify(beerOrderShipmentRepository, times(1)).findByBeerOrderId(1);
-        verify(beerOrderShipmentMapper, times(1)).beerOrderShipmentToBeerOrderShipmentDto(any(BeerOrderShipment.class));
+        verify(apparelOrderShipmentRepository, times(1)).findByApparelOrderId(1);
+        verify(apparelOrderShipmentMapper, times(1)).apparelOrderShipmentToApparelOrderShipmentDto(any(ApparelOrderShipment.class));
     }
 
     @Test
     void getShipmentById() {
         // Given
-        when(beerOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testBeerOrderShipment));
-        when(beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(testBeerOrderShipment)).thenReturn(testBeerOrderShipmentDto);
+        when(apparelOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testApparelOrderShipment));
+        when(apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(testApparelOrderShipment)).thenReturn(testApparelOrderShipmentDto);
 
         // When
-        BeerOrderShipmentDto shipmentDto = beerOrderShipmentService.getShipmentById(1, 1);
+        ApparelOrderShipmentDto shipmentDto = apparelOrderShipmentService.getShipmentById(1, 1);
 
         // Then
         assertThat(shipmentDto).isNotNull();
         assertThat(shipmentDto.getCarrier()).isEqualTo("FedEx");
         assertThat(shipmentDto.getTrackingNumber()).isEqualTo("123456789");
-        verify(beerOrderShipmentRepository, times(1)).findById(1);
-        verify(beerOrderShipmentMapper, times(1)).beerOrderShipmentToBeerOrderShipmentDto(any(BeerOrderShipment.class));
+        verify(apparelOrderShipmentRepository, times(1)).findById(1);
+        verify(apparelOrderShipmentMapper, times(1)).apparelOrderShipmentToApparelOrderShipmentDto(any(ApparelOrderShipment.class));
     }
 
     @Test
     void getShipmentByIdNotFound() {
         // Given
-        when(beerOrderShipmentRepository.findById(1)).thenReturn(Optional.empty());
+        when(apparelOrderShipmentRepository.findById(1)).thenReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> beerOrderShipmentService.getShipmentById(1, 1))
+        assertThatThrownBy(() -> apparelOrderShipmentService.getShipmentById(1, 1))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Shipment not found with id: 1");
     }
 
     @Test
-    void getShipmentByIdWrongBeerOrder() {
+    void getShipmentByIdWrongApparelOrder() {
         // Given
-        BeerOrder anotherBeerOrder = BeerOrder.builder().status("NEW").build();
-        anotherBeerOrder.setId(2);
+        ApparelOrder anotherApparelOrder = ApparelOrder.builder().status("NEW").build();
+        anotherApparelOrder.setId(2);
         
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(testShipmentDate)
                 .carrier("UPS")
                 .trackingNumber("987654321")
-                .beerOrder(anotherBeerOrder)
+                .apparelOrder(anotherApparelOrder)
                 .build();
         shipment.setId(1);
         
-        when(beerOrderShipmentRepository.findById(1)).thenReturn(Optional.of(shipment));
+        when(apparelOrderShipmentRepository.findById(1)).thenReturn(Optional.of(shipment));
 
         // Then
-        assertThatThrownBy(() -> beerOrderShipmentService.getShipmentById(1, 1))
+        assertThatThrownBy(() -> apparelOrderShipmentService.getShipmentById(1, 1))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Shipment not found for Beer Order with id: 1");
+                .hasMessageContaining("Shipment not found for Apparel Order with id: 1");
     }
 
     @Test
     void createShipment() {
         // Given
-        when(beerOrderRepository.findById(1)).thenReturn(Optional.of(testBeerOrder));
-        when(beerOrderShipmentMapper.beerOrderShipmentDtoToBeerOrderShipment(testBeerOrderShipmentDto)).thenReturn(testBeerOrderShipment);
-        when(beerOrderShipmentRepository.save(any(BeerOrderShipment.class))).thenReturn(testBeerOrderShipment);
-        when(beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(testBeerOrderShipment)).thenReturn(testBeerOrderShipmentDto);
+        when(apparelOrderRepository.findById(1)).thenReturn(Optional.of(testApparelOrder));
+        when(apparelOrderShipmentMapper.apparelOrderShipmentDtoToApparelOrderShipment(testApparelOrderShipmentDto)).thenReturn(testApparelOrderShipment);
+        when(apparelOrderShipmentRepository.save(any(ApparelOrderShipment.class))).thenReturn(testApparelOrderShipment);
+        when(apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(testApparelOrderShipment)).thenReturn(testApparelOrderShipmentDto);
 
         // When
-        BeerOrderShipmentDto createdShipmentDto = beerOrderShipmentService.createShipment(1, testBeerOrderShipmentDto);
+        ApparelOrderShipmentDto createdShipmentDto = apparelOrderShipmentService.createShipment(1, testApparelOrderShipmentDto);
 
         // Then
         assertThat(createdShipmentDto).isNotNull();
         assertThat(createdShipmentDto.getCarrier()).isEqualTo("FedEx");
         assertThat(createdShipmentDto.getTrackingNumber()).isEqualTo("123456789");
-        verify(beerOrderRepository, times(1)).findById(1);
-        verify(beerOrderShipmentMapper, times(1)).beerOrderShipmentDtoToBeerOrderShipment(any(BeerOrderShipmentDto.class));
-        verify(beerOrderShipmentRepository, times(1)).save(any(BeerOrderShipment.class));
-        verify(beerOrderShipmentMapper, times(1)).beerOrderShipmentToBeerOrderShipmentDto(any(BeerOrderShipment.class));
+        verify(apparelOrderRepository, times(1)).findById(1);
+        verify(apparelOrderShipmentMapper, times(1)).apparelOrderShipmentDtoToApparelOrderShipment(any(ApparelOrderShipmentDto.class));
+        verify(apparelOrderShipmentRepository, times(1)).save(any(ApparelOrderShipment.class));
+        verify(apparelOrderShipmentMapper, times(1)).apparelOrderShipmentToApparelOrderShipmentDto(any(ApparelOrderShipment.class));
     }
 
     @Test
-    void createShipmentBeerOrderNotFound() {
+    void createShipmentApparelOrderNotFound() {
         // Given
-        when(beerOrderRepository.findById(1)).thenReturn(Optional.empty());
+        when(apparelOrderRepository.findById(1)).thenReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> beerOrderShipmentService.createShipment(1, testBeerOrderShipmentDto))
+        assertThatThrownBy(() -> apparelOrderShipmentService.createShipment(1, testApparelOrderShipmentDto))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Beer Order not found with id: 1");
+                .hasMessageContaining("Apparel Order not found with id: 1");
     }
 
     @Test
     void updateShipment() {
         // Given
-        when(beerOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testBeerOrderShipment));
-        when(beerOrderShipmentRepository.save(any(BeerOrderShipment.class))).thenReturn(testBeerOrderShipment);
-        when(beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(testBeerOrderShipment)).thenReturn(testBeerOrderShipmentDto);
+        when(apparelOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testApparelOrderShipment));
+        when(apparelOrderShipmentRepository.save(any(ApparelOrderShipment.class))).thenReturn(testApparelOrderShipment);
+        when(apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(testApparelOrderShipment)).thenReturn(testApparelOrderShipmentDto);
 
         // Create updated DTO
-        BeerOrderShipmentDto updatedDto = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto updatedDto = ApparelOrderShipmentDto.builder()
                 .id(1)
                 .shipmentDate(testShipmentDate)
                 .carrier("UPS")
@@ -194,25 +194,25 @@ class BeerOrderShipmentServiceImplTest {
                 .build();
 
         // When
-        BeerOrderShipmentDto updatedShipmentDto = beerOrderShipmentService.updateShipment(1, 1, updatedDto);
+        ApparelOrderShipmentDto updatedShipmentDto = apparelOrderShipmentService.updateShipment(1, 1, updatedDto);
 
         // Then
         assertThat(updatedShipmentDto).isNotNull();
-        verify(beerOrderShipmentRepository, times(1)).findById(1);
-        verify(beerOrderShipmentRepository, times(1)).save(any(BeerOrderShipment.class));
-        verify(beerOrderShipmentMapper, times(1)).beerOrderShipmentToBeerOrderShipmentDto(any(BeerOrderShipment.class));
+        verify(apparelOrderShipmentRepository, times(1)).findById(1);
+        verify(apparelOrderShipmentRepository, times(1)).save(any(ApparelOrderShipment.class));
+        verify(apparelOrderShipmentMapper, times(1)).apparelOrderShipmentToApparelOrderShipmentDto(any(ApparelOrderShipment.class));
     }
 
     @Test
     void deleteShipment() {
         // Given
-        when(beerOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testBeerOrderShipment));
+        when(apparelOrderShipmentRepository.findById(1)).thenReturn(Optional.of(testApparelOrderShipment));
 
         // When
-        beerOrderShipmentService.deleteShipment(1, 1);
+        apparelOrderShipmentService.deleteShipment(1, 1);
 
         // Then
-        verify(beerOrderShipmentRepository, times(1)).findById(1);
-        verify(beerOrderShipmentRepository, times(1)).delete(any(BeerOrderShipment.class));
+        verify(apparelOrderShipmentRepository, times(1)).findById(1);
+        verify(apparelOrderShipmentRepository, times(1)).delete(any(ApparelOrderShipment.class));
     }
 }

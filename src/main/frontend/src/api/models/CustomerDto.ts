@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BeerOrderDto } from './BeerOrderDto';
+import type { ApparelOrderDto } from './ApparelOrderDto';
 /**
  * Data Transfer Object for Customer entities
  */
@@ -56,8 +56,8 @@ export type CustomerDto = {
      */
     postalCode: string;
     /**
-     * Beer orders placed by this customer.
+     * Apparel orders placed by this customer.
      */
-    readonly beerOrders?: Array<BeerOrderDto>;
+    readonly apparelOrders?: Array<ApparelOrderDto>;
 };
 

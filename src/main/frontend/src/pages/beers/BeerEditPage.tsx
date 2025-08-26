@@ -13,32 +13,32 @@ import {
 import { Input, Button } from '@components/ui';
 import { LoadingSpinner } from '@components/dialogs';
 import { useForm, useToast } from '../../hooks';
-import { beerValidationRules } from '../../utils/validation';
-import beerService from '../../services/beerService';
-import type { BeerDto } from '../../api';
+import { apparelValidationRules } from '../../utils/validation';
+import apparelService from '../../services/apparelService';
+import type { ApparelDto } from '../../api';
 
-interface BeerFormData extends Record<string, unknown> {
-  beerName: string;
-  beerStyle: string;
+interface ApparelFormData extends Record<string, unknown> {
+  apparelName: string;
+  apparelStyle: string;
   upc: string;
   price: number | undefined;
   quantityOnHand: number | undefined;
 }
 
 /**
- * Beer Edit page component
- * Allows users to edit an existing beer with validation and error handling
+ * Apparel Edit page component
+ * Allows users to edit an existing apparel with validation and error handling
  */
-const BeerEditPage: React.FC = () => {
+const ApparelEditPage: React.FC = () => {
   const navigate = useNavigate();
-  const { beerId } = useParams<{ beerId: string }>();
+  const { apparelId } = useParams<{ apparelId: string }>();
   const { success, error } = useToast();
   const [initialLoading, setInitialLoading] = useState(true);
-  const [beer, setBeer] = useState<BeerDto | null>(null);
+  const [apparel, setApparel] = useState<ApparelDto | null>(null);
 
-  const initialValues: BeerFormData = {
-    beerName: '',
-    beerStyle: '',
+  const initialValues: ApparelFormData = {
+    apparelName: '',
+    apparelStyle: '',
     upc: '',
     price: undefined,
     quantityOnHand: undefined,
@@ -47,78 +47,78 @@ const BeerEditPage: React.FC = () => {
   const { values, errors, isValid, isSubmitting, setValue, setValues, handleSubmit } = useForm({
     initialValues,
     validationRules: {
-      beerName: beerValidationRules.beerName,
-      beerStyle: beerValidationRules.beerStyle,
-      price: beerValidationRules.price,
-      quantityOnHand: beerValidationRules.quantityOnHand,
+      apparelName: apparelValidationRules.apparelName,
+      apparelStyle: apparelValidationRules.apparelStyle,
+      price: apparelValidationRules.price,
+      quantityOnHand: apparelValidationRules.quantityOnHand,
     },
-    onSubmit: async (formData: BeerFormData) => {
-      if (!beer) return;
+    onSubmit: async (formData: ApparelFormData) => {
+      if (!apparel) return;
 
       try {
-        const beerData: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'> = {
-          beerName: formData.beerName,
-          beerStyle: formData.beerStyle,
+        const apparelData: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'> = {
+          apparelName: formData.apparelName,
+          apparelStyle: formData.apparelStyle,
           upc: formData.upc || '',
           price: formData.price || 0,
           quantityOnHand: formData.quantityOnHand || 0,
-          description: beer?.description,
+          description: apparel?.description,
         };
 
-        const updatedBeer = await beerService.updateBeer(beer.id!, beerData);
+        const updatedApparel = await apparelService.updateApparel(apparel.id!, apparelData);
 
         // Optimistic update - update local state immediately
-        setBeer(updatedBeer);
+        setApparel(updatedApparel);
 
-        success(`Beer "${updatedBeer.beerName}" updated successfully`);
-        navigate(`/beers/${updatedBeer.id}`);
+        success(`Apparel "${updatedApparel.apparelName}" updated successfully`);
+        navigate(`/apparels/${updatedApparel.id}`);
       } catch (err) {
-        error('Failed to update beer. Please try again.');
-        console.error('Error updating beer:', err);
+        error('Failed to update apparel. Please try again.');
+        console.error('Error updating apparel:', err);
       }
     },
   });
 
-  // Load beer data on component mount
+  // Load apparel data on component mount
   useEffect(() => {
-    const loadBeer = async () => {
-      if (!beerId) {
-        error('Beer ID is required');
-        navigate('/beers');
+    const loadApparel = async () => {
+      if (!apparelId) {
+        error('Apparel ID is required');
+        navigate('/apparels');
         return;
       }
 
       setInitialLoading(true);
       try {
-        const beerData = await beerService.getBeerById(Number(beerId));
-        setBeer(beerData);
+        const apparelData = await apparelService.getApparelById(Number(apparelId));
+        setApparel(apparelData);
 
-        // Pre-populate form with existing beer data
+        // Pre-populate form with existing apparel data
         setValues({
-          beerName: beerData.beerName || '',
-          beerStyle: beerData.beerStyle || '',
-          upc: beerData.upc || '',
-          price: beerData.price,
-          quantityOnHand: beerData.quantityOnHand,
+          apparelName: apparelData.apparelName || '',
+          apparelStyle: apparelData.apparelStyle || '',
+          upc: apparelData.upc || '',
+          price: apparelData.price,
+          quantityOnHand: apparelData.quantityOnHand,
         });
       } catch (err) {
-        error('Failed to load beer data');
-        console.error('Error loading beer:', err);
-        navigate('/beers');
+        error('Failed to load apparel data');
+        console.error('Error loading apparel:', err);
+        navigate('/apparels');
       } finally {
         setInitialLoading(false);
       }
     };
 
-    loadBeer();
-  }, [beerId, navigate, error, setValues]);
+    loadApparel();
+  }, [apparelId, navigate, error, setValues]);
 
   const handleCancel = () => {
-    navigate(`/beers/${beerId}`);
+    navigate(`/apparels/${apparelId}`);
   };
 
-  // Beer style options
-  const beerStyleOptions = [
+  // Apparel style options
+  const apparelStyleOptions = [
     { value: 'IPA', label: 'IPA' },
     { value: 'Lager', label: 'Lager' },
     { value: 'Stout', label: 'Stout' },
@@ -132,21 +132,21 @@ const BeerEditPage: React.FC = () => {
   if (initialLoading) {
     return (
       <PageContainer>
-        <LoadingSpinner size="lg" message="Loading beer data..." centered />
+        <LoadingSpinner size="lg" message="Loading apparel data..." centered />
       </PageContainer>
     );
   }
 
-  if (!beer) {
+  if (!apparel) {
     return (
       <PageContainer>
         <PageContent>
           <div className="text-center py-8">
-            <h2 className="text-xl font-semibold text-gray-900">Beer not found</h2>
-            <p className="text-gray-600 mt-2">The beer you're trying to edit doesn't exist.</p>
-            <Button onClick={() => navigate('/beers')} className="mt-4">
+            <h2 className="text-xl font-semibold text-gray-900">Apparel not found</h2>
+            <p className="text-gray-600 mt-2">The apparel you're trying to edit doesn't exist.</p>
+            <Button onClick={() => navigate('/apparels')} className="mt-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Beers
+              Back to Apparels
             </Button>
           </div>
         </PageContent>
@@ -157,8 +157,8 @@ const BeerEditPage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader
-        title="Edit Beer"
-        subtitle={`Update "${beer.beerName}" information`}
+        title="Edit Apparel"
+        subtitle={`Update "${apparel.apparelName}" information`}
         actions={
           <Button variant="outline" onClick={handleCancel}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -170,28 +170,28 @@ const BeerEditPage: React.FC = () => {
       <PageContent>
         <FormWrapper onSubmit={handleSubmit} isLoading={isSubmitting}>
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Beer Name */}
-            <FormField label="Beer Name" required error={errors.beerName?.[0]} htmlFor="beerName">
+            {/* Apparel Name */}
+            <FormField label="Apparel Name" required error={errors.apparelName?.[0]} htmlFor="apparelName">
               <Input
-                id="beerName"
-                placeholder="Enter beer name"
-                value={values.beerName}
-                onChange={e => setValue('beerName', e.target.value)}
+                id="apparelName"
+                placeholder="Enter apparel name"
+                value={values.apparelName}
+                onChange={e => setValue('apparelName', e.target.value)}
               />
             </FormField>
 
-            {/* Beer Style */}
+            {/* Apparel Style */}
             <FormField
-              label="Beer Style"
+              label="Apparel Style"
               required
-              error={errors.beerStyle?.[0]}
-              htmlFor="beerStyle"
+              error={errors.apparelStyle?.[0]}
+              htmlFor="apparelStyle"
             >
               <SelectInput
-                value={values.beerStyle}
-                onChange={value => setValue('beerStyle', value)}
-                options={beerStyleOptions}
-                placeholder="Select a beer style"
+                value={values.apparelStyle}
+                onChange={value => setValue('apparelStyle', value)}
+                options={apparelStyleOptions}
+                placeholder="Select a apparel style"
               />
             </FormField>
 
@@ -236,7 +236,7 @@ const BeerEditPage: React.FC = () => {
           </div>
 
           <FormActions
-            submitLabel="Update Beer"
+            submitLabel="Update Apparel"
             cancelLabel="Cancel"
             onCancel={handleCancel}
             isLoading={isSubmitting}
@@ -248,4 +248,4 @@ const BeerEditPage: React.FC = () => {
   );
 };
 
-export default BeerEditPage;
+export default ApparelEditPage;

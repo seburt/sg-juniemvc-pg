@@ -7,15 +7,15 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { BeerDto } from './models/BeerDto';
-export type { BeerOrderDto } from './models/BeerOrderDto';
-export type { BeerOrderLineDto } from './models/BeerOrderLineDto';
-export type { BeerOrderShipmentDto } from './models/BeerOrderShipmentDto';
-export type { BeerPatchDto } from './models/BeerPatchDto';
+export type { ApparelDto } from './models/ApparelDto';
+export type { ApparelOrderDto } from './models/ApparelOrderDto';
+export type { ApparelOrderLineDto } from './models/ApparelOrderLineDto';
+export type { ApparelOrderShipmentDto } from './models/ApparelOrderShipmentDto';
+export type { ApparelPatchDto } from './models/ApparelPatchDto';
 export type { CustomerDto } from './models/CustomerDto';
 export type { Page } from './models/Page';
-export type { PageOfBeerDto } from './models/PageOfBeerDto';
+export type { PageOfApparelDto } from './models/PageOfApparelDto';
 
-export { BeerService } from './services/BeerService';
-export { BeerOrderService } from './services/BeerOrderService';
+export { ApparelService } from './services/ApparelService';
+export { ApparelOrderService } from './services/ApparelOrderService';
 export { CustomerService } from './services/CustomerService';

@@ -1,7 +1,7 @@
 package guru.springframework.juniemvc.controllers;
 
-import guru.springframework.juniemvc.models.BeerOrderDto;
-import guru.springframework.juniemvc.services.BeerOrderService;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
+import guru.springframework.juniemvc.services.ApparelOrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,88 +11,88 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST Controller for BeerOrder operations
+ * REST Controller for ApparelOrder operations
  */
 @RestController
-@RequestMapping("/api/v1/beer-orders")
-public class BeerOrderController {
+@RequestMapping("/api/v1/apparel-orders")
+public class ApparelOrderController {
 
-    private final BeerOrderService beerOrderService;
+    private final ApparelOrderService apparelOrderService;
 
-    public BeerOrderController(BeerOrderService beerOrderService) {
-        this.beerOrderService = beerOrderService;
+    public ApparelOrderController(ApparelOrderService apparelOrderService) {
+        this.apparelOrderService = apparelOrderService;
     }
 
     /**
-     * Get all beer orders
-     * @return List of all beer orders
+     * Get all apparel orders
+     * @return List of all apparel orders
      */
     @GetMapping
-    public List<BeerOrderDto> getAllBeerOrders() {
-        return beerOrderService.getAllBeerOrders();
+    public List<ApparelOrderDto> getAllApparelOrders() {
+        return apparelOrderService.getAllApparelOrders();
     }
 
     /**
-     * Get a beer order by its ID
-     * @param id the beer order ID
-     * @return ResponseEntity with the beer order if found, or 404 Not Found
+     * Get a apparel order by its ID
+     * @param id the apparel order ID
+     * @return ResponseEntity with the apparel order if found, or 404 Not Found
      */
     @GetMapping("/{id}")
-    public ResponseEntity<BeerOrderDto> getBeerOrderById(@PathVariable Integer id) {
-        Optional<BeerOrderDto> beerOrderOptional = beerOrderService.getBeerOrderById(id);
+    public ResponseEntity<ApparelOrderDto> getApparelOrderById(@PathVariable Integer id) {
+        Optional<ApparelOrderDto> apparelOrderOptional = apparelOrderService.getApparelOrderById(id);
 
-        return beerOrderOptional
+        return apparelOrderOptional
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * Create a new beer order
-     * @param beerOrderDto the beer order to create
-     * @return ResponseEntity with the created beer order and 201 Created status
+     * Create a new apparel order
+     * @param apparelOrderDto the apparel order to create
+     * @return ResponseEntity with the created apparel order and 201 Created status
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BeerOrderDto createBeerOrder(@Valid @RequestBody BeerOrderDto beerOrderDto) {
-        // Ensure a new beer order is created, not an update
-        beerOrderDto.setId(null);
-        return beerOrderService.saveBeerOrder(beerOrderDto);
+    public ApparelOrderDto createApparelOrder(@Valid @RequestBody ApparelOrderDto apparelOrderDto) {
+        // Ensure a new apparel order is created, not an update
+        apparelOrderDto.setId(null);
+        return apparelOrderService.saveApparelOrder(apparelOrderDto);
     }
 
     /**
-     * Update an existing beer order
-     * @param id the beer order ID
-     * @param beerOrderDto the updated beer order data
-     * @return ResponseEntity with the updated beer order if found, or 404 Not Found
+     * Update an existing apparel order
+     * @param id the apparel order ID
+     * @param apparelOrderDto the updated apparel order data
+     * @return ResponseEntity with the updated apparel order if found, or 404 Not Found
      */
     @PutMapping("/{id}")
-    public ResponseEntity<BeerOrderDto> updateBeerOrder(@PathVariable Integer id, @Valid @RequestBody BeerOrderDto beerOrderDto) {
-        Optional<BeerOrderDto> beerOrderOptional = beerOrderService.getBeerOrderById(id);
+    public ResponseEntity<ApparelOrderDto> updateApparelOrder(@PathVariable Integer id, @Valid @RequestBody ApparelOrderDto apparelOrderDto) {
+        Optional<ApparelOrderDto> apparelOrderOptional = apparelOrderService.getApparelOrderById(id);
 
-        if (beerOrderOptional.isEmpty()) {
+        if (apparelOrderOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Ensure we're updating the correct beer order
-        beerOrderDto.setId(id);
-        BeerOrderDto updatedBeerOrder = beerOrderService.saveBeerOrder(beerOrderDto);
-        return ResponseEntity.ok(updatedBeerOrder);
+        // Ensure we're updating the correct apparel order
+        apparelOrderDto.setId(id);
+        ApparelOrderDto updatedApparelOrder = apparelOrderService.saveApparelOrder(apparelOrderDto);
+        return ResponseEntity.ok(updatedApparelOrder);
     }
 
     /**
-     * Delete a beer order by its ID
-     * @param id the beer order ID
+     * Delete a apparel order by its ID
+     * @param id the apparel order ID
      * @return ResponseEntity with no content if successful, or 404 Not Found
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBeerOrder(@PathVariable Integer id) {
-        Optional<BeerOrderDto> beerOrderOptional = beerOrderService.getBeerOrderById(id);
+    public ResponseEntity<Void> deleteApparelOrder(@PathVariable Integer id) {
+        Optional<ApparelOrderDto> apparelOrderOptional = apparelOrderService.getApparelOrderById(id);
 
-        if (beerOrderOptional.isEmpty()) {
+        if (apparelOrderOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        beerOrderService.deleteBeerOrderById(id);
+        apparelOrderService.deleteApparelOrderById(id);
         return ResponseEntity.noContent().build();
     }
 }

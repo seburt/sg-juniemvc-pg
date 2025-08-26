@@ -1,7 +1,7 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.models.BeerDto;
-import guru.springframework.juniemvc.models.BeerPatchDto;
+import guru.springframework.juniemvc.models.ApparelDto;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,50 +9,50 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service interface for Beer operations
+ * Service interface for Apparel operations
  */
-public interface BeerService {
+public interface ApparelService {
 
     /**
-     * Get all beers
-     * @return List of all beers
+     * Get all apparels
+     * @return List of all apparels
      */
-    List<BeerDto> getAllBeers();
+    List<ApparelDto> getAllApparels();
 
     /**
-     * Get all beers with optional filtering by beer name and beer style, with pagination
-     * @param beerName the beer name to filter by (can be null)
-     * @param beerStyle the beer style to filter by (can be null)
+     * Get all apparels with optional filtering by apparel name and apparel style, with pagination
+     * @param apparelName the apparel name to filter by (can be null)
+     * @param apparelStyle the apparel style to filter by (can be null)
      * @param pageable pagination information
-     * @return Page of beers matching the criteria
+     * @return Page of apparels matching the criteria
      */
-    Page<BeerDto> getAllBeers(String beerName, String beerStyle, Pageable pageable);
+    Page<ApparelDto> getAllApparels(String apparelName, String apparelStyle, Pageable pageable);
 
     /**
-     * Get a beer by its ID
-     * @param id the beer ID
-     * @return Optional containing the beer if found
+     * Get a apparel by its ID
+     * @param id the apparel ID
+     * @return Optional containing the apparel if found
      */
-    Optional<BeerDto> getBeerById(Integer id);
+    Optional<ApparelDto> getApparelById(Integer id);
 
     /**
-     * Save a new beer or update an existing one
-     * @param beerDto the beer to save
-     * @return the saved beer
+     * Save a new apparel or update an existing one
+     * @param apparelDto the apparel to save
+     * @return the saved apparel
      */
-    BeerDto saveBeer(BeerDto beerDto);
+    ApparelDto saveApparel(ApparelDto apparelDto);
 
     /**
-     * Partially update an existing beer
-     * @param id the beer ID
-     * @param beerPatchDto the beer patch data
-     * @return Optional containing the updated beer if found
+     * Partially update an existing apparel
+     * @param id the apparel ID
+     * @param apparelPatchDto the apparel patch data
+     * @return Optional containing the updated apparel if found
      */
-    Optional<BeerDto> patchBeer(Integer id, BeerPatchDto beerPatchDto);
+    Optional<ApparelDto> patchApparel(Integer id, ApparelPatchDto apparelPatchDto);
 
     /**
-     * Delete a beer by its ID
-     * @param id the beer ID
+     * Delete a apparel by its ID
+     * @param id the apparel ID
      */
-    void deleteBeerById(Integer id);
+    void deleteApparelById(Integer id);
 }

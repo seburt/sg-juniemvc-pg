@@ -1,51 +1,51 @@
 /**
- * Beer Service
+ * Apparel Service
  *
- * Service for managing beer-related operations
+ * Service for managing apparel-related operations
  */
 
 import type { AxiosRequestConfig } from 'axios';
 import apiService from './api';
-import type { BeerDto, BeerPatchDto, PageOfBeerDto } from '../types/beer';
+import type { ApparelDto, ApparelPatchDto, PageOfApparelDto } from '../types/apparel';
 import type { PaginationParams, SortParams, FilterParam } from '@utils/apiUtils';
 
 // API endpoints
-const BEER_API_URL = '/api/v1/beers';
-const BEER_BY_ID_URL = '/api/v1/beers/{id}';
+const BEER_API_URL = '/api/v1/apparels';
+const BEER_BY_ID_URL = '/api/v1/apparels/{id}';
 
 /**
- * Beer Service class
- * Provides methods for interacting with the Beer API
+ * Apparel Service class
+ * Provides methods for interacting with the Apparel API
  */
-class BeerService {
+class ApparelService {
   /**
-   * Get a paginated list of beers with optional filtering
+   * Get a paginated list of apparels with optional filtering
    *
    * @param pagination - Pagination parameters
    * @param sort - Sorting parameters
-   * @param beerName - Optional beer name filter
-   * @param beerStyle - Optional beer style filter
+   * @param apparelName - Optional apparel name filter
+   * @param apparelStyle - Optional apparel style filter
    * @param config - Additional Axios request configuration
-   * @returns Promise with the paginated beer list
+   * @returns Promise with the paginated apparel list
    */
-  public async getBeers(
+  public async getApparels(
     pagination?: PaginationParams,
     sort?: SortParams,
-    beerName?: string,
-    beerStyle?: string,
+    apparelName?: string,
+    apparelStyle?: string,
     config?: AxiosRequestConfig
-  ): Promise<PageOfBeerDto> {
+  ): Promise<PageOfApparelDto> {
     const filters: FilterParam[] = [];
 
-    if (beerName) {
-      filters.push({ field: 'beerName', value: beerName });
+    if (apparelName) {
+      filters.push({ field: 'apparelName', value: apparelName });
     }
 
-    if (beerStyle) {
-      filters.push({ field: 'beerStyle', value: beerStyle });
+    if (apparelStyle) {
+      filters.push({ field: 'apparelStyle', value: apparelStyle });
     }
 
-    return apiService.getPaginatedWithNotification<PageOfBeerDto>(
+    return apiService.getPaginatedWithNotification<PageOfApparelDto>(
       BEER_API_URL,
       pagination,
       sort,
@@ -55,72 +55,72 @@ class BeerService {
   }
 
   /**
-   * Get a beer by ID
+   * Get a apparel by ID
    *
-   * @param id - Beer ID
+   * @param id - Apparel ID
    * @param config - Additional Axios request configuration
-   * @returns Promise with the beer
+   * @returns Promise with the apparel
    */
-  public async getBeerById(id: number, config?: AxiosRequestConfig): Promise<BeerDto> {
-    return apiService.getByIdWithNotification<BeerDto>(BEER_BY_ID_URL, id, config);
+  public async getApparelById(id: number, config?: AxiosRequestConfig): Promise<ApparelDto> {
+    return apiService.getByIdWithNotification<ApparelDto>(BEER_BY_ID_URL, id, config);
   }
 
   /**
-   * Create a new beer
+   * Create a new apparel
    *
-   * @param beer - Beer data
+   * @param apparel - Apparel data
    * @param config - Additional Axios request configuration
-   * @returns Promise with the created beer
+   * @returns Promise with the created apparel
    */
-  public async createBeer(beer: BeerDto, config?: AxiosRequestConfig): Promise<BeerDto> {
-    return apiService.createWithNotification<BeerDto>(BEER_API_URL, beer, config);
+  public async createApparel(apparel: ApparelDto, config?: AxiosRequestConfig): Promise<ApparelDto> {
+    return apiService.createWithNotification<ApparelDto>(BEER_API_URL, apparel, config);
   }
 
   /**
-   * Update a beer
+   * Update a apparel
    *
-   * @param id - Beer ID
-   * @param beer - Updated beer data
+   * @param id - Apparel ID
+   * @param apparel - Updated apparel data
    * @param config - Additional Axios request configuration
-   * @returns Promise with the updated beer
+   * @returns Promise with the updated apparel
    */
-  public async updateBeer(
+  public async updateApparel(
     id: number,
-    beer: BeerDto,
+    apparel: ApparelDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerDto> {
-    return apiService.updateWithNotification<BeerDto>(BEER_BY_ID_URL, id, beer, config);
+  ): Promise<ApparelDto> {
+    return apiService.updateWithNotification<ApparelDto>(BEER_BY_ID_URL, id, apparel, config);
   }
 
   /**
-   * Partially update a beer
+   * Partially update a apparel
    *
-   * @param id - Beer ID
-   * @param beerPatch - Partial beer data
+   * @param id - Apparel ID
+   * @param apparelPatch - Partial apparel data
    * @param config - Additional Axios request configuration
-   * @returns Promise with the updated beer
+   * @returns Promise with the updated apparel
    */
-  public async patchBeer(
+  public async patchApparel(
     id: number,
-    beerPatch: BeerPatchDto,
+    apparelPatch: ApparelPatchDto,
     config?: AxiosRequestConfig
-  ): Promise<BeerDto> {
-    return apiService.partialUpdateWithNotification<BeerDto>(BEER_BY_ID_URL, id, beerPatch, config);
+  ): Promise<ApparelDto> {
+    return apiService.partialUpdateWithNotification<ApparelDto>(BEER_BY_ID_URL, id, apparelPatch, config);
   }
 
   /**
-   * Delete a beer
+   * Delete a apparel
    *
-   * @param id - Beer ID
+   * @param id - Apparel ID
    * @param config - Additional Axios request configuration
    * @returns Promise with the response
    */
-  public async deleteBeer(id: number, config?: AxiosRequestConfig): Promise<void> {
+  public async deleteApparel(id: number, config?: AxiosRequestConfig): Promise<void> {
     return apiService.deleteResourceWithNotification<void>(BEER_BY_ID_URL, id, config);
   }
 }
 
 // Create a singleton instance
-const beerService = new BeerService();
+const apparelService = new ApparelService();
 
-export default beerService;
+export default apparelService;

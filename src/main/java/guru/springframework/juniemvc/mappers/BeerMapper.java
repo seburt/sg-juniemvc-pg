@@ -1,8 +1,8 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.models.BeerDto;
-import guru.springframework.juniemvc.models.BeerPatchDto;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.models.ApparelDto;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,29 +10,29 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
- * Mapper for Beer entity and BeerDto
+ * Mapper for Apparel entity and ApparelDto
  */
 @Mapper(componentModel = "spring")
-public interface BeerMapper {
+public interface ApparelMapper {
 
-    BeerDto beerToBeerDto(Beer beer);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdDate", ignore = true)
-    @Mapping(target = "updateDate", ignore = true)
-    @Mapping(target = "beerOrderLines", ignore = true)
-    Beer beerDtoToBeer(BeerDto beerDto);
+    ApparelDto apparelToApparelDto(Apparel apparel);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updateDate", ignore = true)
-    @Mapping(target = "beerOrderLines", ignore = true)
-    void updateBeerFromDto(BeerDto beerDto, @MappingTarget Beer beer);
+    @Mapping(target = "apparelOrderLines", ignore = true)
+    Apparel apparelDtoToApparel(ApparelDto apparelDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updateDate", ignore = true)
-    @Mapping(target = "beerOrderLines", ignore = true)
+    @Mapping(target = "apparelOrderLines", ignore = true)
+    void updateApparelFromDto(ApparelDto apparelDto, @MappingTarget Apparel apparel);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updateDate", ignore = true)
+    @Mapping(target = "apparelOrderLines", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateBeerFromPatchDto(BeerPatchDto beerPatchDto, @MappingTarget Beer beer);
+    void updateApparelFromPatchDto(ApparelPatchDto apparelPatchDto, @MappingTarget Apparel apparel);
 }

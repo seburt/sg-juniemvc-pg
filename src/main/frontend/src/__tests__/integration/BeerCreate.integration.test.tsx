@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from '../../test/utils';
 import userEvent from '@testing-library/user-event';
-import BeerCreatePage from '../../pages/beers/BeerCreatePage';
-import { createMockBeer } from '../../test/utils';
+import ApparelCreatePage from '../../pages/apparels/ApparelCreatePage';
+import { createMockApparel } from '../../test/utils';
 import apiService from '../../services/api';
 import { useForm, useToast } from '../../hooks';
 
-// Mock the API service that beerService depends on
+// Mock the API service that apparelService depends on
 jest.mock('../../services/api');
 
 // Mock the hooks
@@ -29,29 +29,29 @@ const mockApiService = apiService as jest.Mocked<typeof apiService>;
 const mockUseForm = useForm as jest.MockedFunction<typeof useForm>;
 const mockUseToast = useToast as jest.MockedFunction<typeof useToast>;
 
-describe('Beer Creation Integration', () => {
+describe('Apparel Creation Integration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should complete the full beer creation flow', async () => {
+  it('should complete the full apparel creation flow', async () => {
     const user = userEvent.setup();
 
-    // Mock successful beer creation
-    const newBeer = createMockBeer({
+    // Mock successful apparel creation
+    const newApparel = createMockApparel({
       id: 1,
-      beerName: 'Test IPA',
-      beerStyle: 'IPA',
+      apparelName: 'Test IPA',
+      apparelStyle: 'IPA',
       price: 12.99,
       quantityOnHand: 100,
     });
-    mockApiService.createWithNotification.mockResolvedValue(newBeer);
+    mockApiService.createWithNotification.mockResolvedValue(newApparel);
 
     // Mock the useForm hook to return controlled form behavior
     const mockFormState = {
       values: {
-        beerName: 'Test Beer',
-        beerStyle: 'IPA',
+        apparelName: 'Test Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         price: 12.99,
         quantityOnHand: 100,
@@ -72,58 +72,58 @@ describe('Beer Creation Integration', () => {
     };
     (mockUseForm as jest.MockedFunction<typeof useForm>).mockReturnValue(mockFormState);
 
-    render(<BeerCreatePage />);
+    render(<ApparelCreatePage />);
 
     // Verify the page renders correctly
-    expect(screen.getByText('Create New Beer')).toBeInTheDocument();
-    expect(screen.getByText('Add a new beer to your inventory')).toBeInTheDocument();
+    expect(screen.getByText('Create New Apparel')).toBeInTheDocument();
+    expect(screen.getByText('Add a new apparel to your inventory')).toBeInTheDocument();
 
     // Check that form fields are present
-    expect(screen.getByLabelText(/beer name/i)).toBeInTheDocument();
-    expect(screen.getByText('Beer Style')).toBeInTheDocument(); // Look for exact label text
+    expect(screen.getByLabelText(/apparel name/i)).toBeInTheDocument();
+    expect(screen.getByText('Apparel Style')).toBeInTheDocument(); // Look for exact label text
     expect(screen.getByLabelText(/price/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/quantity on hand/i)).toBeInTheDocument();
 
     // Check that action buttons are present
-    expect(screen.getByRole('button', { name: /create beer/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /create apparel/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /back to beers/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /back to apparels/i })).toBeInTheDocument();
 
     // Test form interaction
-    const beerNameInput = screen.getByLabelText(/beer name/i);
-    await user.type(beerNameInput, 'Test IPA');
-    expect(mockFormState.setValue).toHaveBeenCalledWith('beerName', expect.any(String));
+    const apparelNameInput = screen.getByLabelText(/apparel name/i);
+    await user.type(apparelNameInput, 'Test IPA');
+    expect(mockFormState.setValue).toHaveBeenCalledWith('apparelName', expect.any(String));
 
     // Test form submission
-    const submitButton = screen.getByRole('button', { name: /create beer/i });
+    const submitButton = screen.getByRole('button', { name: /create apparel/i });
     await user.click(submitButton);
     expect(mockFormState.handleSubmit).toHaveBeenCalled();
 
     // Test cancel functionality
     const cancelButton = screen.getByRole('button', { name: /cancel/i });
     await user.click(cancelButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/beers');
+    expect(mockNavigate).toHaveBeenCalledWith('/apparels');
 
     // Test back button functionality
-    const backButton = screen.getByRole('button', { name: /back to beers/i });
+    const backButton = screen.getByRole('button', { name: /back to apparels/i });
     await user.click(backButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/beers');
+    expect(mockNavigate).toHaveBeenCalledWith('/apparels');
   });
 
   it('should handle form validation errors', async () => {
     // Mock form with validation errors
     const mockFormState = {
       values: {
-        beerName: '',
-        beerStyle: '',
+        apparelName: '',
+        apparelStyle: '',
         upc: '',
         price: undefined,
         quantityOnHand: undefined,
         imageUrl: undefined,
       },
       errors: {
-        beerName: ['Beer name is required'],
-        beerStyle: ['Beer style is required'],
+        apparelName: ['Apparel name is required'],
+        apparelStyle: ['Apparel style is required'],
         price: ['Price must be greater than 0'],
       },
       isValid: false,
@@ -140,19 +140,19 @@ describe('Beer Creation Integration', () => {
     };
     (mockUseForm as jest.MockedFunction<typeof useForm>).mockReturnValue(mockFormState);
 
-    render(<BeerCreatePage />);
+    render(<ApparelCreatePage />);
 
     // Check that validation errors are displayed
-    expect(screen.getByText('Beer name is required')).toBeInTheDocument();
-    expect(screen.getByText('Beer style is required')).toBeInTheDocument();
+    expect(screen.getByText('Apparel name is required')).toBeInTheDocument();
+    expect(screen.getByText('Apparel style is required')).toBeInTheDocument();
     expect(screen.getByText('Price must be greater than 0')).toBeInTheDocument();
 
     // Check that submit button is disabled when form is invalid
-    const submitButton = screen.getByRole('button', { name: /create beer/i });
+    const submitButton = screen.getByRole('button', { name: /create apparel/i });
     expect(submitButton).toBeDisabled();
   });
 
-  it('should handle API errors during beer creation', async () => {
+  it('should handle API errors during apparel creation', async () => {
     const user = userEvent.setup();
 
     // Mock API error
@@ -162,8 +162,8 @@ describe('Beer Creation Integration', () => {
 
     const mockFormState = {
       values: {
-        beerName: 'Test Beer',
-        beerStyle: 'IPA',
+        apparelName: 'Test Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         price: 12.99,
         quantityOnHand: 100,
@@ -182,19 +182,19 @@ describe('Beer Creation Integration', () => {
       handleSubmit: jest.fn(async formData => {
         // Simulate the actual form submission logic
         try {
-          await mockApiService.createWithNotification('/api/v1/beers', formData);
+          await mockApiService.createWithNotification('/api/v1/apparels', formData);
         } catch {
-          mockUseToast().error('Failed to create beer. Please try again.');
+          mockUseToast().error('Failed to create apparel. Please try again.');
         }
       }),
       reset: jest.fn(),
     };
     (mockUseForm as jest.MockedFunction<typeof useForm>).mockReturnValue(mockFormState);
 
-    render(<BeerCreatePage />);
+    render(<ApparelCreatePage />);
 
     // Submit the form
-    const submitButton = screen.getByRole('button', { name: /create beer/i });
+    const submitButton = screen.getByRole('button', { name: /create apparel/i });
     await user.click(submitButton);
 
     // Verify that the API was called and error was handled
@@ -207,8 +207,8 @@ describe('Beer Creation Integration', () => {
     // Mock form in submitting state
     const mockFormState = {
       values: {
-        beerName: 'Test Beer',
-        beerStyle: 'IPA',
+        apparelName: 'Test Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         price: 12.99,
         quantityOnHand: 100,
@@ -229,7 +229,7 @@ describe('Beer Creation Integration', () => {
     };
     (mockUseForm as jest.MockedFunction<typeof useForm>).mockReturnValue(mockFormState);
 
-    render(<BeerCreatePage />);
+    render(<ApparelCreatePage />);
 
     // Check that submit button shows loading state
     const submitButton = screen.getByRole('button', { name: /saving/i });
@@ -243,8 +243,8 @@ describe('Beer Creation Integration', () => {
   it('should handle image upload functionality', async () => {
     const mockFormState = {
       values: {
-        beerName: '',
-        beerStyle: '',
+        apparelName: '',
+        apparelStyle: '',
         upc: '',
         price: undefined,
         quantityOnHand: undefined,
@@ -265,10 +265,10 @@ describe('Beer Creation Integration', () => {
     };
     (mockUseForm as jest.MockedFunction<typeof useForm>).mockReturnValue(mockFormState);
 
-    render(<BeerCreatePage />);
+    render(<ApparelCreatePage />);
 
     // Check that image upload component is present
-    expect(screen.getByText(/upload beer image/i)).toBeInTheDocument();
+    expect(screen.getByText(/upload apparel image/i)).toBeInTheDocument();
     expect(screen.getByText(/drag and drop or click to select/i)).toBeInTheDocument();
   });
 });

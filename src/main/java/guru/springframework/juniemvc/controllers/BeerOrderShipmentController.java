@@ -1,7 +1,7 @@
 package guru.springframework.juniemvc.controllers;
 
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
-import guru.springframework.juniemvc.services.BeerOrderShipmentService;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
+import guru.springframework.juniemvc.services.ApparelOrderShipmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,78 +11,78 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controller for BeerOrderShipment operations
+ * Controller for ApparelOrderShipment operations
  */
 @RestController
-@RequestMapping("/api/v1/beer-orders/{beerOrderId}/shipments")
+@RequestMapping("/api/v1/apparel-orders/{apparelOrderId}/shipments")
 @RequiredArgsConstructor
-public class BeerOrderShipmentController {
+public class ApparelOrderShipmentController {
 
-    private final BeerOrderShipmentService beerOrderShipmentService;
+    private final ApparelOrderShipmentService apparelOrderShipmentService;
 
     /**
-     * Get all shipments for a beer order
-     * @param beerOrderId the beer order id
+     * Get all shipments for a apparel order
+     * @param apparelOrderId the apparel order id
      * @return the list of shipments
      */
     @GetMapping
-    public ResponseEntity<List<BeerOrderShipmentDto>> getAllShipments(@PathVariable Integer beerOrderId) {
-        return ResponseEntity.ok(beerOrderShipmentService.getAllShipments(beerOrderId));
+    public ResponseEntity<List<ApparelOrderShipmentDto>> getAllShipments(@PathVariable Integer apparelOrderId) {
+        return ResponseEntity.ok(apparelOrderShipmentService.getAllShipments(apparelOrderId));
     }
 
     /**
      * Get a shipment by id
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      * @return the shipment
      */
     @GetMapping("/{shipmentId}")
-    public ResponseEntity<BeerOrderShipmentDto> getShipmentById(
-            @PathVariable Integer beerOrderId,
+    public ResponseEntity<ApparelOrderShipmentDto> getShipmentById(
+            @PathVariable Integer apparelOrderId,
             @PathVariable Integer shipmentId) {
-        return ResponseEntity.ok(beerOrderShipmentService.getShipmentById(beerOrderId, shipmentId));
+        return ResponseEntity.ok(apparelOrderShipmentService.getShipmentById(apparelOrderId, shipmentId));
     }
 
     /**
      * Create a new shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentDto the shipment DTO
      * @return the created shipment
      */
     @PostMapping
-    public ResponseEntity<BeerOrderShipmentDto> createShipment(
-            @PathVariable Integer beerOrderId,
-            @Valid @RequestBody BeerOrderShipmentDto shipmentDto) {
-        BeerOrderShipmentDto createdShipment = beerOrderShipmentService.createShipment(beerOrderId, shipmentDto);
+    public ResponseEntity<ApparelOrderShipmentDto> createShipment(
+            @PathVariable Integer apparelOrderId,
+            @Valid @RequestBody ApparelOrderShipmentDto shipmentDto) {
+        ApparelOrderShipmentDto createdShipment = apparelOrderShipmentService.createShipment(apparelOrderId, shipmentDto);
         return new ResponseEntity<>(createdShipment, HttpStatus.CREATED);
     }
 
     /**
      * Update a shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      * @param shipmentDto the shipment DTO
      * @return the updated shipment
      */
     @PutMapping("/{shipmentId}")
-    public ResponseEntity<BeerOrderShipmentDto> updateShipment(
-            @PathVariable Integer beerOrderId,
+    public ResponseEntity<ApparelOrderShipmentDto> updateShipment(
+            @PathVariable Integer apparelOrderId,
             @PathVariable Integer shipmentId,
-            @Valid @RequestBody BeerOrderShipmentDto shipmentDto) {
-        return ResponseEntity.ok(beerOrderShipmentService.updateShipment(beerOrderId, shipmentId, shipmentDto));
+            @Valid @RequestBody ApparelOrderShipmentDto shipmentDto) {
+        return ResponseEntity.ok(apparelOrderShipmentService.updateShipment(apparelOrderId, shipmentId, shipmentDto));
     }
 
     /**
      * Delete a shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      * @return no content
      */
     @DeleteMapping("/{shipmentId}")
     public ResponseEntity<Void> deleteShipment(
-            @PathVariable Integer beerOrderId,
+            @PathVariable Integer apparelOrderId,
             @PathVariable Integer shipmentId) {
-        beerOrderShipmentService.deleteShipment(beerOrderId, shipmentId);
+        apparelOrderShipmentService.deleteShipment(apparelOrderId, shipmentId);
         return ResponseEntity.noContent().build();
     }
 }

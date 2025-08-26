@@ -62,7 +62,7 @@ const CustomerEditPage: React.FC = () => {
           city: formData.city,
           state: formData.state,
           postalCode: formData.postalCode,
-          beerOrders: customer.beerOrders, // Include existing beer orders
+          apparelOrders: customer.apparelOrders, // Include existing apparel orders
         };
 
         const updatedCustomer = await customerService.updateCustomer(customer.id!, customerData);

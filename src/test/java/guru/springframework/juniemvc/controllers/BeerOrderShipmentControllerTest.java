@@ -1,9 +1,9 @@
 package guru.springframework.juniemvc.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
-import guru.springframework.juniemvc.services.BeerOrderService;
-import guru.springframework.juniemvc.services.BeerOrderShipmentService;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
+import guru.springframework.juniemvc.services.ApparelOrderService;
+import guru.springframework.juniemvc.services.ApparelOrderShipmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Tests for BeerOrderShipmentController
+ * Tests for ApparelOrderShipmentController
  */
-@WebMvcTest(BeerOrderShipmentController.class)
-class BeerOrderShipmentControllerTest {
+@WebMvcTest(ApparelOrderShipmentController.class)
+class ApparelOrderShipmentControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -40,12 +40,12 @@ class BeerOrderShipmentControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    BeerOrderShipmentService beerOrderShipmentService;
+    ApparelOrderShipmentService apparelOrderShipmentService;
 
     @MockBean
-    BeerOrderService beerOrderService;
+    ApparelOrderService apparelOrderService;
 
-    BeerOrderShipmentDto testShipment;
+    ApparelOrderShipmentDto testShipment;
     LocalDateTime testShipmentDate;
 
     @BeforeEach
@@ -54,7 +54,7 @@ class BeerOrderShipmentControllerTest {
         testShipmentDate = LocalDateTime.now();
 
         // Create test shipment
-        testShipment = BeerOrderShipmentDto.builder()
+        testShipment = ApparelOrderShipmentDto.builder()
                 .id(1)
                 .shipmentDate(testShipmentDate)
                 .carrier("FedEx")
@@ -65,11 +65,11 @@ class BeerOrderShipmentControllerTest {
     @Test
     void testGetAllShipments() throws Exception {
         // Given
-        List<BeerOrderShipmentDto> shipments = Arrays.asList(testShipment);
-        given(beerOrderShipmentService.getAllShipments(1)).willReturn(shipments);
+        List<ApparelOrderShipmentDto> shipments = Arrays.asList(testShipment);
+        given(apparelOrderShipmentService.getAllShipments(1)).willReturn(shipments);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beer-orders/1/shipments")
+        mockMvc.perform(get("/api/v1/apparel-orders/1/shipments")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -82,10 +82,10 @@ class BeerOrderShipmentControllerTest {
     @Test
     void testGetShipmentById() throws Exception {
         // Given
-        given(beerOrderShipmentService.getShipmentById(1, 1)).willReturn(testShipment);
+        given(apparelOrderShipmentService.getShipmentById(1, 1)).willReturn(testShipment);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beer-orders/1/shipments/1")
+        mockMvc.perform(get("/api/v1/apparel-orders/1/shipments/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -97,23 +97,23 @@ class BeerOrderShipmentControllerTest {
     @Test
     void testCreateShipment() throws Exception {
         // Given
-        BeerOrderShipmentDto shipmentToCreate = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto shipmentToCreate = ApparelOrderShipmentDto.builder()
                 .shipmentDate(testShipmentDate)
                 .carrier("UPS")
                 .trackingNumber("987654321")
                 .build();
 
-        BeerOrderShipmentDto createdShipment = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto createdShipment = ApparelOrderShipmentDto.builder()
                 .id(2)
                 .shipmentDate(testShipmentDate)
                 .carrier("UPS")
                 .trackingNumber("987654321")
                 .build();
 
-        given(beerOrderShipmentService.createShipment(anyInt(), any(BeerOrderShipmentDto.class))).willReturn(createdShipment);
+        given(apparelOrderShipmentService.createShipment(anyInt(), any(ApparelOrderShipmentDto.class))).willReturn(createdShipment);
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beer-orders/1/shipments")
+        mockMvc.perform(post("/api/v1/apparel-orders/1/shipments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(shipmentToCreate)))
                 .andExpect(status().isCreated())
@@ -125,23 +125,23 @@ class BeerOrderShipmentControllerTest {
     @Test
     void testUpdateShipment() throws Exception {
         // Given
-        BeerOrderShipmentDto shipmentToUpdate = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto shipmentToUpdate = ApparelOrderShipmentDto.builder()
                 .shipmentDate(testShipmentDate)
                 .carrier("DHL")
                 .trackingNumber("UPDATED123")
                 .build();
 
-        BeerOrderShipmentDto updatedShipment = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto updatedShipment = ApparelOrderShipmentDto.builder()
                 .id(1)
                 .shipmentDate(testShipmentDate)
                 .carrier("DHL")
                 .trackingNumber("UPDATED123")
                 .build();
 
-        given(beerOrderShipmentService.updateShipment(anyInt(), anyInt(), any(BeerOrderShipmentDto.class))).willReturn(updatedShipment);
+        given(apparelOrderShipmentService.updateShipment(anyInt(), anyInt(), any(ApparelOrderShipmentDto.class))).willReturn(updatedShipment);
 
         // When/Then
-        mockMvc.perform(put("/api/v1/beer-orders/1/shipments/1")
+        mockMvc.perform(put("/api/v1/apparel-orders/1/shipments/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(shipmentToUpdate)))
                 .andExpect(status().isOk())
@@ -153,26 +153,26 @@ class BeerOrderShipmentControllerTest {
     @Test
     void testDeleteShipment() throws Exception {
         // Given
-        doNothing().when(beerOrderShipmentService).deleteShipment(1, 1);
+        doNothing().when(apparelOrderShipmentService).deleteShipment(1, 1);
 
         // When/Then
-        mockMvc.perform(delete("/api/v1/beer-orders/1/shipments/1"))
+        mockMvc.perform(delete("/api/v1/apparel-orders/1/shipments/1"))
                 .andExpect(status().isNoContent());
 
-        verify(beerOrderShipmentService).deleteShipment(1, 1);
+        verify(apparelOrderShipmentService).deleteShipment(1, 1);
     }
 
     @Test
     void testValidationErrors() throws Exception {
         // Given
-        BeerOrderShipmentDto invalidShipment = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto invalidShipment = ApparelOrderShipmentDto.builder()
                 .carrier("FedEx")
                 .trackingNumber("123456789")
                 // Missing required shipmentDate
                 .build();
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beer-orders/1/shipments")
+        mockMvc.perform(post("/api/v1/apparel-orders/1/shipments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidShipment)))
                 .andExpect(status().isBadRequest());

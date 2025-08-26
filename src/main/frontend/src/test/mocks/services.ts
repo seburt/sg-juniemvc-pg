@@ -1,46 +1,46 @@
-import { createMockBeer, createMockCustomer, createMockBeerOrder, createMockPage } from '../utils';
-import type { BeerDto } from '../../types/beer';
+import { createMockApparel, createMockCustomer, createMockApparelOrder, createMockPage } from '../utils';
+import type { ApparelDto } from '../../types/apparel';
 import type { CustomerDto } from '../../types/customer';
-import type { BeerOrderDto, BeerOrderShipmentDto } from '../../types/beerOrder';
+import type { ApparelOrderDto, ApparelOrderShipmentDto } from '../../types/apparelOrder';
 
-// Mock Beer Service
-export const mockBeerService = {
+// Mock Apparel Service
+export const mockApparelService = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getBeers: jest.fn().mockImplementation((_params = {}) => {
-    const mockBeers = [
-      createMockBeer({ id: 1, beerName: 'Mango Bobs', beerStyle: 'IPA' }),
-      createMockBeer({ id: 2, beerName: 'Galaxy Cat', beerStyle: 'PALE_ALE' }),
-      createMockBeer({ id: 3, beerName: 'Pinball Porter', beerStyle: 'PORTER' }),
+  getApparels: jest.fn().mockImplementation((_params = {}) => {
+    const mockApparels = [
+      createMockApparel({ id: 1, apparelName: 'Mango Bobs', apparelStyle: 'IPA' }),
+      createMockApparel({ id: 2, apparelName: 'Galaxy Cat', apparelStyle: 'PALE_ALE' }),
+      createMockApparel({ id: 3, apparelName: 'Pinball Porter', apparelStyle: 'PORTER' }),
     ];
-    return Promise.resolve(createMockPage(mockBeers));
+    return Promise.resolve(createMockPage(mockApparels));
   }),
 
-  getBeerById: jest.fn().mockImplementation((id: number) => {
-    const mockBeer = createMockBeer({ id, beerName: `Test Beer ${id}` });
-    return Promise.resolve(mockBeer);
+  getApparelById: jest.fn().mockImplementation((id: number) => {
+    const mockApparel = createMockApparel({ id, apparelName: `Test Apparel ${id}` });
+    return Promise.resolve(mockApparel);
   }),
 
-  createBeer: jest
+  createApparel: jest
     .fn()
     .mockImplementation(
-      (beerData: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
-        const mockBeer = createMockBeer({ id: 999, ...beerData });
-        return Promise.resolve(mockBeer);
+      (apparelData: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
+        const mockApparel = createMockApparel({ id: 999, ...apparelData });
+        return Promise.resolve(mockApparel);
       }
     ),
 
-  updateBeer: jest.fn().mockImplementation((id: number, beerData: Partial<BeerDto>) => {
-    const mockBeer = createMockBeer({ id, ...beerData });
-    return Promise.resolve(mockBeer);
+  updateApparel: jest.fn().mockImplementation((id: number, apparelData: Partial<ApparelDto>) => {
+    const mockApparel = createMockApparel({ id, ...apparelData });
+    return Promise.resolve(mockApparel);
   }),
 
-  patchBeer: jest.fn().mockImplementation((id: number, patchData: Partial<BeerDto>) => {
-    const mockBeer = createMockBeer({ id, ...patchData });
-    return Promise.resolve(mockBeer);
+  patchApparel: jest.fn().mockImplementation((id: number, patchData: Partial<ApparelDto>) => {
+    const mockApparel = createMockApparel({ id, ...patchData });
+    return Promise.resolve(mockApparel);
   }),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  deleteBeer: jest.fn().mockImplementation((_id: number) => {
+  deleteApparel: jest.fn().mockImplementation((_id: number) => {
     return Promise.resolve();
   }),
 };
@@ -87,58 +87,58 @@ export const mockCustomerService = {
   }),
 };
 
-// Mock Beer Order Service
-export const mockBeerOrderService = {
+// Mock Apparel Order Service
+export const mockApparelOrderService = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getBeerOrders: jest.fn().mockImplementation((_params = {}) => {
+  getApparelOrders: jest.fn().mockImplementation((_params = {}) => {
     const mockOrders = [
-      createMockBeerOrder({ id: 1, customerRef: 'CUST-001', status: 'NEW' }),
-      createMockBeerOrder({ id: 2, customerRef: 'CUST-002', status: 'PROCESSING' }),
-      createMockBeerOrder({ id: 3, customerRef: 'CUST-003', status: 'COMPLETED' }),
+      createMockApparelOrder({ id: 1, customerRef: 'CUST-001', status: 'NEW' }),
+      createMockApparelOrder({ id: 2, customerRef: 'CUST-002', status: 'PROCESSING' }),
+      createMockApparelOrder({ id: 3, customerRef: 'CUST-003', status: 'COMPLETED' }),
     ];
     return Promise.resolve(createMockPage(mockOrders));
   }),
 
-  getBeerOrderById: jest.fn().mockImplementation((id: number) => {
-    const mockOrder = createMockBeerOrder({
+  getApparelOrderById: jest.fn().mockImplementation((id: number) => {
+    const mockOrder = createMockApparelOrder({
       id,
       customerRef: `CUST-${id.toString().padStart(3, '0')}`,
     });
     return Promise.resolve(mockOrder);
   }),
 
-  createBeerOrder: jest
+  createApparelOrder: jest
     .fn()
     .mockImplementation(
-      (orderData: Omit<BeerOrderDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
-        const mockOrder = createMockBeerOrder({ id: 999, ...orderData });
+      (orderData: Omit<ApparelOrderDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
+        const mockOrder = createMockApparelOrder({ id: 999, ...orderData });
         return Promise.resolve(mockOrder);
       }
     ),
 
-  updateBeerOrder: jest.fn().mockImplementation((id: number, orderData: Partial<BeerOrderDto>) => {
-    const mockOrder = createMockBeerOrder({ id, ...orderData });
+  updateApparelOrder: jest.fn().mockImplementation((id: number, orderData: Partial<ApparelOrderDto>) => {
+    const mockOrder = createMockApparelOrder({ id, ...orderData });
     return Promise.resolve(mockOrder);
   }),
 
-  patchBeerOrder: jest.fn().mockImplementation((id: number, patchData: Partial<BeerOrderDto>) => {
-    const mockOrder = createMockBeerOrder({ id, ...patchData });
+  patchApparelOrder: jest.fn().mockImplementation((id: number, patchData: Partial<ApparelOrderDto>) => {
+    const mockOrder = createMockApparelOrder({ id, ...patchData });
     return Promise.resolve(mockOrder);
   }),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  deleteBeerOrder: jest.fn().mockImplementation((_id: number) => {
+  deleteApparelOrder: jest.fn().mockImplementation((_id: number) => {
     return Promise.resolve();
   }),
 
-  createBeerOrderShipment: jest
+  createApparelOrderShipment: jest
     .fn()
     .mockImplementation(
       (
         _orderId: number,
-        shipmentData: Omit<BeerOrderShipmentDto, 'id' | 'version' | 'createdDate' | 'updateDate'>
+        shipmentData: Omit<ApparelOrderShipmentDto, 'id' | 'version' | 'createdDate' | 'updateDate'>
       ) => {
-        const mockShipment: BeerOrderShipmentDto = {
+        const mockShipment: ApparelOrderShipmentDto = {
           id: 999,
           version: 1,
           createdDate: new Date().toISOString(),
@@ -150,8 +150,8 @@ export const mockBeerOrderService = {
     ),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getBeerOrderShipments: jest.fn().mockImplementation((_orderId: number) => {
-    const mockShipments: BeerOrderShipmentDto[] = [
+  getApparelOrderShipments: jest.fn().mockImplementation((_orderId: number) => {
+    const mockShipments: ApparelOrderShipmentDto[] = [
       {
         id: 1,
         version: 1,
@@ -202,7 +202,7 @@ export const mockApiErrors = {
 
 // Helper function to reset all mocks
 export const resetAllMocks = () => {
-  Object.values(mockBeerService).forEach(mock => {
+  Object.values(mockApparelService).forEach(mock => {
     if (jest.isMockFunction(mock)) {
       mock.mockClear();
     }
@@ -214,7 +214,7 @@ export const resetAllMocks = () => {
     }
   });
 
-  Object.values(mockBeerOrderService).forEach(mock => {
+  Object.values(mockApparelOrderService).forEach(mock => {
     if (jest.isMockFunction(mock)) {
       mock.mockClear();
     }

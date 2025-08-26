@@ -1,38 +1,38 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.models.BeerOrderDto;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service interface for BeerOrder operations
+ * Service interface for ApparelOrder operations
  */
-public interface BeerOrderService {
+public interface ApparelOrderService {
 
     /**
-     * Get all beer orders
-     * @return List of all beer orders
+     * Get all apparel orders
+     * @return List of all apparel orders
      */
-    List<BeerOrderDto> getAllBeerOrders();
+    List<ApparelOrderDto> getAllApparelOrders();
 
     /**
-     * Get a beer order by its ID
-     * @param id the beer order ID
-     * @return Optional containing the beer order if found
+     * Get a apparel order by its ID
+     * @param id the apparel order ID
+     * @return Optional containing the apparel order if found
      */
-    Optional<BeerOrderDto> getBeerOrderById(Integer id);
+    Optional<ApparelOrderDto> getApparelOrderById(Integer id);
 
     /**
-     * Save a new beer order or update an existing one
-     * @param beerOrderDto the beer order to save
-     * @return the saved beer order
+     * Save a new apparel order or update an existing one
+     * @param apparelOrderDto the apparel order to save
+     * @return the saved apparel order
      */
-    BeerOrderDto saveBeerOrder(BeerOrderDto beerOrderDto);
+    ApparelOrderDto saveApparelOrder(ApparelOrderDto apparelOrderDto);
 
     /**
-     * Delete a beer order by its ID
-     * @param id the beer order ID
+     * Delete a apparel order by its ID
+     * @param id the apparel order ID
      */
-    void deleteBeerOrderById(Integer id);
+    void deleteApparelOrderById(Integer id);
 }

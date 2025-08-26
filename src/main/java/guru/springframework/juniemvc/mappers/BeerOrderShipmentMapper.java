@@ -1,18 +1,18 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Mapper for BeerOrderShipment entity and BeerOrderShipmentDto
+ * Mapper for ApparelOrderShipment entity and ApparelOrderShipmentDto
  */
 @Mapper
-public interface BeerOrderShipmentMapper {
+public interface ApparelOrderShipmentMapper {
 
-    BeerOrderShipmentDto beerOrderShipmentToBeerOrderShipmentDto(BeerOrderShipment beerOrderShipment);
+    ApparelOrderShipmentDto apparelOrderShipmentToApparelOrderShipmentDto(ApparelOrderShipment apparelOrderShipment);
 
-    @Mapping(target = "beerOrder", ignore = true)
-    BeerOrderShipment beerOrderShipmentDtoToBeerOrderShipment(BeerOrderShipmentDto beerOrderShipmentDto);
+    @Mapping(target = "apparelOrder", ignore = true)
+    ApparelOrderShipment apparelOrderShipmentDtoToApparelOrderShipment(ApparelOrderShipmentDto apparelOrderShipmentDto);
 }

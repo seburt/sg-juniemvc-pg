@@ -1,50 +1,50 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
 
 import java.util.List;
 
 /**
- * Service for BeerOrderShipment operations
+ * Service for ApparelOrderShipment operations
  */
-public interface BeerOrderShipmentService {
+public interface ApparelOrderShipmentService {
 
     /**
-     * Get all shipments for a beer order
-     * @param beerOrderId the beer order id
+     * Get all shipments for a apparel order
+     * @param apparelOrderId the apparel order id
      * @return the list of shipments
      */
-    List<BeerOrderShipmentDto> getAllShipments(Integer beerOrderId);
+    List<ApparelOrderShipmentDto> getAllShipments(Integer apparelOrderId);
 
     /**
      * Get a shipment by id
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      * @return the shipment
      */
-    BeerOrderShipmentDto getShipmentById(Integer beerOrderId, Integer shipmentId);
+    ApparelOrderShipmentDto getShipmentById(Integer apparelOrderId, Integer shipmentId);
 
     /**
      * Create a new shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentDto the shipment DTO
      * @return the created shipment
      */
-    BeerOrderShipmentDto createShipment(Integer beerOrderId, BeerOrderShipmentDto shipmentDto);
+    ApparelOrderShipmentDto createShipment(Integer apparelOrderId, ApparelOrderShipmentDto shipmentDto);
 
     /**
      * Update a shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      * @param shipmentDto the shipment DTO
      * @return the updated shipment
      */
-    BeerOrderShipmentDto updateShipment(Integer beerOrderId, Integer shipmentId, BeerOrderShipmentDto shipmentDto);
+    ApparelOrderShipmentDto updateShipment(Integer apparelOrderId, Integer shipmentId, ApparelOrderShipmentDto shipmentDto);
 
     /**
      * Delete a shipment
-     * @param beerOrderId the beer order id
+     * @param apparelOrderId the apparel order id
      * @param shipmentId the shipment id
      */
-    void deleteShipment(Integer beerOrderId, Integer shipmentId);
+    void deleteShipment(Integer apparelOrderId, Integer shipmentId);
 }

@@ -14,9 +14,9 @@ import {
 // Local interfaces for order data
 interface OrderLineItem {
   id: number;
-  beerId: number;
-  beerName: string;
-  beerStyle: string;
+  apparelId: number;
+  apparelName: string;
+  apparelStyle: string;
   upc: string;
   orderQuantity: number;
   price: number;
@@ -44,19 +44,19 @@ interface OrderDetail {
 }
 
 /**
- * Beer Order Detail page component
- * Displays detailed information about a specific beer order
+ * Apparel Order Detail page component
+ * Displays detailed information about a specific apparel order
  */
-const BeerOrderDetailPage: React.FC = () => {
+const ApparelOrderDetailPage: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [activeTab, setActiveTab] = useState('details');
 
-  // Simulate fetching beer order data
+  // Simulate fetching apparel order data
   useEffect(() => {
-    // In a real application, you would fetch the beer order data from the API
+    // In a real application, you would fetch the apparel order data from the API
     // For now, we'll use mock data
     const mockOrder = {
       id: Number(orderId),
@@ -71,27 +71,27 @@ const BeerOrderDetailPage: React.FC = () => {
       lineItems: [
         {
           id: 1,
-          beerId: 1,
-          beerName: 'Mango Bobs',
-          beerStyle: 'IPA',
+          apparelId: 1,
+          apparelName: 'Mango Bobs',
+          apparelStyle: 'IPA',
           upc: '0631234200036',
           orderQuantity: 2,
           price: 12.99,
         },
         {
           id: 2,
-          beerId: 2,
-          beerName: 'Galaxy Cat',
-          beerStyle: 'PALE_ALE',
+          apparelId: 2,
+          apparelName: 'Galaxy Cat',
+          apparelStyle: 'PALE_ALE',
           upc: '0631234300019',
           orderQuantity: 3,
           price: 11.99,
         },
         {
           id: 3,
-          beerId: 3,
-          beerName: 'Pinball Porter',
-          beerStyle: 'PORTER',
+          apparelId: 3,
+          apparelName: 'Pinball Porter',
+          apparelStyle: 'PORTER',
           upc: '0083783375213',
           orderQuantity: 4,
           price: 13.99,
@@ -132,7 +132,7 @@ const BeerOrderDetailPage: React.FC = () => {
   };
 
   const handleBackToList = () => {
-    navigate('/beer-orders');
+    navigate('/apparel-orders');
   };
 
   if (loading) {
@@ -174,7 +174,7 @@ const BeerOrderDetailPage: React.FC = () => {
             Back to Orders
           </button>
           <button
-            onClick={() => navigate(`/beer-orders/${orderId}/edit`)}
+            onClick={() => navigate(`/apparel-orders/${orderId}/edit`)}
             className="rounded-md bg-blue-500 px-4 py-2 text-white"
           >
             Edit Order
@@ -280,7 +280,7 @@ const BeerOrderDetailPage: React.FC = () => {
                   <thead>
                     <tr className="border-b bg-muted/50">
                       <th className="p-2 text-left font-medium">Item</th>
-                      <th className="p-2 text-left font-medium">Beer</th>
+                      <th className="p-2 text-left font-medium">Apparel</th>
                       <th className="p-2 text-left font-medium">Style</th>
                       <th className="p-2 text-left font-medium">UPC</th>
                       <th className="p-2 text-left font-medium">Quantity</th>
@@ -292,8 +292,8 @@ const BeerOrderDetailPage: React.FC = () => {
                     {order.lineItems.map((item: OrderLineItem) => (
                       <tr key={item.id} className="border-b">
                         <td className="p-2">{item.id}</td>
-                        <td className="p-2">{item.beerName}</td>
-                        <td className="p-2">{item.beerStyle}</td>
+                        <td className="p-2">{item.apparelName}</td>
+                        <td className="p-2">{item.apparelStyle}</td>
                         <td className="p-2">{item.upc}</td>
                         <td className="p-2">{item.orderQuantity}</td>
                         <td className="p-2">${item.price.toFixed(2)}</td>
@@ -356,7 +356,7 @@ const BeerOrderDetailPage: React.FC = () => {
 
               <div className="mt-6">
                 <button
-                  onClick={() => navigate(`/beer-orders/${orderId}/shipments/new`)}
+                  onClick={() => navigate(`/apparel-orders/${orderId}/shipments/new`)}
                   className="rounded-md bg-primary px-4 py-2 text-primary-foreground"
                 >
                   Add Shipment
@@ -370,4 +370,4 @@ const BeerOrderDetailPage: React.FC = () => {
   );
 };
 
-export default BeerOrderDetailPage;
+export default ApparelOrderDetailPage;

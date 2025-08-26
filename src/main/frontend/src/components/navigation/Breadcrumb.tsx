@@ -35,14 +35,14 @@ const Breadcrumb: React.FC = () => {
       // Generate human-readable labels
       let label = segment;
       switch (segment) {
-        case 'beers':
-          label = 'Beers';
+        case 'apparels':
+          label = 'Apparels';
           break;
         case 'customers':
           label = 'Customers';
           break;
-        case 'beer-orders':
-          label = 'Beer Orders';
+        case 'apparel-orders':
+          label = 'Apparel Orders';
           break;
         case 'new':
           label = 'New';
@@ -55,11 +55,11 @@ const Breadcrumb: React.FC = () => {
           if (/^\d+$/.test(segment)) {
             // Determine the type based on the previous segment
             const prevSegment = pathSegments[index - 1];
-            if (prevSegment === 'beers') {
-              label = `Beer #${segment}`;
+            if (prevSegment === 'apparels') {
+              label = `Apparel #${segment}`;
             } else if (prevSegment === 'customers') {
               label = `Customer #${segment}`;
-            } else if (prevSegment === 'beer-orders') {
+            } else if (prevSegment === 'apparel-orders') {
               label = `Order #${segment}`;
             } else {
               label = `#${segment}`;

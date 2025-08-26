@@ -21,12 +21,12 @@ import java.util.Set;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class Beer extends BaseEntity {
+public class Apparel extends BaseEntity {
 
     @Column(nullable = false)
-    private String beerName;
+    private String apparelName;
 
-    private String beerStyle;
+    private String apparelStyle;
     private String upc;
     private Integer quantityOnHand;
     private String description;
@@ -34,8 +34,8 @@ public class Beer extends BaseEntity {
     @Column(precision = 19, scale = 2)
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "beer")
+    @OneToMany(mappedBy = "apparel")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<BeerOrderLine> beerOrderLines = new HashSet<>();
+    private Set<ApparelOrderLine> apparelOrderLines = new HashSet<>();
 }

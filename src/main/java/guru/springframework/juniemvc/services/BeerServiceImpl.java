@@ -1,10 +1,10 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.mappers.BeerMapper;
-import guru.springframework.juniemvc.models.BeerDto;
-import guru.springframework.juniemvc.models.BeerPatchDto;
-import guru.springframework.juniemvc.repositories.BeerRepository;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.mappers.ApparelMapper;
+import guru.springframework.juniemvc.models.ApparelDto;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
+import guru.springframework.juniemvc.repositories.ApparelRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,84 +15,84 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of BeerService that uses BeerRepository for persistence
+ * Implementation of ApparelService that uses ApparelRepository for persistence
  */
 @Service
-public class BeerServiceImpl implements BeerService {
+public class ApparelServiceImpl implements ApparelService {
 
-    private final BeerRepository beerRepository;
-    private final BeerMapper beerMapper;
+    private final ApparelRepository apparelRepository;
+    private final ApparelMapper apparelMapper;
 
-    public BeerServiceImpl(BeerRepository beerRepository, BeerMapper beerMapper) {
-        this.beerRepository = beerRepository;
-        this.beerMapper = beerMapper;
+    public ApparelServiceImpl(ApparelRepository apparelRepository, ApparelMapper apparelMapper) {
+        this.apparelRepository = apparelRepository;
+        this.apparelMapper = apparelMapper;
     }
 
     @Override
-    public List<BeerDto> getAllBeers() {
-        return beerRepository.findAll().stream()
-                .map(beerMapper::beerToBeerDto)
+    public List<ApparelDto> getAllApparels() {
+        return apparelRepository.findAll().stream()
+                .map(apparelMapper::apparelToApparelDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Page<BeerDto> getAllBeers(String beerName, String beerStyle, Pageable pageable) {
+    public Page<ApparelDto> getAllApparels(String apparelName, String apparelStyle, Pageable pageable) {
         // Handle different combinations of parameters
-        boolean hasName = StringUtils.hasText(beerName);
-        boolean hasStyle = StringUtils.hasText(beerStyle);
+        boolean hasName = StringUtils.hasText(apparelName);
+        boolean hasStyle = StringUtils.hasText(apparelStyle);
 
-        Page<Beer> beerPage;
+        Page<Apparel> apparelPage;
 
         if (hasName && hasStyle) {
             // Both parameters provided
-            beerPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(
-                    beerName, beerStyle, pageable);
+            apparelPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase(
+                    apparelName, apparelStyle, pageable);
         } else if (hasName) {
-            // Only beerName provided
-            beerPage = beerRepository.findAllByBeerNameContainingIgnoreCase(beerName, pageable);
+            // Only apparelName provided
+            apparelPage = apparelRepository.findAllByApparelNameContainingIgnoreCase(apparelName, pageable);
         } else if (hasStyle) {
-            // Only beerStyle provided - use the combined method with empty string for name
-            beerPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(
-                    "", beerStyle, pageable);
+            // Only apparelStyle provided - use the combined method with empty string for name
+            apparelPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase(
+                    "", apparelStyle, pageable);
         } else {
             // No parameters provided - use the combined method with empty strings
-            beerPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(
+            apparelPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase(
                     "", "", pageable);
         }
 
-        return beerPage.map(beerMapper::beerToBeerDto);
+        return apparelPage.map(apparelMapper::apparelToApparelDto);
     }
 
     @Override
-    public Optional<BeerDto> getBeerById(Integer id) {
-        return beerRepository.findById(id)
-                .map(beerMapper::beerToBeerDto);
+    public Optional<ApparelDto> getApparelById(Integer id) {
+        return apparelRepository.findById(id)
+                .map(apparelMapper::apparelToApparelDto);
     }
 
     @Override
-    public BeerDto saveBeer(BeerDto beerDto) {
-        Beer beer = beerMapper.beerDtoToBeer(beerDto);
-        Beer savedBeer = beerRepository.save(beer);
-        return beerMapper.beerToBeerDto(savedBeer);
+    public ApparelDto saveApparel(ApparelDto apparelDto) {
+        Apparel apparel = apparelMapper.apparelDtoToApparel(apparelDto);
+        Apparel savedApparel = apparelRepository.save(apparel);
+        return apparelMapper.apparelToApparelDto(savedApparel);
     }
 
     @Override
-    public void deleteBeerById(Integer id) {
-        beerRepository.deleteById(id);
+    public void deleteApparelById(Integer id) {
+        apparelRepository.deleteById(id);
     }
 
     @Override
-    public Optional<BeerDto> patchBeer(Integer id, BeerPatchDto beerPatchDto) {
-        return beerRepository.findById(id)
-                .map(beer -> {
-                    // Update the beer with non-null values from the patch DTO
-                    beerMapper.updateBeerFromPatchDto(beerPatchDto, beer);
+    public Optional<ApparelDto> patchApparel(Integer id, ApparelPatchDto apparelPatchDto) {
+        return apparelRepository.findById(id)
+                .map(apparel -> {
+                    // Update the apparel with non-null values from the patch DTO
+                    apparelMapper.updateApparelFromPatchDto(apparelPatchDto, apparel);
 
-                    // Save the updated beer
-                    Beer savedBeer = beerRepository.save(beer);
+                    // Save the updated apparel
+                    Apparel savedApparel = apparelRepository.save(apparel);
 
                     // Convert back to DTO and return
-                    return beerMapper.beerToBeerDto(savedBeer);
+                    return apparelMapper.apparelToApparelDto(savedApparel);
                 });
     }
 }

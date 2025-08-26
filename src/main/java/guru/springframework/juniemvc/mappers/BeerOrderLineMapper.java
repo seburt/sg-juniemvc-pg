@@ -1,23 +1,23 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.BeerOrderLine;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Mapper for BeerOrderLine entity and BeerOrderLineDto
+ * Mapper for ApparelOrderLine entity and ApparelOrderLineDto
  */
 @Mapper
-public interface BeerOrderLineMapper {
+public interface ApparelOrderLineMapper {
     
-    @Mapping(target = "beerId", source = "beer.id")
-    @Mapping(target = "beerName", source = "beer.beerName")
-    @Mapping(target = "beerStyle", source = "beer.beerStyle")
-    @Mapping(target = "upc", source = "beer.upc")
-    BeerOrderLineDto beerOrderLineToBeerOrderLineDto(BeerOrderLine beerOrderLine);
+    @Mapping(target = "apparelId", source = "apparel.id")
+    @Mapping(target = "apparelName", source = "apparel.apparelName")
+    @Mapping(target = "apparelStyle", source = "apparel.apparelStyle")
+    @Mapping(target = "upc", source = "apparel.upc")
+    ApparelOrderLineDto apparelOrderLineToApparelOrderLineDto(ApparelOrderLine apparelOrderLine);
     
-    @Mapping(target = "beer", ignore = true)
-    @Mapping(target = "beerOrder", ignore = true)
-    BeerOrderLine beerOrderLineDtoToBeerOrderLine(BeerOrderLineDto beerOrderLineDto);
+    @Mapping(target = "apparel", ignore = true)
+    @Mapping(target = "apparelOrder", ignore = true)
+    ApparelOrderLine apparelOrderLineDtoToApparelOrderLine(ApparelOrderLineDto apparelOrderLineDto);
 }

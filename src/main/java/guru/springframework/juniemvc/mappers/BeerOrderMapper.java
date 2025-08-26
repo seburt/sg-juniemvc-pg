@@ -1,56 +1,56 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderLine;
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
-import guru.springframework.juniemvc.models.BeerOrderDto;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Mapper for BeerOrder entity and BeerOrderDto
+ * Mapper for ApparelOrder entity and ApparelOrderDto
  */
-@Mapper(uses = {BeerOrderLineMapper.class, CustomerMapper.class, BeerOrderShipmentMapper.class})
-public interface BeerOrderMapper {
+@Mapper(uses = {ApparelOrderLineMapper.class, CustomerMapper.class, ApparelOrderShipmentMapper.class})
+public interface ApparelOrderMapper {
 
-    BeerOrderDto beerOrderToBeerOrderDto(BeerOrder beerOrder);
+    ApparelOrderDto apparelOrderToApparelOrderDto(ApparelOrder apparelOrder);
 
-    @Mapping(target = "beerOrderLines", ignore = true)
+    @Mapping(target = "apparelOrderLines", ignore = true)
     @Mapping(target = "shipments", ignore = true)
-    BeerOrder beerOrderDtoToBeerOrder(BeerOrderDto beerOrderDto);
+    ApparelOrder apparelOrderDtoToApparelOrder(ApparelOrderDto apparelOrderDto);
 
     /**
-     * Add beer order lines to beer order
-     * @param beerOrder the beer order
-     * @param beerOrderDto the beer order DTO
-     * @param beerOrderLineMapper the beer order line mapper
-     * @return the updated beer order
+     * Add apparel order lines to apparel order
+     * @param apparelOrder the apparel order
+     * @param apparelOrderDto the apparel order DTO
+     * @param apparelOrderLineMapper the apparel order line mapper
+     * @return the updated apparel order
      */
-    default BeerOrder addBeerOrderLines(BeerOrder beerOrder, BeerOrderDto beerOrderDto, BeerOrderLineMapper beerOrderLineMapper) {
-        if (beerOrderDto.getBeerOrderLines() != null && !beerOrderDto.getBeerOrderLines().isEmpty()) {
-            beerOrderDto.getBeerOrderLines().forEach(lineDto -> {
-                BeerOrderLine line = beerOrderLineMapper.beerOrderLineDtoToBeerOrderLine(lineDto);
-                beerOrder.addBeerOrderLine(line);
+    default ApparelOrder addApparelOrderLines(ApparelOrder apparelOrder, ApparelOrderDto apparelOrderDto, ApparelOrderLineMapper apparelOrderLineMapper) {
+        if (apparelOrderDto.getApparelOrderLines() != null && !apparelOrderDto.getApparelOrderLines().isEmpty()) {
+            apparelOrderDto.getApparelOrderLines().forEach(lineDto -> {
+                ApparelOrderLine line = apparelOrderLineMapper.apparelOrderLineDtoToApparelOrderLine(lineDto);
+                apparelOrder.addApparelOrderLine(line);
             });
         }
-        return beerOrder;
+        return apparelOrder;
     }
 
     /**
-     * Add shipments to beer order
-     * @param beerOrder the beer order
-     * @param beerOrderDto the beer order DTO
-     * @param beerOrderShipmentMapper the beer order shipment mapper
-     * @return the updated beer order
+     * Add shipments to apparel order
+     * @param apparelOrder the apparel order
+     * @param apparelOrderDto the apparel order DTO
+     * @param apparelOrderShipmentMapper the apparel order shipment mapper
+     * @return the updated apparel order
      */
-    default BeerOrder addShipments(BeerOrder beerOrder, BeerOrderDto beerOrderDto, BeerOrderShipmentMapper beerOrderShipmentMapper) {
-        if (beerOrderDto.getShipments() != null && !beerOrderDto.getShipments().isEmpty()) {
-            beerOrderDto.getShipments().forEach(shipmentDto -> {
-                BeerOrderShipment shipment = beerOrderShipmentMapper.beerOrderShipmentDtoToBeerOrderShipment(shipmentDto);
-                beerOrder.addShipment(shipment);
+    default ApparelOrder addShipments(ApparelOrder apparelOrder, ApparelOrderDto apparelOrderDto, ApparelOrderShipmentMapper apparelOrderShipmentMapper) {
+        if (apparelOrderDto.getShipments() != null && !apparelOrderDto.getShipments().isEmpty()) {
+            apparelOrderDto.getShipments().forEach(shipmentDto -> {
+                ApparelOrderShipment shipment = apparelOrderShipmentMapper.apparelOrderShipmentDtoToApparelOrderShipment(shipmentDto);
+                apparelOrder.addShipment(shipment);
             });
         }
-        return beerOrder;
+        return apparelOrder;
     }
 }

@@ -1,20 +1,20 @@
--- Create tables for Beer, BeerOrder, and BeerOrderLine entities
+-- Create tables for Apparel, ApparelOrder, and ApparelOrderLine entities
 
--- Create beer table
-CREATE TABLE beer (
+-- Create apparel table
+CREATE TABLE apparel (
     id INT AUTO_INCREMENT PRIMARY KEY,
     version INT,
     created_date TIMESTAMP,
     update_date TIMESTAMP,
-    beer_name VARCHAR(255) NOT NULL,
-    beer_style VARCHAR(255),
+    apparel_name VARCHAR(255) NOT NULL,
+    apparel_style VARCHAR(255),
     upc VARCHAR(255),
     quantity_on_hand INT,
     price DECIMAL(19, 2)
 );
 
--- Create beer_order table
-CREATE TABLE beer_order (
+-- Create apparel_order table
+CREATE TABLE apparel_order (
     id INT AUTO_INCREMENT PRIMARY KEY,
     version INT,
     created_date TIMESTAMP,
@@ -24,17 +24,17 @@ CREATE TABLE beer_order (
     status VARCHAR(255)
 );
 
--- Create beer_order_line table
-CREATE TABLE beer_order_line (
+-- Create apparel_order_line table
+CREATE TABLE apparel_order_line (
     id INT AUTO_INCREMENT PRIMARY KEY,
     version INT,
     created_date TIMESTAMP,
     update_date TIMESTAMP,
-    beer_order_id INT,
-    beer_id INT,
+    apparel_order_id INT,
+    apparel_id INT,
     order_quantity INT,
     quantity_allocated INT,
     status VARCHAR(255),
-    FOREIGN KEY (beer_order_id) REFERENCES beer_order(id),
-    FOREIGN KEY (beer_id) REFERENCES beer(id)
+    FOREIGN KEY (apparel_order_id) REFERENCES apparel_order(id),
+    FOREIGN KEY (apparel_id) REFERENCES apparel(id)
 );

@@ -40,5 +40,5 @@ public class CustomerDto extends BaseEntityDto {
     @NotBlank(message = "Postal code is required")
     private String postalCode;
     
-    private Set<BeerOrderDto> beerOrders;
+    private Set<ApparelOrderDto> apparelOrders;
 }

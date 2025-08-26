@@ -1,11 +1,11 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderLine;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
 import guru.springframework.juniemvc.entities.Customer;
-import guru.springframework.juniemvc.models.BeerOrderDto;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
 import guru.springframework.juniemvc.models.CustomerDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,24 +19,24 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BeerOrderMapperTest {
+class ApparelOrderMapperTest {
 
-    private BeerOrderMapper beerOrderMapper;
-    private BeerOrderLineMapper beerOrderLineMapper;
+    private ApparelOrderMapper apparelOrderMapper;
+    private ApparelOrderLineMapper apparelOrderLineMapper;
     private CustomerMapper customerMapper;
-    private BeerOrder testBeerOrder;
-    private Beer testBeer;
+    private ApparelOrder testApparelOrder;
+    private Apparel testApparel;
     private Customer testCustomer;
     private CustomerDto testCustomerDto;
 
     @BeforeEach
     void setUp() {
-        beerOrderMapper = Mappers.getMapper(BeerOrderMapper.class);
-        beerOrderLineMapper = Mappers.getMapper(BeerOrderLineMapper.class);
+        apparelOrderMapper = Mappers.getMapper(ApparelOrderMapper.class);
+        apparelOrderLineMapper = Mappers.getMapper(ApparelOrderLineMapper.class);
         customerMapper = Mappers.getMapper(CustomerMapper.class);
 
-        ReflectionTestUtils.setField(beerOrderMapper, "beerOrderLineMapper", beerOrderLineMapper);
-        ReflectionTestUtils.setField(beerOrderMapper, "customerMapper", customerMapper);
+        ReflectionTestUtils.setField(apparelOrderMapper, "apparelOrderLineMapper", apparelOrderLineMapper);
+        ReflectionTestUtils.setField(apparelOrderMapper, "customerMapper", customerMapper);
 
         // Create test customer
         testCustomer = Customer.builder()
@@ -61,104 +61,104 @@ class BeerOrderMapperTest {
                 .postalCode("62701")
                 .build();
 
-        // Create test beer
-        testBeer = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        // Create test apparel
+        testApparel = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
-        testBeer.setId(1);
+        testApparel.setId(1);
 
-        // Create test beer order
-        testBeerOrder = BeerOrder.builder()
+        // Create test apparel order
+        testApparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
-        testBeerOrder.setId(1);
-        testBeerOrder.setCreatedDate(LocalDateTime.now());
-        testBeerOrder.setUpdateDate(LocalDateTime.now());
+        testApparelOrder.setId(1);
+        testApparelOrder.setCreatedDate(LocalDateTime.now());
+        testApparelOrder.setUpdateDate(LocalDateTime.now());
 
-        // Create test beer order line
-        BeerOrderLine testBeerOrderLine = BeerOrderLine.builder()
+        // Create test apparel order line
+        ApparelOrderLine testApparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(2)
                 .status("ALLOCATED")
                 .build();
-        testBeerOrderLine.setId(1);
-        testBeerOrderLine.setBeer(testBeer);
+        testApparelOrderLine.setId(1);
+        testApparelOrderLine.setApparel(testApparel);
 
-        // Add beer order line to beer order
-        testBeerOrder.addBeerOrderLine(testBeerOrderLine);
+        // Add apparel order line to apparel order
+        testApparelOrder.addApparelOrderLine(testApparelOrderLine);
     }
 
     @Test
-    void testBeerOrderToBeerOrderDto() {
+    void testApparelOrderToApparelOrderDto() {
         // When
-        BeerOrderDto beerOrderDto = beerOrderMapper.beerOrderToBeerOrderDto(testBeerOrder);
+        ApparelOrderDto apparelOrderDto = apparelOrderMapper.apparelOrderToApparelOrderDto(testApparelOrder);
 
         // Then
-        assertThat(beerOrderDto).isNotNull();
-        assertThat(beerOrderDto.getId()).isEqualTo(testBeerOrder.getId());
-        assertThat(beerOrderDto.getCustomer()).isNotNull();
-        assertThat(beerOrderDto.getCustomer().getName()).isEqualTo(testCustomer.getName());
-        assertThat(beerOrderDto.getPaymentAmount()).isEqualTo(testBeerOrder.getPaymentAmount());
-        assertThat(beerOrderDto.getStatus()).isEqualTo(testBeerOrder.getStatus());
-        assertThat(beerOrderDto.getBeerOrderLines()).hasSize(1);
+        assertThat(apparelOrderDto).isNotNull();
+        assertThat(apparelOrderDto.getId()).isEqualTo(testApparelOrder.getId());
+        assertThat(apparelOrderDto.getCustomer()).isNotNull();
+        assertThat(apparelOrderDto.getCustomer().getName()).isEqualTo(testCustomer.getName());
+        assertThat(apparelOrderDto.getPaymentAmount()).isEqualTo(testApparelOrder.getPaymentAmount());
+        assertThat(apparelOrderDto.getStatus()).isEqualTo(testApparelOrder.getStatus());
+        assertThat(apparelOrderDto.getApparelOrderLines()).hasSize(1);
 
-        BeerOrderLineDto lineDto = beerOrderDto.getBeerOrderLines().iterator().next();
-        assertThat(lineDto.getBeerId()).isEqualTo(testBeer.getId());
-        assertThat(lineDto.getBeerName()).isEqualTo(testBeer.getBeerName());
-        assertThat(lineDto.getBeerStyle()).isEqualTo(testBeer.getBeerStyle());
-        assertThat(lineDto.getUpc()).isEqualTo(testBeer.getUpc());
+        ApparelOrderLineDto lineDto = apparelOrderDto.getApparelOrderLines().iterator().next();
+        assertThat(lineDto.getApparelId()).isEqualTo(testApparel.getId());
+        assertThat(lineDto.getApparelName()).isEqualTo(testApparel.getApparelName());
+        assertThat(lineDto.getApparelStyle()).isEqualTo(testApparel.getApparelStyle());
+        assertThat(lineDto.getUpc()).isEqualTo(testApparel.getUpc());
         assertThat(lineDto.getOrderQuantity()).isEqualTo(2);
         assertThat(lineDto.getQuantityAllocated()).isEqualTo(2);
         assertThat(lineDto.getStatus()).isEqualTo("ALLOCATED");
     }
 
     @Test
-    void testBeerOrderDtoToBeerOrder() {
+    void testApparelOrderDtoToApparelOrder() {
         // Given
-        BeerOrderDto beerOrderDto = BeerOrderDto.builder()
+        ApparelOrderDto apparelOrderDto = ApparelOrderDto.builder()
                 .id(2)
                 .customer(testCustomerDto)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("PENDING")
-                .beerOrderLines(new HashSet<>())
+                .apparelOrderLines(new HashSet<>())
                 .build();
 
-        BeerOrderLineDto lineDto = BeerOrderLineDto.builder()
+        ApparelOrderLineDto lineDto = ApparelOrderLineDto.builder()
                 .id(2)
-                .beerId(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelId(1)
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .orderQuantity(3)
                 .quantityAllocated(0)
                 .status("NEW")
                 .build();
 
-        beerOrderDto.getBeerOrderLines().add(lineDto);
+        apparelOrderDto.getApparelOrderLines().add(lineDto);
 
         // When
-        BeerOrder beerOrder = beerOrderMapper.beerOrderDtoToBeerOrder(beerOrderDto);
-        beerOrder = beerOrderMapper.addBeerOrderLines(beerOrder, beerOrderDto, beerOrderLineMapper);
+        ApparelOrder apparelOrder = apparelOrderMapper.apparelOrderDtoToApparelOrder(apparelOrderDto);
+        apparelOrder = apparelOrderMapper.addApparelOrderLines(apparelOrder, apparelOrderDto, apparelOrderLineMapper);
 
         // Then
-        assertThat(beerOrder).isNotNull();
-        assertThat(beerOrder.getId()).isNull(); // ID should be ignored in mapping
-        assertThat(beerOrder.getCustomer()).isNotNull();
-        assertThat(beerOrder.getCustomer().getName()).isEqualTo(testCustomer.getName());
-        assertThat(beerOrder.getPaymentAmount()).isEqualTo(beerOrderDto.getPaymentAmount());
-        assertThat(beerOrder.getStatus()).isEqualTo(beerOrderDto.getStatus());
-        assertThat(beerOrder.getBeerOrderLines()).hasSize(1);
+        assertThat(apparelOrder).isNotNull();
+        assertThat(apparelOrder.getId()).isNull(); // ID should be ignored in mapping
+        assertThat(apparelOrder.getCustomer()).isNotNull();
+        assertThat(apparelOrder.getCustomer().getName()).isEqualTo(testCustomer.getName());
+        assertThat(apparelOrder.getPaymentAmount()).isEqualTo(apparelOrderDto.getPaymentAmount());
+        assertThat(apparelOrder.getStatus()).isEqualTo(apparelOrderDto.getStatus());
+        assertThat(apparelOrder.getApparelOrderLines()).hasSize(1);
 
-        BeerOrderLine line = beerOrder.getBeerOrderLines().iterator().next();
+        ApparelOrderLine line = apparelOrder.getApparelOrderLines().iterator().next();
         assertThat(line.getOrderQuantity()).isEqualTo(3);
         assertThat(line.getQuantityAllocated()).isEqualTo(0);
         assertThat(line.getStatus()).isEqualTo("NEW");
-        assertThat(line.getBeerOrder()).isEqualTo(beerOrder); // Bidirectional relationship should be set
+        assertThat(line.getApparelOrder()).isEqualTo(apparelOrder); // Bidirectional relationship should be set
     }
 }

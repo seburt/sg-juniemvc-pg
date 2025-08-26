@@ -1,7 +1,7 @@
-import beerService from '../beerService';
+import apparelService from '../apparelService';
 import apiService from '../api';
-import { createMockBeer, createMockPage } from '../../test/utils';
-import type { BeerDto, BeerPatchDto } from '../../types/beer';
+import { createMockApparel, createMockPage } from '../../test/utils';
+import type { ApparelDto, ApparelPatchDto } from '../../types/apparel';
 
 // Interface for API errors with response property
 interface ApiError extends Error {
@@ -16,85 +16,85 @@ interface ApiError extends Error {
 jest.mock('../api');
 const mockApiService = apiService as jest.Mocked<typeof apiService>;
 
-describe('BeerService', () => {
+describe('ApparelService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('getBeers', () => {
-    it('should fetch beers with pagination', async () => {
-      const mockBeers = [
-        createMockBeer({ id: 1, beerName: 'Test Beer 1' }),
-        createMockBeer({ id: 2, beerName: 'Test Beer 2' }),
+  describe('getApparels', () => {
+    it('should fetch apparels with pagination', async () => {
+      const mockApparels = [
+        createMockApparel({ id: 1, apparelName: 'Test Apparel 1' }),
+        createMockApparel({ id: 2, apparelName: 'Test Apparel 2' }),
       ];
-      const mockPage = createMockPage(mockBeers);
+      const mockPage = createMockPage(mockApparels);
 
       mockApiService.getPaginatedWithNotification.mockResolvedValue(mockPage);
 
-      const result = await beerService.getBeers(
+      const result = await apparelService.getApparels(
         { page: 0, size: 20 },
-        { sort: 'beerName', direction: 'asc' }
+        { sort: 'apparelName', direction: 'asc' }
       );
 
       expect(mockApiService.getPaginatedWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers',
+        '/api/v1/apparels',
         { page: 0, size: 20 },
-        { sort: 'beerName', direction: 'asc' },
+        { sort: 'apparelName', direction: 'asc' },
         [],
         undefined
       );
       expect(result).toEqual(mockPage);
     });
 
-    it('should fetch beers with name filter', async () => {
-      const mockBeers = [createMockBeer({ beerName: 'IPA Beer' })];
-      const mockPage = createMockPage(mockBeers);
+    it('should fetch apparels with name filter', async () => {
+      const mockApparels = [createMockApparel({ apparelName: 'IPA Apparel' })];
+      const mockPage = createMockPage(mockApparels);
 
       mockApiService.getPaginatedWithNotification.mockResolvedValue(mockPage);
 
-      await beerService.getBeers(undefined, undefined, 'IPA');
+      await apparelService.getApparels(undefined, undefined, 'IPA');
 
       expect(mockApiService.getPaginatedWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers',
+        '/api/v1/apparels',
         undefined,
         undefined,
-        [{ field: 'beerName', value: 'IPA' }],
+        [{ field: 'apparelName', value: 'IPA' }],
         undefined
       );
     });
 
-    it('should fetch beers with style filter', async () => {
-      const mockBeers = [createMockBeer({ beerStyle: 'IPA' })];
-      const mockPage = createMockPage(mockBeers);
+    it('should fetch apparels with style filter', async () => {
+      const mockApparels = [createMockApparel({ apparelStyle: 'IPA' })];
+      const mockPage = createMockPage(mockApparels);
 
       mockApiService.getPaginatedWithNotification.mockResolvedValue(mockPage);
 
-      await beerService.getBeers(undefined, undefined, undefined, 'IPA');
+      await apparelService.getApparels(undefined, undefined, undefined, 'IPA');
 
       expect(mockApiService.getPaginatedWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers',
+        '/api/v1/apparels',
         undefined,
         undefined,
-        [{ field: 'beerStyle', value: 'IPA' }],
+        [{ field: 'apparelStyle', value: 'IPA' }],
         undefined
       );
     });
 
-    it('should fetch beers with both name and style filters', async () => {
-      const mockBeers = [createMockBeer({ beerName: 'Test IPA', beerStyle: 'IPA' })];
-      const mockPage = createMockPage(mockBeers);
+    it('should fetch apparels with both name and style filters', async () => {
+      const mockApparels = [createMockApparel({ apparelName: 'Test IPA', apparelStyle: 'IPA' })];
+      const mockPage = createMockPage(mockApparels);
 
       mockApiService.getPaginatedWithNotification.mockResolvedValue(mockPage);
 
-      await beerService.getBeers(undefined, undefined, 'Test', 'IPA');
+      await apparelService.getApparels(undefined, undefined, 'Test', 'IPA');
 
       expect(mockApiService.getPaginatedWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers',
+        '/api/v1/apparels',
         undefined,
         undefined,
         [
-          { field: 'beerName', value: 'Test' },
-          { field: 'beerStyle', value: 'IPA' },
+          { field: 'apparelName', value: 'Test' },
+          { field: 'apparelStyle', value: 'IPA' },
         ],
         undefined
       );
@@ -104,178 +104,178 @@ describe('BeerService', () => {
       const error = new Error('API Error');
       mockApiService.getPaginatedWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.getBeers()).rejects.toThrow('API Error');
+      await expect(apparelService.getApparels()).rejects.toThrow('API Error');
     });
   });
 
-  describe('getBeerById', () => {
-    it('should fetch a beer by ID', async () => {
-      const mockBeer = createMockBeer({ id: 1, beerName: 'Test Beer' });
-      mockApiService.getByIdWithNotification.mockResolvedValue(mockBeer);
+  describe('getApparelById', () => {
+    it('should fetch a apparel by ID', async () => {
+      const mockApparel = createMockApparel({ id: 1, apparelName: 'Test Apparel' });
+      mockApiService.getByIdWithNotification.mockResolvedValue(mockApparel);
 
-      const result = await beerService.getBeerById(1);
+      const result = await apparelService.getApparelById(1);
 
       expect(mockApiService.getByIdWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers/{id}',
+        '/api/v1/apparels/{id}',
         1,
         undefined
       );
-      expect(result).toEqual(mockBeer);
+      expect(result).toEqual(mockApparel);
     });
 
     it('should handle not found error', async () => {
-      const error: ApiError = new Error('Beer not found');
+      const error: ApiError = new Error('Apparel not found');
       error.response = { status: 404 };
       mockApiService.getByIdWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.getBeerById(999)).rejects.toThrow('Beer not found');
+      await expect(apparelService.getApparelById(999)).rejects.toThrow('Apparel not found');
     });
 
     it('should pass custom config', async () => {
-      const mockBeer = createMockBeer({ id: 1 });
+      const mockApparel = createMockApparel({ id: 1 });
       const customConfig = { timeout: 5000 };
-      mockApiService.getByIdWithNotification.mockResolvedValue(mockBeer);
+      mockApiService.getByIdWithNotification.mockResolvedValue(mockApparel);
 
-      await beerService.getBeerById(1, customConfig);
+      await apparelService.getApparelById(1, customConfig);
 
       expect(mockApiService.getByIdWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers/{id}',
+        '/api/v1/apparels/{id}',
         1,
         customConfig
       );
     });
   });
 
-  describe('createBeer', () => {
-    it('should create a new beer', async () => {
-      const newBeer: BeerDto = {
-        beerName: 'New Beer',
-        beerStyle: 'IPA',
+  describe('createApparel', () => {
+    it('should create a new apparel', async () => {
+      const newApparel: ApparelDto = {
+        apparelName: 'New Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         quantityOnHand: 100,
         price: 12.99,
       };
-      const createdBeer = createMockBeer({ id: 1, ...newBeer });
-      mockApiService.createWithNotification.mockResolvedValue(createdBeer);
+      const createdApparel = createMockApparel({ id: 1, ...newApparel });
+      mockApiService.createWithNotification.mockResolvedValue(createdApparel);
 
-      const result = await beerService.createBeer(newBeer);
+      const result = await apparelService.createApparel(newApparel);
 
       expect(mockApiService.createWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers',
-        newBeer,
+        '/api/v1/apparels',
+        newApparel,
         undefined
       );
-      expect(result).toEqual(createdBeer);
+      expect(result).toEqual(createdApparel);
     });
 
     it('should handle validation errors', async () => {
-      const invalidBeer: BeerDto = {
-        beerName: '',
-        beerStyle: 'IPA',
+      const invalidApparel: ApparelDto = {
+        apparelName: '',
+        apparelStyle: 'IPA',
         upc: '123456789',
         quantityOnHand: 100,
         price: 12.99,
       };
       const error: ApiError = new Error('Validation failed');
-      error.response = { status: 400, data: { message: 'Beer name is required' } };
+      error.response = { status: 400, data: { message: 'Apparel name is required' } };
       mockApiService.createWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.createBeer(invalidBeer)).rejects.toThrow('Validation failed');
+      await expect(apparelService.createApparel(invalidApparel)).rejects.toThrow('Validation failed');
     });
   });
 
-  describe('updateBeer', () => {
-    it('should update an existing beer', async () => {
-      const updatedBeer: BeerDto = {
+  describe('updateApparel', () => {
+    it('should update an existing apparel', async () => {
+      const updatedApparel: ApparelDto = {
         id: 1,
-        beerName: 'Updated Beer',
-        beerStyle: 'IPA',
+        apparelName: 'Updated Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         quantityOnHand: 150,
         price: 13.99,
       };
-      mockApiService.updateWithNotification.mockResolvedValue(updatedBeer);
+      mockApiService.updateWithNotification.mockResolvedValue(updatedApparel);
 
-      const result = await beerService.updateBeer(1, updatedBeer);
+      const result = await apparelService.updateApparel(1, updatedApparel);
 
       expect(mockApiService.updateWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers/{id}',
+        '/api/v1/apparels/{id}',
         1,
-        updatedBeer,
+        updatedApparel,
         undefined
       );
-      expect(result).toEqual(updatedBeer);
+      expect(result).toEqual(updatedApparel);
     });
 
     it('should handle update conflicts', async () => {
-      const beer = createMockBeer({ id: 1, version: 1 });
+      const apparel = createMockApparel({ id: 1, version: 1 });
       const error: ApiError = new Error('Conflict');
       error.response = { status: 409, data: { message: 'Version conflict' } };
       mockApiService.updateWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.updateBeer(1, beer)).rejects.toThrow('Conflict');
+      await expect(apparelService.updateApparel(1, apparel)).rejects.toThrow('Conflict');
     });
   });
 
-  describe('patchBeer', () => {
-    it('should partially update a beer', async () => {
-      const patchData: BeerPatchDto = {
+  describe('patchApparel', () => {
+    it('should partially update a apparel', async () => {
+      const patchData: ApparelPatchDto = {
         price: 14.99,
         quantityOnHand: 200,
       };
-      const updatedBeer = createMockBeer({ id: 1, ...patchData });
-      mockApiService.partialUpdateWithNotification.mockResolvedValue(updatedBeer);
+      const updatedApparel = createMockApparel({ id: 1, ...patchData });
+      mockApiService.partialUpdateWithNotification.mockResolvedValue(updatedApparel);
 
-      const result = await beerService.patchBeer(1, patchData);
+      const result = await apparelService.patchApparel(1, patchData);
 
       expect(mockApiService.partialUpdateWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers/{id}',
+        '/api/v1/apparels/{id}',
         1,
         patchData,
         undefined
       );
-      expect(result).toEqual(updatedBeer);
+      expect(result).toEqual(updatedApparel);
     });
 
     it('should handle patch validation errors', async () => {
-      const invalidPatch: BeerPatchDto = {
+      const invalidPatch: ApparelPatchDto = {
         price: -1, // Invalid negative price
       };
       const error: ApiError = new Error('Invalid price');
       error.response = { status: 400 };
       mockApiService.partialUpdateWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.patchBeer(1, invalidPatch)).rejects.toThrow('Invalid price');
+      await expect(apparelService.patchApparel(1, invalidPatch)).rejects.toThrow('Invalid price');
     });
   });
 
-  describe('deleteBeer', () => {
-    it('should delete a beer', async () => {
+  describe('deleteApparel', () => {
+    it('should delete a apparel', async () => {
       mockApiService.deleteResourceWithNotification.mockResolvedValue(undefined);
 
-      await beerService.deleteBeer(1);
+      await apparelService.deleteApparel(1);
 
       expect(mockApiService.deleteResourceWithNotification).toHaveBeenCalledWith(
-        '/api/v1/beers/{id}',
+        '/api/v1/apparels/{id}',
         1,
         undefined
       );
     });
 
     it('should handle delete errors', async () => {
-      const error: ApiError = new Error('Cannot delete beer');
-      error.response = { status: 409, data: { message: 'Beer has active orders' } };
+      const error: ApiError = new Error('Cannot delete apparel');
+      error.response = { status: 409, data: { message: 'Apparel has active orders' } };
       mockApiService.deleteResourceWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.deleteBeer(1)).rejects.toThrow('Cannot delete beer');
+      await expect(apparelService.deleteApparel(1)).rejects.toThrow('Cannot delete apparel');
     });
 
     it('should handle not found on delete', async () => {
-      const error: ApiError = new Error('Beer not found');
+      const error: ApiError = new Error('Apparel not found');
       error.response = { status: 404 };
       mockApiService.deleteResourceWithNotification.mockRejectedValue(error);
 
-      await expect(beerService.deleteBeer(999)).rejects.toThrow('Beer not found');
+      await expect(apparelService.deleteApparel(999)).rejects.toThrow('Apparel not found');
     });
   });
 
@@ -285,7 +285,7 @@ describe('BeerService', () => {
       networkError.code = 'NETWORK_ERROR';
       mockApiService.getPaginatedWithNotification.mockRejectedValue(networkError);
 
-      await expect(beerService.getBeers()).rejects.toThrow('Network Error');
+      await expect(apparelService.getApparels()).rejects.toThrow('Network Error');
     });
 
     it('should handle timeout errors', async () => {
@@ -293,7 +293,7 @@ describe('BeerService', () => {
       timeoutError.code = 'ECONNABORTED';
       mockApiService.getByIdWithNotification.mockRejectedValue(timeoutError);
 
-      await expect(beerService.getBeerById(1)).rejects.toThrow('Timeout');
+      await expect(apparelService.getApparelById(1)).rejects.toThrow('Timeout');
     });
 
     it('should handle server errors', async () => {
@@ -301,27 +301,27 @@ describe('BeerService', () => {
       serverError.response = { status: 500 };
       mockApiService.createWithNotification.mockRejectedValue(serverError);
 
-      const beer = createMockBeer();
-      await expect(beerService.createBeer(beer)).rejects.toThrow('Internal Server Error');
+      const apparel = createMockApparel();
+      await expect(apparelService.createApparel(apparel)).rejects.toThrow('Internal Server Error');
     });
   });
 
   describe('service configuration', () => {
     it('should use correct API endpoints', () => {
       // Test that the service uses the expected endpoints
-      expect(beerService).toBeDefined();
-      expect(typeof beerService.getBeers).toBe('function');
-      expect(typeof beerService.getBeerById).toBe('function');
-      expect(typeof beerService.createBeer).toBe('function');
-      expect(typeof beerService.updateBeer).toBe('function');
-      expect(typeof beerService.patchBeer).toBe('function');
-      expect(typeof beerService.deleteBeer).toBe('function');
+      expect(apparelService).toBeDefined();
+      expect(typeof apparelService.getApparels).toBe('function');
+      expect(typeof apparelService.getApparelById).toBe('function');
+      expect(typeof apparelService.createApparel).toBe('function');
+      expect(typeof apparelService.updateApparel).toBe('function');
+      expect(typeof apparelService.patchApparel).toBe('function');
+      expect(typeof apparelService.deleteApparel).toBe('function');
     });
 
     it('should be a singleton instance', async () => {
       // Import the service again to test singleton behavior
-      const { default: beerService2 } = await import('../beerService');
-      expect(beerService).toBe(beerService2);
+      const { default: apparelService2 } = await import('../apparelService');
+      expect(apparelService).toBe(apparelService2);
     });
   });
 });

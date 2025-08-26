@@ -51,26 +51,26 @@ public class Customer extends BaseEntity {
     @Builder.Default
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<BeerOrder> beerOrders = new HashSet<>();
+    private Set<ApparelOrder> apparelOrders = new HashSet<>();
     
     /**
-     * Helper method to add a beer order to this customer
-     * @param beerOrder the beer order to add
+     * Helper method to add a apparel order to this customer
+     * @param apparelOrder the apparel order to add
      */
-    public void addBeerOrder(BeerOrder beerOrder) {
-        if (beerOrders == null) {
-            beerOrders = new HashSet<>();
+    public void addApparelOrder(ApparelOrder apparelOrder) {
+        if (apparelOrders == null) {
+            apparelOrders = new HashSet<>();
         }
-        beerOrders.add(beerOrder);
-        beerOrder.setCustomer(this);
+        apparelOrders.add(apparelOrder);
+        apparelOrder.setCustomer(this);
     }
     
     /**
-     * Helper method to remove a beer order from this customer
-     * @param beerOrder the beer order to remove
+     * Helper method to remove a apparel order from this customer
+     * @param apparelOrder the apparel order to remove
      */
-    public void removeBeerOrder(BeerOrder beerOrder) {
-        beerOrders.remove(beerOrder);
-        beerOrder.setCustomer(null);
+    public void removeApparelOrder(ApparelOrder apparelOrder) {
+        apparelOrders.remove(apparelOrder);
+        apparelOrder.setCustomer(null);
     }
 }

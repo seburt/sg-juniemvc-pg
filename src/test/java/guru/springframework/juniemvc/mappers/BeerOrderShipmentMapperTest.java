@@ -1,8 +1,8 @@
 package guru.springframework.juniemvc.mappers;
 
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderShipment;
-import guru.springframework.juniemvc.models.BeerOrderShipmentDto;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderShipment;
+import guru.springframework.juniemvc.models.ApparelOrderShipmentDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -12,55 +12,55 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for BeerOrderShipmentMapper
+ * Tests for ApparelOrderShipmentMapper
  */
-class BeerOrderShipmentMapperTest {
+class ApparelOrderShipmentMapperTest {
 
-    private BeerOrderShipmentMapper beerOrderShipmentMapper;
-    private BeerOrderShipment testBeerOrderShipment;
-    private BeerOrder testBeerOrder;
+    private ApparelOrderShipmentMapper apparelOrderShipmentMapper;
+    private ApparelOrderShipment testApparelOrderShipment;
+    private ApparelOrder testApparelOrder;
     private LocalDateTime testShipmentDate;
 
     @BeforeEach
     void setUp() {
-        beerOrderShipmentMapper = Mappers.getMapper(BeerOrderShipmentMapper.class);
+        apparelOrderShipmentMapper = Mappers.getMapper(ApparelOrderShipmentMapper.class);
         
-        // Create test beer order
-        testBeerOrder = BeerOrder.builder()
+        // Create test apparel order
+        testApparelOrder = ApparelOrder.builder()
                 .status("COMPLETED")
                 .build();
-        testBeerOrder.setId(1);
+        testApparelOrder.setId(1);
         
         // Create test shipment date
         testShipmentDate = LocalDateTime.now();
         
-        // Create test beer order shipment
-        testBeerOrderShipment = BeerOrderShipment.builder()
+        // Create test apparel order shipment
+        testApparelOrderShipment = ApparelOrderShipment.builder()
                 .shipmentDate(testShipmentDate)
                 .carrier("FedEx")
                 .trackingNumber("123456789")
-                .beerOrder(testBeerOrder)
+                .apparelOrder(testApparelOrder)
                 .build();
-        testBeerOrderShipment.setId(1);
+        testApparelOrderShipment.setId(1);
     }
 
     @Test
-    void testBeerOrderShipmentToBeerOrderShipmentDto() {
+    void testApparelOrderShipmentToApparelOrderShipmentDto() {
         // When
-        BeerOrderShipmentDto shipmentDto = beerOrderShipmentMapper.beerOrderShipmentToBeerOrderShipmentDto(testBeerOrderShipment);
+        ApparelOrderShipmentDto shipmentDto = apparelOrderShipmentMapper.apparelOrderShipmentToApparelOrderShipmentDto(testApparelOrderShipment);
         
         // Then
         assertThat(shipmentDto).isNotNull();
-        assertThat(shipmentDto.getId()).isEqualTo(testBeerOrderShipment.getId());
-        assertThat(shipmentDto.getShipmentDate()).isEqualTo(testBeerOrderShipment.getShipmentDate());
-        assertThat(shipmentDto.getCarrier()).isEqualTo(testBeerOrderShipment.getCarrier());
-        assertThat(shipmentDto.getTrackingNumber()).isEqualTo(testBeerOrderShipment.getTrackingNumber());
+        assertThat(shipmentDto.getId()).isEqualTo(testApparelOrderShipment.getId());
+        assertThat(shipmentDto.getShipmentDate()).isEqualTo(testApparelOrderShipment.getShipmentDate());
+        assertThat(shipmentDto.getCarrier()).isEqualTo(testApparelOrderShipment.getCarrier());
+        assertThat(shipmentDto.getTrackingNumber()).isEqualTo(testApparelOrderShipment.getTrackingNumber());
     }
 
     @Test
-    void testBeerOrderShipmentDtoToBeerOrderShipment() {
+    void testApparelOrderShipmentDtoToApparelOrderShipment() {
         // Given
-        BeerOrderShipmentDto shipmentDto = BeerOrderShipmentDto.builder()
+        ApparelOrderShipmentDto shipmentDto = ApparelOrderShipmentDto.builder()
                 .id(2)
                 .shipmentDate(testShipmentDate.plusDays(1))
                 .carrier("UPS")
@@ -68,12 +68,12 @@ class BeerOrderShipmentMapperTest {
                 .build();
         
         // When
-        BeerOrderShipment shipment = beerOrderShipmentMapper.beerOrderShipmentDtoToBeerOrderShipment(shipmentDto);
+        ApparelOrderShipment shipment = apparelOrderShipmentMapper.apparelOrderShipmentDtoToApparelOrderShipment(shipmentDto);
         
         // Then
         assertThat(shipment).isNotNull();
         assertThat(shipment.getId()).isNull(); // ID should be ignored in mapping
-        assertThat(shipment.getBeerOrder()).isNull(); // BeerOrder should be ignored in mapping
+        assertThat(shipment.getApparelOrder()).isNull(); // ApparelOrder should be ignored in mapping
         assertThat(shipment.getShipmentDate()).isEqualTo(shipmentDto.getShipmentDate());
         assertThat(shipment.getCarrier()).isEqualTo(shipmentDto.getCarrier());
         assertThat(shipment.getTrackingNumber()).isEqualTo(shipmentDto.getTrackingNumber());

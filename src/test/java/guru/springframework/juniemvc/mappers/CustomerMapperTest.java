@@ -53,8 +53,8 @@ class CustomerMapperTest {
         assertThat(customerDto.getPostalCode()).isEqualTo(testCustomer.getPostalCode());
         assertThat(customerDto.getCreatedDate()).isEqualTo(testCustomer.getCreatedDate());
         assertThat(customerDto.getUpdateDate()).isEqualTo(testCustomer.getUpdateDate());
-        // beerOrders should be ignored in the mapping
-        assertThat(customerDto.getBeerOrders()).isNull();
+        // apparelOrders should be ignored in the mapping
+        assertThat(customerDto.getApparelOrders()).isNull();
     }
 
     @Test
@@ -84,8 +84,8 @@ class CustomerMapperTest {
         assertThat(customer.getCity()).isEqualTo(customerDto.getCity());
         assertThat(customer.getState()).isEqualTo(customerDto.getState());
         assertThat(customer.getPostalCode()).isEqualTo(customerDto.getPostalCode());
-        // beerOrders should be ignored in the mapping
-        assertThat(customer.getBeerOrders()).isNotNull();
-        assertThat(customer.getBeerOrders()).isEmpty();
+        // apparelOrders should be ignored in the mapping
+        assertThat(customer.getApparelOrders()).isNotNull();
+        assertThat(customer.getApparelOrders()).isEmpty();
     }
 }

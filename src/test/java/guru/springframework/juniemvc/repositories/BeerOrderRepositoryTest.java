@@ -1,8 +1,8 @@
 package guru.springframework.juniemvc.repositories;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderLine;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
 import guru.springframework.juniemvc.entities.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,31 +16,31 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class BeerOrderRepositoryTest {
+class ApparelOrderRepositoryTest {
 
     @Autowired
-    BeerOrderRepository beerOrderRepository;
+    ApparelOrderRepository apparelOrderRepository;
 
     @Autowired
-    BeerRepository beerRepository;
+    ApparelRepository apparelRepository;
 
     @Autowired
     CustomerRepository customerRepository;
 
-    private Beer testBeer;
+    private Apparel testApparel;
     private Customer testCustomer;
 
     @BeforeEach
     void setUp() {
-        // Create and save a test beer
-        testBeer = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        // Create and save a test apparel
+        testApparel = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
-        testBeer = beerRepository.save(testBeer);
+        testApparel = apparelRepository.save(testApparel);
 
         // Create and save a test customer
         testCustomer = Customer.builder()
@@ -56,81 +56,81 @@ class BeerOrderRepositoryTest {
     }
 
     @Test
-    void testSaveBeerOrder() {
+    void testSaveApparelOrder() {
         // Given
-        BeerOrder beerOrder = BeerOrder.builder()
+        ApparelOrder apparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
 
-        BeerOrderLine beerOrderLine = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder.addBeerOrderLine(beerOrderLine);
+        apparelOrder.addApparelOrderLine(apparelOrderLine);
 
         // When
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
+        ApparelOrder savedApparelOrder = apparelOrderRepository.save(apparelOrder);
 
         // Then
-        assertThat(savedBeerOrder).isNotNull();
-        assertThat(savedBeerOrder.getId()).isNotNull();
-        assertThat(savedBeerOrder.getBeerOrderLines()).hasSize(1);
-        assertThat(savedBeerOrder.getBeerOrderLines().iterator().next().getBeer().getId()).isEqualTo(testBeer.getId());
+        assertThat(savedApparelOrder).isNotNull();
+        assertThat(savedApparelOrder.getId()).isNotNull();
+        assertThat(savedApparelOrder.getApparelOrderLines()).hasSize(1);
+        assertThat(savedApparelOrder.getApparelOrderLines().iterator().next().getApparel().getId()).isEqualTo(testApparel.getId());
     }
 
     @Test
-    void testGetBeerOrderById() {
+    void testGetApparelOrderById() {
         // Given
-        BeerOrder beerOrder = BeerOrder.builder()
+        ApparelOrder apparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
 
-        BeerOrderLine beerOrderLine = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder.addBeerOrderLine(beerOrderLine);
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
+        apparelOrder.addApparelOrderLine(apparelOrderLine);
+        ApparelOrder savedApparelOrder = apparelOrderRepository.save(apparelOrder);
 
         // When
-        Optional<BeerOrder> fetchedBeerOrderOptional = beerOrderRepository.findById(savedBeerOrder.getId());
+        Optional<ApparelOrder> fetchedApparelOrderOptional = apparelOrderRepository.findById(savedApparelOrder.getId());
 
         // Then
-        assertThat(fetchedBeerOrderOptional).isPresent();
-        BeerOrder fetchedBeerOrder = fetchedBeerOrderOptional.get();
-        assertThat(fetchedBeerOrder.getCustomer()).isNotNull();
-        assertThat(fetchedBeerOrder.getCustomer().getName()).isEqualTo(testCustomer.getName());
-        assertThat(fetchedBeerOrder.getBeerOrderLines()).hasSize(1);
+        assertThat(fetchedApparelOrderOptional).isPresent();
+        ApparelOrder fetchedApparelOrder = fetchedApparelOrderOptional.get();
+        assertThat(fetchedApparelOrder.getCustomer()).isNotNull();
+        assertThat(fetchedApparelOrder.getCustomer().getName()).isEqualTo(testCustomer.getName());
+        assertThat(fetchedApparelOrder.getApparelOrderLines()).hasSize(1);
     }
 
     @Test
-    void testUpdateBeerOrder() {
+    void testUpdateApparelOrder() {
         // Given
-        BeerOrder beerOrder = BeerOrder.builder()
+        ApparelOrder apparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
 
-        BeerOrderLine beerOrderLine = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder.addBeerOrderLine(beerOrderLine);
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
+        apparelOrder.addApparelOrderLine(apparelOrderLine);
+        ApparelOrder savedApparelOrder = apparelOrderRepository.save(apparelOrder);
 
         // When
         // Create a new customer for the update
@@ -145,47 +145,47 @@ class BeerOrderRepositoryTest {
                 .build();
         updatedCustomer = customerRepository.save(updatedCustomer);
 
-        savedBeerOrder.setCustomer(updatedCustomer);
-        savedBeerOrder.setStatus("PROCESSING");
-        BeerOrder updatedBeerOrder = beerOrderRepository.save(savedBeerOrder);
+        savedApparelOrder.setCustomer(updatedCustomer);
+        savedApparelOrder.setStatus("PROCESSING");
+        ApparelOrder updatedApparelOrder = apparelOrderRepository.save(savedApparelOrder);
 
         // Then
-        assertThat(updatedBeerOrder.getCustomer()).isNotNull();
-        assertThat(updatedBeerOrder.getCustomer().getName()).isEqualTo("Updated Customer");
-        assertThat(updatedBeerOrder.getStatus()).isEqualTo("PROCESSING");
+        assertThat(updatedApparelOrder.getCustomer()).isNotNull();
+        assertThat(updatedApparelOrder.getCustomer().getName()).isEqualTo("Updated Customer");
+        assertThat(updatedApparelOrder.getStatus()).isEqualTo("PROCESSING");
     }
 
     @Test
-    void testDeleteBeerOrder() {
+    void testDeleteApparelOrder() {
         // Given
-        BeerOrder beerOrder = BeerOrder.builder()
+        ApparelOrder apparelOrder = ApparelOrder.builder()
                 .customer(testCustomer)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
 
-        BeerOrderLine beerOrderLine = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder.addBeerOrderLine(beerOrderLine);
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
+        apparelOrder.addApparelOrderLine(apparelOrderLine);
+        ApparelOrder savedApparelOrder = apparelOrderRepository.save(apparelOrder);
 
         // When
-        beerOrderRepository.deleteById(savedBeerOrder.getId());
-        Optional<BeerOrder> deletedBeerOrder = beerOrderRepository.findById(savedBeerOrder.getId());
+        apparelOrderRepository.deleteById(savedApparelOrder.getId());
+        Optional<ApparelOrder> deletedApparelOrder = apparelOrderRepository.findById(savedApparelOrder.getId());
 
         // Then
-        assertThat(deletedBeerOrder).isEmpty();
+        assertThat(deletedApparelOrder).isEmpty();
     }
 
     @Test
-    void testListBeerOrders() {
+    void testListApparelOrders() {
         // Given
-        beerOrderRepository.deleteAll(); // Clear any existing data
+        apparelOrderRepository.deleteAll(); // Clear any existing data
         customerRepository.deleteAll(); // Clear any existing customers
 
         // Create two test customers
@@ -211,42 +211,42 @@ class BeerOrderRepositoryTest {
                 .build();
         customer2 = customerRepository.save(customer2);
 
-        BeerOrder beerOrder1 = BeerOrder.builder()
+        ApparelOrder apparelOrder1 = ApparelOrder.builder()
                 .customer(customer1)
                 .paymentAmount(new BigDecimal("25.98"))
                 .status("NEW")
                 .build();
 
-        BeerOrderLine beerOrderLine1 = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine1 = ApparelOrderLine.builder()
                 .orderQuantity(2)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder1.addBeerOrderLine(beerOrderLine1);
+        apparelOrder1.addApparelOrderLine(apparelOrderLine1);
 
-        BeerOrder beerOrder2 = BeerOrder.builder()
+        ApparelOrder apparelOrder2 = ApparelOrder.builder()
                 .customer(customer2)
                 .paymentAmount(new BigDecimal("39.97"))
                 .status("PROCESSING")
                 .build();
 
-        BeerOrderLine beerOrderLine2 = BeerOrderLine.builder()
+        ApparelOrderLine apparelOrderLine2 = ApparelOrderLine.builder()
                 .orderQuantity(3)
                 .quantityAllocated(0)
                 .status("NEW")
-                .beer(testBeer)
+                .apparel(testApparel)
                 .build();
 
-        beerOrder2.addBeerOrderLine(beerOrderLine2);
+        apparelOrder2.addApparelOrderLine(apparelOrderLine2);
 
-        beerOrderRepository.saveAll(List.of(beerOrder1, beerOrder2));
+        apparelOrderRepository.saveAll(List.of(apparelOrder1, apparelOrder2));
 
         // When
-        List<BeerOrder> beerOrders = beerOrderRepository.findAll();
+        List<ApparelOrder> apparelOrders = apparelOrderRepository.findAll();
 
         // Then
-        assertThat(beerOrders).hasSize(2);
+        assertThat(apparelOrders).hasSize(2);
     }
 }

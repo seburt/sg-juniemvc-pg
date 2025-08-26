@@ -13,13 +13,13 @@ import {
 import { Input } from '@components/ui';
 import { Button } from '@components/ui';
 import { useForm, useToast } from '../../hooks';
-import { beerValidationRules } from '../../utils/validation';
-import beerService from '../../services/beerService';
-import type { BeerDto } from '../../api';
+import { apparelValidationRules } from '../../utils/validation';
+import apparelService from '../../services/apparelService';
+import type { ApparelDto } from '../../api';
 
-interface BeerFormData extends Record<string, unknown> {
-  beerName: string;
-  beerStyle: string;
+interface ApparelFormData extends Record<string, unknown> {
+  apparelName: string;
+  apparelStyle: string;
   upc: string;
   price: number | undefined;
   quantityOnHand: number | undefined;
@@ -27,16 +27,16 @@ interface BeerFormData extends Record<string, unknown> {
 }
 
 /**
- * Beer Create page component
- * Allows users to create a new beer with validation and error handling
+ * Apparel Create page component
+ * Allows users to create a new apparel with validation and error handling
  */
-const BeerCreatePage: React.FC = () => {
+const ApparelCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const { success, error } = useToast();
 
-  const initialValues: BeerFormData = {
-    beerName: '',
-    beerStyle: '',
+  const initialValues: ApparelFormData = {
+    apparelName: '',
+    apparelStyle: '',
     upc: '',
     price: undefined,
     quantityOnHand: undefined,
@@ -46,38 +46,38 @@ const BeerCreatePage: React.FC = () => {
   const { values, errors, isValid, isSubmitting, setValue, handleSubmit } = useForm({
     initialValues,
     validationRules: {
-      beerName: beerValidationRules.beerName,
-      beerStyle: beerValidationRules.beerStyle,
-      price: beerValidationRules.price,
-      quantityOnHand: beerValidationRules.quantityOnHand,
+      apparelName: apparelValidationRules.apparelName,
+      apparelStyle: apparelValidationRules.apparelStyle,
+      price: apparelValidationRules.price,
+      quantityOnHand: apparelValidationRules.quantityOnHand,
     },
-    onSubmit: async (formData: BeerFormData) => {
+    onSubmit: async (formData: ApparelFormData) => {
       try {
-        const beerData: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'> = {
-          beerName: formData.beerName,
-          beerStyle: formData.beerStyle,
+        const apparelData: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'> = {
+          apparelName: formData.apparelName,
+          apparelStyle: formData.apparelStyle,
           upc: formData.upc || '',
           price: formData.price || 0,
           quantityOnHand: formData.quantityOnHand || 0,
           description: undefined,
         };
 
-        const createdBeer = await beerService.createBeer(beerData);
-        success(`Beer "${createdBeer.beerName}" created successfully`);
-        navigate(`/beers/${createdBeer.id}`);
+        const createdApparel = await apparelService.createApparel(apparelData);
+        success(`Apparel "${createdApparel.apparelName}" created successfully`);
+        navigate(`/apparels/${createdApparel.id}`);
       } catch (err) {
-        error('Failed to create beer. Please try again.');
-        console.error('Error creating beer:', err);
+        error('Failed to create apparel. Please try again.');
+        console.error('Error creating apparel:', err);
       }
     },
   });
 
   const handleCancel = () => {
-    navigate('/beers');
+    navigate('/apparels');
   };
 
-  // Beer style options
-  const beerStyleOptions = [
+  // Apparel style options
+  const apparelStyleOptions = [
     { value: 'IPA', label: 'IPA' },
     { value: 'Lager', label: 'Lager' },
     { value: 'Stout', label: 'Stout' },
@@ -91,12 +91,12 @@ const BeerCreatePage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader
-        title="Create New Beer"
-        subtitle="Add a new beer to your inventory"
+        title="Create New Apparel"
+        subtitle="Add a new apparel to your inventory"
         actions={
           <Button variant="outline" onClick={handleCancel}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Beers
+            Back to Apparels
           </Button>
         }
       />
@@ -104,28 +104,28 @@ const BeerCreatePage: React.FC = () => {
       <PageContent>
         <FormWrapper onSubmit={handleSubmit} isLoading={isSubmitting}>
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Beer Name */}
-            <FormField label="Beer Name" required error={errors.beerName?.[0]} htmlFor="beerName">
+            {/* Apparel Name */}
+            <FormField label="Apparel Name" required error={errors.apparelName?.[0]} htmlFor="apparelName">
               <Input
-                id="beerName"
-                placeholder="Enter beer name"
-                value={values.beerName}
-                onChange={e => setValue('beerName', e.target.value)}
+                id="apparelName"
+                placeholder="Enter apparel name"
+                value={values.apparelName}
+                onChange={e => setValue('apparelName', e.target.value)}
               />
             </FormField>
 
-            {/* Beer Style */}
+            {/* Apparel Style */}
             <FormField
-              label="Beer Style"
+              label="Apparel Style"
               required
-              error={errors.beerStyle?.[0]}
-              htmlFor="beerStyle"
+              error={errors.apparelStyle?.[0]}
+              htmlFor="apparelStyle"
             >
               <SelectInput
-                value={values.beerStyle}
-                onChange={value => setValue('beerStyle', value)}
-                options={beerStyleOptions}
-                placeholder="Select a beer style"
+                value={values.apparelStyle}
+                onChange={value => setValue('apparelStyle', value)}
+                options={apparelStyleOptions}
+                placeholder="Select a apparel style"
               />
             </FormField>
 
@@ -169,21 +169,21 @@ const BeerCreatePage: React.FC = () => {
             </FormField>
           </div>
 
-          {/* Beer Image */}
+          {/* Apparel Image */}
           <FormField
-            label="Beer Image"
-            helpText="Upload an image for this beer (optional)"
+            label="Apparel Image"
+            helpText="Upload an image for this apparel (optional)"
             htmlFor="imageUrl"
           >
             <ImageUpload
               value={values.imageUrl}
               onChange={value => setValue('imageUrl', value)}
-              placeholder="Upload beer image"
+              placeholder="Upload apparel image"
             />
           </FormField>
 
           <FormActions
-            submitLabel="Create Beer"
+            submitLabel="Create Apparel"
             cancelLabel="Cancel"
             onCancel={handleCancel}
             isLoading={isSubmitting}
@@ -195,4 +195,4 @@ const BeerCreatePage: React.FC = () => {
   );
 };
 
-export default BeerCreatePage;
+export default ApparelCreatePage;

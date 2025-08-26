@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
 /**
- * DTO for Beer patch operations
+ * DTO for Apparel patch operations
  * This DTO is used for partial updates and does not have any validation constraints
  */
 @Data
@@ -17,10 +17,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class BeerPatchDto extends BaseEntityDto {
+public class ApparelPatchDto extends BaseEntityDto {
 
-    private String beerName;
-    private String beerStyle;
+    private String apparelName;
+    private String apparelStyle;
     private String upc;
     private Integer quantityOnHand;
     private String description;

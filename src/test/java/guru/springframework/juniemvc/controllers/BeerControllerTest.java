@@ -1,9 +1,9 @@
 package guru.springframework.juniemvc.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.juniemvc.models.BeerDto;
-import guru.springframework.juniemvc.models.BeerPatchDto;
-import guru.springframework.juniemvc.services.BeerService;
+import guru.springframework.juniemvc.models.ApparelDto;
+import guru.springframework.juniemvc.models.ApparelPatchDto;
+import guru.springframework.juniemvc.services.ApparelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,8 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(BeerController.class)
-class BeerControllerTest {
+@WebMvcTest(ApparelController.class)
+class ApparelControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -43,16 +43,16 @@ class BeerControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    BeerService beerService;
+    ApparelService apparelService;
 
-    BeerDto testBeer;
+    ApparelDto testApparel;
 
     @BeforeEach
     void setUp() {
-        testBeer = BeerDto.builder()
+        testApparel = ApparelDto.builder()
                 .id(1)
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
@@ -60,33 +60,33 @@ class BeerControllerTest {
     }
 
     @Test
-    void testGetAllBeers() throws Exception {
+    void testGetAllApparels() throws Exception {
         // Given
-        List<BeerDto> beers = Arrays.asList(testBeer);
-        Page<BeerDto> beerPage = new PageImpl<>(beers, PageRequest.of(0, 20), 1);
+        List<ApparelDto> apparels = Arrays.asList(testApparel);
+        Page<ApparelDto> apparelPage = new PageImpl<>(apparels, PageRequest.of(0, 20), 1);
 
-        given(beerService.getAllBeers(eq(null), eq(null), any(Pageable.class))).willReturn(beerPage);
+        given(apparelService.getAllApparels(eq(null), eq(null), any(Pageable.class))).willReturn(apparelPage);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers")
+        mockMvc.perform(get("/api/v1/apparels")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(1)))
-                .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")));
+                .andExpect(jsonPath("$.content[0].apparelName", is("Test Apparel")));
     }
 
     @Test
-    void testGetAllBeersWithPagination() throws Exception {
+    void testGetAllApparelsWithPagination() throws Exception {
         // Given
-        List<BeerDto> beers = Arrays.asList(testBeer);
-        Page<BeerDto> beerPage = new PageImpl<>(beers, PageRequest.of(0, 20), 1);
+        List<ApparelDto> apparels = Arrays.asList(testApparel);
+        Page<ApparelDto> apparelPage = new PageImpl<>(apparels, PageRequest.of(0, 20), 1);
 
-        given(beerService.getAllBeers(eq(null), eq(null), any(Pageable.class))).willReturn(beerPage);
+        given(apparelService.getAllApparels(eq(null), eq(null), any(Pageable.class))).willReturn(apparelPage);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers")
+        mockMvc.perform(get("/api/v1/apparels")
                 .param("page", "0")
                 .param("size", "20")
                 .accept(MediaType.APPLICATION_JSON))
@@ -94,7 +94,7 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(1)))
-                .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")))
+                .andExpect(jsonPath("$.content[0].apparelName", is("Test Apparel")))
                 .andExpect(jsonPath("$.totalElements", is(1)))
                 .andExpect(jsonPath("$.totalPages", is(1)))
                 .andExpect(jsonPath("$.size", is(20)))
@@ -102,16 +102,16 @@ class BeerControllerTest {
     }
 
     @Test
-    void testGetAllBeersWithBeerNameFilter() throws Exception {
+    void testGetAllApparelsWithApparelNameFilter() throws Exception {
         // Given
-        List<BeerDto> beers = Arrays.asList(testBeer);
-        Page<BeerDto> beerPage = new PageImpl<>(beers, PageRequest.of(0, 20), 1);
+        List<ApparelDto> apparels = Arrays.asList(testApparel);
+        Page<ApparelDto> apparelPage = new PageImpl<>(apparels, PageRequest.of(0, 20), 1);
 
-        given(beerService.getAllBeers(eq("Test"), eq(null), any(Pageable.class))).willReturn(beerPage);
+        given(apparelService.getAllApparels(eq("Test"), eq(null), any(Pageable.class))).willReturn(apparelPage);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers")
-                .param("beerName", "Test")
+        mockMvc.perform(get("/api/v1/apparels")
+                .param("apparelName", "Test")
                 .param("page", "0")
                 .param("size", "20")
                 .accept(MediaType.APPLICATION_JSON))
@@ -119,7 +119,7 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(1)))
-                .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")))
+                .andExpect(jsonPath("$.content[0].apparelName", is("Test Apparel")))
                 .andExpect(jsonPath("$.totalElements", is(1)))
                 .andExpect(jsonPath("$.totalPages", is(1)))
                 .andExpect(jsonPath("$.size", is(20)))
@@ -127,16 +127,16 @@ class BeerControllerTest {
     }
 
     @Test
-    void testGetAllBeersWithBeerStyleFilter() throws Exception {
+    void testGetAllApparelsWithApparelStyleFilter() throws Exception {
         // Given
-        List<BeerDto> beers = Arrays.asList(testBeer);
-        Page<BeerDto> beerPage = new PageImpl<>(beers, PageRequest.of(0, 20), 1);
+        List<ApparelDto> apparels = Arrays.asList(testApparel);
+        Page<ApparelDto> apparelPage = new PageImpl<>(apparels, PageRequest.of(0, 20), 1);
 
-        given(beerService.getAllBeers(eq(null), eq("IPA"), any(Pageable.class))).willReturn(beerPage);
+        given(apparelService.getAllApparels(eq(null), eq("IPA"), any(Pageable.class))).willReturn(apparelPage);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers")
-                .param("beerStyle", "IPA")
+        mockMvc.perform(get("/api/v1/apparels")
+                .param("apparelStyle", "IPA")
                 .param("page", "0")
                 .param("size", "20")
                 .accept(MediaType.APPLICATION_JSON))
@@ -144,8 +144,8 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(1)))
-                .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")))
-                .andExpect(jsonPath("$.content[0].beerStyle", is("IPA")))
+                .andExpect(jsonPath("$.content[0].apparelName", is("Test Apparel")))
+                .andExpect(jsonPath("$.content[0].apparelStyle", is("IPA")))
                 .andExpect(jsonPath("$.totalElements", is(1)))
                 .andExpect(jsonPath("$.totalPages", is(1)))
                 .andExpect(jsonPath("$.size", is(20)))
@@ -153,17 +153,17 @@ class BeerControllerTest {
     }
 
     @Test
-    void testGetAllBeersWithBeerNameAndBeerStyleFilter() throws Exception {
+    void testGetAllApparelsWithApparelNameAndApparelStyleFilter() throws Exception {
         // Given
-        List<BeerDto> beers = Arrays.asList(testBeer);
-        Page<BeerDto> beerPage = new PageImpl<>(beers, PageRequest.of(0, 20), 1);
+        List<ApparelDto> apparels = Arrays.asList(testApparel);
+        Page<ApparelDto> apparelPage = new PageImpl<>(apparels, PageRequest.of(0, 20), 1);
 
-        given(beerService.getAllBeers(eq("Test"), eq("IPA"), any(Pageable.class))).willReturn(beerPage);
+        given(apparelService.getAllApparels(eq("Test"), eq("IPA"), any(Pageable.class))).willReturn(apparelPage);
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers")
-                .param("beerName", "Test")
-                .param("beerStyle", "IPA")
+        mockMvc.perform(get("/api/v1/apparels")
+                .param("apparelName", "Test")
+                .param("apparelStyle", "IPA")
                 .param("page", "0")
                 .param("size", "20")
                 .accept(MediaType.APPLICATION_JSON))
@@ -171,8 +171,8 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(1)))
-                .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")))
-                .andExpect(jsonPath("$.content[0].beerStyle", is("IPA")))
+                .andExpect(jsonPath("$.content[0].apparelName", is("Test Apparel")))
+                .andExpect(jsonPath("$.content[0].apparelStyle", is("IPA")))
                 .andExpect(jsonPath("$.totalElements", is(1)))
                 .andExpect(jsonPath("$.totalPages", is(1)))
                 .andExpect(jsonPath("$.size", is(20)))
@@ -180,199 +180,199 @@ class BeerControllerTest {
     }
 
     @Test
-    void testGetBeerById() throws Exception {
+    void testGetApparelById() throws Exception {
         // Given
-        given(beerService.getBeerById(1)).willReturn(Optional.of(testBeer));
+        given(apparelService.getApparelById(1)).willReturn(Optional.of(testApparel));
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers/1")
+        mockMvc.perform(get("/api/v1/apparels/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.beerName", is("Test Beer")));
+                .andExpect(jsonPath("$.apparelName", is("Test Apparel")));
     }
 
     @Test
-    void testGetBeerByIdNotFound() throws Exception {
+    void testGetApparelByIdNotFound() throws Exception {
         // Given
-        given(beerService.getBeerById(1)).willReturn(Optional.empty());
+        given(apparelService.getApparelById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(get("/api/v1/beers/1")
+        mockMvc.perform(get("/api/v1/apparels/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testCreateBeer() throws Exception {
+    void testCreateApparel() throws Exception {
         // Given
-        BeerDto beerToCreate = BeerDto.builder()
-                .beerName("New Beer")
-                .beerStyle("Stout")
+        ApparelDto apparelToCreate = ApparelDto.builder()
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        BeerDto savedBeer = BeerDto.builder()
+        ApparelDto savedApparel = ApparelDto.builder()
                 .id(2)
-                .beerName("New Beer")
-                .beerStyle("Stout")
+                .apparelName("New Apparel")
+                .apparelStyle("Stout")
                 .upc("654321")
                 .price(new BigDecimal("14.99"))
                 .quantityOnHand(200)
                 .build();
 
-        given(beerService.saveBeer(any(BeerDto.class))).willReturn(savedBeer);
+        given(apparelService.saveApparel(any(ApparelDto.class))).willReturn(savedApparel);
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beers")
+        mockMvc.perform(post("/api/v1/apparels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerToCreate)))
+                .content(objectMapper.writeValueAsString(apparelToCreate)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(2)))
-                .andExpect(jsonPath("$.beerName", is("New Beer")));
+                .andExpect(jsonPath("$.apparelName", is("New Apparel")));
     }
 
     @Test
-    void testUpdateBeer() throws Exception {
+    void testUpdateApparel() throws Exception {
         // Given
-        BeerDto beerToUpdate = BeerDto.builder()
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+        ApparelDto apparelToUpdate = ApparelDto.builder()
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        BeerDto updatedBeer = BeerDto.builder()
+        ApparelDto updatedApparel = ApparelDto.builder()
                 .id(1)
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        given(beerService.getBeerById(1)).willReturn(Optional.of(testBeer));
-        given(beerService.saveBeer(any(BeerDto.class))).willReturn(updatedBeer);
+        given(apparelService.getApparelById(1)).willReturn(Optional.of(testApparel));
+        given(apparelService.saveApparel(any(ApparelDto.class))).willReturn(updatedApparel);
 
         // When/Then
-        mockMvc.perform(put("/api/v1/beers/1")
+        mockMvc.perform(put("/api/v1/apparels/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerToUpdate)))
+                .content(objectMapper.writeValueAsString(apparelToUpdate)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.beerName", is("Updated Beer")))
-                .andExpect(jsonPath("$.beerStyle", is("Lager")));
+                .andExpect(jsonPath("$.apparelName", is("Updated Apparel")))
+                .andExpect(jsonPath("$.apparelStyle", is("Lager")));
     }
 
     @Test
-    void testUpdateBeerNotFound() throws Exception {
+    void testUpdateApparelNotFound() throws Exception {
         // Given
-        BeerDto beerToUpdate = BeerDto.builder()
-                .beerName("Updated Beer")
-                .beerStyle("Lager")
+        ApparelDto apparelToUpdate = ApparelDto.builder()
+                .apparelName("Updated Apparel")
+                .apparelStyle("Lager")
                 .upc("789012")
                 .price(new BigDecimal("16.99"))
                 .quantityOnHand(150)
                 .build();
 
-        given(beerService.getBeerById(1)).willReturn(Optional.empty());
+        given(apparelService.getApparelById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(put("/api/v1/beers/1")
+        mockMvc.perform(put("/api/v1/apparels/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerToUpdate)))
+                .content(objectMapper.writeValueAsString(apparelToUpdate)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testDeleteBeer() throws Exception {
+    void testDeleteApparel() throws Exception {
         // Given
-        given(beerService.getBeerById(1)).willReturn(Optional.of(testBeer));
-        doNothing().when(beerService).deleteBeerById(1);
+        given(apparelService.getApparelById(1)).willReturn(Optional.of(testApparel));
+        doNothing().when(apparelService).deleteApparelById(1);
 
         // When/Then
-        mockMvc.perform(delete("/api/v1/beers/1"))
+        mockMvc.perform(delete("/api/v1/apparels/1"))
                 .andExpect(status().isNoContent());
 
-        verify(beerService).deleteBeerById(1);
+        verify(apparelService).deleteApparelById(1);
     }
 
     @Test
-    void testDeleteBeerNotFound() throws Exception {
+    void testDeleteApparelNotFound() throws Exception {
         // Given
-        given(beerService.getBeerById(1)).willReturn(Optional.empty());
+        given(apparelService.getApparelById(1)).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(delete("/api/v1/beers/1"))
+        mockMvc.perform(delete("/api/v1/apparels/1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void testValidationErrors() throws Exception {
         // Given
-        BeerDto invalidBeer = BeerDto.builder()
+        ApparelDto invalidApparel = ApparelDto.builder()
                 // Missing required fields
-                .beerName("")
-                .beerStyle("")
+                .apparelName("")
+                .apparelStyle("")
                 .upc("")
                 .price(new BigDecimal("-1.0"))
                 .quantityOnHand(-1)
                 .build();
 
         // When/Then
-        mockMvc.perform(post("/api/v1/beers")
+        mockMvc.perform(post("/api/v1/apparels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalidBeer)))
+                .content(objectMapper.writeValueAsString(invalidApparel)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testPatchBeer() throws Exception {
+    void testPatchApparel() throws Exception {
         // Given
-        BeerPatchDto beerPatchDto = BeerPatchDto.builder()
-                .beerName("Patched Beer")
+        ApparelPatchDto apparelPatchDto = ApparelPatchDto.builder()
+                .apparelName("Patched Apparel")
                 .price(new BigDecimal("15.99"))
                 .build();
 
-        BeerDto patchedBeer = BeerDto.builder()
+        ApparelDto patchedApparel = ApparelDto.builder()
                 .id(1)
-                .beerName("Patched Beer")
-                .beerStyle("IPA") // Original value
+                .apparelName("Patched Apparel")
+                .apparelStyle("IPA") // Original value
                 .upc("123456") // Original value
                 .price(new BigDecimal("15.99")) // Updated value
                 .quantityOnHand(100) // Original value
                 .build();
 
-        given(beerService.patchBeer(eq(1), any(BeerPatchDto.class))).willReturn(Optional.of(patchedBeer));
+        given(apparelService.patchApparel(eq(1), any(ApparelPatchDto.class))).willReturn(Optional.of(patchedApparel));
 
         // When/Then
-        mockMvc.perform(patch("/api/v1/beers/1")
+        mockMvc.perform(patch("/api/v1/apparels/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerPatchDto)))
+                .content(objectMapper.writeValueAsString(apparelPatchDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.beerName", is("Patched Beer")))
-                .andExpect(jsonPath("$.beerStyle", is("IPA")))
+                .andExpect(jsonPath("$.apparelName", is("Patched Apparel")))
+                .andExpect(jsonPath("$.apparelStyle", is("IPA")))
                 .andExpect(jsonPath("$.price", is(15.99)));
     }
 
     @Test
-    void testPatchBeerNotFound() throws Exception {
+    void testPatchApparelNotFound() throws Exception {
         // Given
-        BeerPatchDto beerPatchDto = BeerPatchDto.builder()
-                .beerName("Patched Beer")
+        ApparelPatchDto apparelPatchDto = ApparelPatchDto.builder()
+                .apparelName("Patched Apparel")
                 .build();
 
-        given(beerService.patchBeer(eq(1), any(BeerPatchDto.class))).willReturn(Optional.empty());
+        given(apparelService.patchApparel(eq(1), any(ApparelPatchDto.class))).willReturn(Optional.empty());
 
         // When/Then
-        mockMvc.perform(patch("/api/v1/beers/1")
+        mockMvc.perform(patch("/api/v1/apparels/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beerPatchDto)))
+                .content(objectMapper.writeValueAsString(apparelPatchDto)))
                 .andExpect(status().isNotFound());
     }
 }

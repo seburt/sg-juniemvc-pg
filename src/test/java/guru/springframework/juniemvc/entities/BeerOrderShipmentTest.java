@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for BeerOrderShipment entity
+ * Tests for ApparelOrderShipment entity
  */
-class BeerOrderShipmentTest {
+class ApparelOrderShipmentTest {
 
     @Test
-    void testBeerOrderShipmentProperties() {
-        // Create a beer order shipment
+    void testApparelOrderShipmentProperties() {
+        // Create a apparel order shipment
         LocalDateTime shipmentDate = LocalDateTime.now();
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(shipmentDate)
                 .carrier("FedEx")
                 .trackingNumber("123456789")
@@ -29,30 +29,30 @@ class BeerOrderShipmentTest {
     }
 
     @Test
-    void testBeerOrderRelationship() {
-        // Create a beer order
-        BeerOrder beerOrder = BeerOrder.builder()
+    void testApparelOrderRelationship() {
+        // Create a apparel order
+        ApparelOrder apparelOrder = ApparelOrder.builder()
                 .status("NEW")
                 .build();
 
-        // Create a beer order shipment
-        BeerOrderShipment shipment = BeerOrderShipment.builder()
+        // Create a apparel order shipment
+        ApparelOrderShipment shipment = ApparelOrderShipment.builder()
                 .shipmentDate(LocalDateTime.now())
                 .carrier("UPS")
                 .trackingNumber("987654321")
                 .build();
 
-        // Add shipment to beer order
-        beerOrder.addShipment(shipment);
+        // Add shipment to apparel order
+        apparelOrder.addShipment(shipment);
 
         // Verify relationship
-        assertThat(beerOrder.getShipments()).hasSize(1);
-        assertThat(beerOrder.getShipments()).contains(shipment);
-        assertThat(shipment.getBeerOrder()).isEqualTo(beerOrder);
+        assertThat(apparelOrder.getShipments()).hasSize(1);
+        assertThat(apparelOrder.getShipments()).contains(shipment);
+        assertThat(shipment.getApparelOrder()).isEqualTo(apparelOrder);
 
         // Test removing shipment
-        beerOrder.removeShipment(shipment);
-        assertThat(beerOrder.getShipments()).isEmpty();
-        assertThat(shipment.getBeerOrder()).isNull();
+        apparelOrder.removeShipment(shipment);
+        assertThat(apparelOrder.getShipments()).isEmpty();
+        assertThat(shipment.getApparelOrder()).isNull();
     }
 }

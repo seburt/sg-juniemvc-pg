@@ -40,18 +40,18 @@ export const waitForLoadingToFinish = () => {
 };
 
 // Mock data factories
-export const createMockBeer = (overrides = {}) => ({
+export const createMockApparel = (overrides = {}) => ({
   id: 1,
   version: 1,
   createdDate: '2023-01-01T00:00:00Z',
   updateDate: '2023-01-01T00:00:00Z',
-  beerName: 'Test Beer',
-  beerStyle: 'IPA',
+  apparelName: 'Test Apparel',
+  apparelStyle: 'IPA',
   upc: '123456789',
   quantityOnHand: 100,
   price: 12.99,
-  description: 'A test beer',
-  imageUrl: 'https://example.com/beer.jpg',
+  description: 'A test apparel',
+  imageUrl: 'https://example.com/apparel.jpg',
   ...overrides,
 });
 
@@ -70,7 +70,7 @@ export const createMockCustomer = (overrides = {}) => ({
   ...overrides,
 });
 
-export const createMockBeerOrder = (overrides = {}) => ({
+export const createMockApparelOrder = (overrides = {}) => ({
   id: 1,
   version: 1,
   createdDate: '2023-01-01T00:00:00Z',
@@ -78,15 +78,15 @@ export const createMockBeerOrder = (overrides = {}) => ({
   customerRef: 'CUST-123',
   paymentAmount: 25.98,
   status: 'NEW',
-  beerOrderLines: [
+  apparelOrderLines: [
     {
       id: 1,
       version: 1,
       createdDate: '2023-01-01T00:00:00Z',
       updateDate: '2023-01-01T00:00:00Z',
-      beerId: 1,
-      beerName: 'Test Beer',
-      beerStyle: 'IPA',
+      apparelId: 1,
+      apparelName: 'Test Apparel',
+      apparelStyle: 'IPA',
       upc: '123456789',
       orderQuantity: 2,
       quantityAllocated: 0,

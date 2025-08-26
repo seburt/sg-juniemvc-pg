@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
- * DTO for BeerOrderLine entity
+ * DTO for ApparelOrderLine entity
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class BeerOrderLineDto extends BaseEntityDto {
+public class ApparelOrderLineDto extends BaseEntityDto {
     
-    private Integer beerId;
-    private String beerName;
+    private Integer apparelId;
+    private String apparelName;
 
-    // style of the beer, ALE, PALE ALE, IPA, etc
-    private String beerStyle;
+    // style of the apparel, ALE, PALE ALE, IPA, etc
+    private String apparelStyle;
     private String upc;
     
     @NotNull(message = "Order quantity is required")

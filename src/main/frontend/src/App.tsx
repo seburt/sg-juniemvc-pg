@@ -9,11 +9,11 @@ import './App.css';
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
 
-// Beer pages
-const BeerListPage = React.lazy(() => import('./pages/beers/BeerListPage'));
-const BeerDetailPage = React.lazy(() => import('./pages/beers/BeerDetailPage'));
-const BeerCreatePage = React.lazy(() => import('./pages/beers/BeerCreatePage'));
-const BeerEditPage = React.lazy(() => import('./pages/beers/BeerEditPage'));
+// Apparel pages
+const ApparelListPage = React.lazy(() => import('./pages/apparels/ApparelListPage'));
+const ApparelDetailPage = React.lazy(() => import('./pages/apparels/ApparelDetailPage'));
+const ApparelCreatePage = React.lazy(() => import('./pages/apparels/ApparelCreatePage'));
+const ApparelEditPage = React.lazy(() => import('./pages/apparels/ApparelEditPage'));
 
 // Customer pages
 const CustomerListPage = React.lazy(() => import('./pages/customers/CustomerListPage'));
@@ -21,13 +21,13 @@ const CustomerDetailPage = React.lazy(() => import('./pages/customers/CustomerDe
 const CustomerCreatePage = React.lazy(() => import('./pages/customers/CustomerCreatePage'));
 const CustomerEditPage = React.lazy(() => import('./pages/customers/CustomerEditPage'));
 
-// Beer Order pages
-const BeerOrderListPage = React.lazy(() => import('./pages/beerOrders/BeerOrderListPage'));
-const BeerOrderDetailPage = React.lazy(() => import('./pages/beerOrders/BeerOrderDetailPage'));
-const BeerOrderCreatePage = React.lazy(() => import('./pages/beerOrders/BeerOrderCreatePage'));
-const BeerOrderEditPage = React.lazy(() => import('./pages/beerOrders/BeerOrderEditPage'));
-const BeerOrderShipmentCreatePage = React.lazy(
-  () => import('./pages/beerOrders/BeerOrderShipmentCreatePage')
+// Apparel Order pages
+const ApparelOrderListPage = React.lazy(() => import('./pages/apparelOrders/ApparelOrderListPage'));
+const ApparelOrderDetailPage = React.lazy(() => import('./pages/apparelOrders/ApparelOrderDetailPage'));
+const ApparelOrderCreatePage = React.lazy(() => import('./pages/apparelOrders/ApparelOrderCreatePage'));
+const ApparelOrderEditPage = React.lazy(() => import('./pages/apparelOrders/ApparelOrderEditPage'));
+const ApparelOrderShipmentCreatePage = React.lazy(
+  () => import('./pages/apparelOrders/ApparelOrderShipmentCreatePage')
 );
 
 // Loading component for Suspense fallback
@@ -65,13 +65,13 @@ const App: React.FC = () => {
           ),
         },
         {
-          path: 'beers',
+          path: 'apparels',
           children: [
             {
               index: true,
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerListPage />
+                  <ApparelListPage />
                 </Suspense>
               ),
             },
@@ -79,23 +79,23 @@ const App: React.FC = () => {
               path: 'new',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerCreatePage />
+                  <ApparelCreatePage />
                 </Suspense>
               ),
             },
             {
-              path: ':beerId',
+              path: ':apparelId',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerDetailPage />
+                  <ApparelDetailPage />
                 </Suspense>
               ),
             },
             {
-              path: ':beerId/edit',
+              path: ':apparelId/edit',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerEditPage />
+                  <ApparelEditPage />
                 </Suspense>
               ),
             },
@@ -139,13 +139,13 @@ const App: React.FC = () => {
           ],
         },
         {
-          path: 'beer-orders',
+          path: 'apparel-orders',
           children: [
             {
               index: true,
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerOrderListPage />
+                  <ApparelOrderListPage />
                 </Suspense>
               ),
             },
@@ -153,31 +153,31 @@ const App: React.FC = () => {
               path: 'new',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerOrderCreatePage />
+                  <ApparelOrderCreatePage />
                 </Suspense>
               ),
             },
             {
-              path: ':beerOrderId',
+              path: ':apparelOrderId',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerOrderDetailPage />
+                  <ApparelOrderDetailPage />
                 </Suspense>
               ),
             },
             {
-              path: ':beerOrderId/edit',
+              path: ':apparelOrderId/edit',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerOrderEditPage />
+                  <ApparelOrderEditPage />
                 </Suspense>
               ),
             },
             {
-              path: ':beerOrderId/shipments/new',
+              path: ':apparelOrderId/shipments/new',
               element: (
                 <Suspense fallback={<LoadingSpinner />}>
-                  <BeerOrderShipmentCreatePage />
+                  <ApparelOrderShipmentCreatePage />
                 </Suspense>
               ),
             },

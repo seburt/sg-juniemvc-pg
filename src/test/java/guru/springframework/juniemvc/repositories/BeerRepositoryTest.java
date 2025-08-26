@@ -1,6 +1,6 @@
 package guru.springframework.juniemvc.repositories;
 
-import guru.springframework.juniemvc.entities.Beer;
+import guru.springframework.juniemvc.entities.Apparel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,214 +15,214 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class BeerRepositoryTest {
+class ApparelRepositoryTest {
 
     @Autowired
-    BeerRepository beerRepository;
+    ApparelRepository apparelRepository;
 
     @Test
-    void testSaveBeer() {
+    void testSaveApparel() {
         // Given
-        Beer beer = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        Apparel apparel = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
 
         // When
-        Beer savedBeer = beerRepository.save(beer);
+        Apparel savedApparel = apparelRepository.save(apparel);
 
         // Then
-        assertThat(savedBeer).isNotNull();
-        assertThat(savedBeer.getId()).isNotNull();
+        assertThat(savedApparel).isNotNull();
+        assertThat(savedApparel.getId()).isNotNull();
     }
 
     @Test
-    void testGetBeerById() {
+    void testGetApparelById() {
         // Given
-        Beer beer = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        Apparel apparel = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer savedBeer = beerRepository.save(beer);
+        Apparel savedApparel = apparelRepository.save(apparel);
 
         // When
-        Optional<Beer> fetchedBeerOptional = beerRepository.findById(savedBeer.getId());
+        Optional<Apparel> fetchedApparelOptional = apparelRepository.findById(savedApparel.getId());
 
         // Then
-        assertThat(fetchedBeerOptional).isPresent();
-        Beer fetchedBeer = fetchedBeerOptional.get();
-        assertThat(fetchedBeer.getBeerName()).isEqualTo("Test Beer");
+        assertThat(fetchedApparelOptional).isPresent();
+        Apparel fetchedApparel = fetchedApparelOptional.get();
+        assertThat(fetchedApparel.getApparelName()).isEqualTo("Test Apparel");
     }
 
     @Test
-    void testUpdateBeer() {
+    void testUpdateApparel() {
         // Given
-        Beer beer = Beer.builder()
-                .beerName("Original Name")
-                .beerStyle("IPA")
+        Apparel apparel = Apparel.builder()
+                .apparelName("Original Name")
+                .apparelStyle("IPA")
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer savedBeer = beerRepository.save(beer);
+        Apparel savedApparel = apparelRepository.save(apparel);
 
         // When
-        savedBeer.setBeerName("Updated Name");
-        Beer updatedBeer = beerRepository.save(savedBeer);
+        savedApparel.setApparelName("Updated Name");
+        Apparel updatedApparel = apparelRepository.save(savedApparel);
 
         // Then
-        assertThat(updatedBeer.getBeerName()).isEqualTo("Updated Name");
+        assertThat(updatedApparel.getApparelName()).isEqualTo("Updated Name");
     }
 
     @Test
-    void testDeleteBeer() {
+    void testDeleteApparel() {
         // Given
-        Beer beer = Beer.builder()
-                .beerName("Delete Me")
-                .beerStyle("Lager")
+        Apparel apparel = Apparel.builder()
+                .apparelName("Delete Me")
+                .apparelStyle("Lager")
                 .upc("654321")
                 .price(new BigDecimal("9.99"))
                 .quantityOnHand(50)
                 .build();
-        Beer savedBeer = beerRepository.save(beer);
+        Apparel savedApparel = apparelRepository.save(apparel);
 
         // When
-        beerRepository.deleteById(savedBeer.getId());
-        Optional<Beer> deletedBeer = beerRepository.findById(savedBeer.getId());
+        apparelRepository.deleteById(savedApparel.getId());
+        Optional<Apparel> deletedApparel = apparelRepository.findById(savedApparel.getId());
 
         // Then
-        assertThat(deletedBeer).isEmpty();
+        assertThat(deletedApparel).isEmpty();
     }
 
     @Test
-    void testListBeers() {
+    void testListApparels() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Beer 1")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Apparel 1")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Beer 2")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Apparel 2")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2));
+        apparelRepository.saveAll(List.of(apparel1, apparel2));
 
         // When
-        List<Beer> beers = beerRepository.findAll();
+        List<Apparel> apparels = apparelRepository.findAll();
 
         // Then
-        assertThat(beers).hasSize(2);
+        assertThat(apparels).hasSize(2);
     }
 
     @Test
-    void testFindAllByBeerNameContainingIgnoreCaseWithPagination() {
+    void testFindAllByApparelNameContainingIgnoreCaseWithPagination() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Test Beer")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Test Apparel")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Another Test Beer")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Another Test Apparel")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        Beer beer3 = Beer.builder()
-                .beerName("Not Matching")
-                .beerStyle("Lager")
+        Apparel apparel3 = Apparel.builder()
+                .apparelName("Not Matching")
+                .apparelStyle("Lager")
                 .upc("333333")
                 .price(new BigDecimal("10.99"))
                 .quantityOnHand(150)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2, beer3));
+        apparelRepository.saveAll(List.of(apparel1, apparel2, apparel3));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCase("Test", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCase("Test", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(2);
-        assertThat(beersPage.getTotalElements()).isEqualTo(2);
-        assertThat(beersPage.getContent().get(0).getBeerName()).contains("Test");
-        assertThat(beersPage.getContent().get(1).getBeerName()).contains("Test");
+        assertThat(apparelsPage.getContent()).hasSize(2);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(2);
+        assertThat(apparelsPage.getContent().get(0).getApparelName()).contains("Test");
+        assertThat(apparelsPage.getContent().get(1).getApparelName()).contains("Test");
     }
 
     @Test
-    void testFindAllByBeerNameContainingIgnoreCaseWithEmptyString() {
+    void testFindAllByApparelNameContainingIgnoreCaseWithEmptyString() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Beer 1")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Apparel 1")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Beer 2")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Apparel 2")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2));
+        apparelRepository.saveAll(List.of(apparel1, apparel2));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCase("", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCase("", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(2);
-        assertThat(beersPage.getTotalElements()).isEqualTo(2);
+        assertThat(apparelsPage.getContent()).hasSize(2);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(2);
     }
 
     @Test
-    void testFindAllByBeerNameContainingIgnoreCasePagination() {
+    void testFindAllByApparelNameContainingIgnoreCasePagination() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        // Create 25 beers with "Test" in the name
+        apparelRepository.deleteAll(); // Clear any existing data
+        // Create 25 apparels with "Test" in the name
         for (int i = 1; i <= 25; i++) {
-            Beer beer = Beer.builder()
-                    .beerName("Test Beer " + i)
-                    .beerStyle(i % 2 == 0 ? "IPA" : "Stout")
+            Apparel apparel = Apparel.builder()
+                    .apparelName("Test Apparel " + i)
+                    .apparelStyle(i % 2 == 0 ? "IPA" : "Stout")
                     .upc("1111" + i)
                     .price(new BigDecimal("11.99"))
                     .quantityOnHand(100 + i)
                     .build();
-            beerRepository.save(beer);
+            apparelRepository.save(apparel);
         }
 
         // First page (0-based index)
         Pageable firstPageable = PageRequest.of(0, 10);
-        Page<Beer> firstPage = beerRepository.findAllByBeerNameContainingIgnoreCase("Test", firstPageable);
+        Page<Apparel> firstPage = apparelRepository.findAllByApparelNameContainingIgnoreCase("Test", firstPageable);
 
         // Second page
         Pageable secondPageable = PageRequest.of(1, 10);
-        Page<Beer> secondPage = beerRepository.findAllByBeerNameContainingIgnoreCase("Test", secondPageable);
+        Page<Apparel> secondPage = apparelRepository.findAllByApparelNameContainingIgnoreCase("Test", secondPageable);
 
         // Third page (should have only 5 items)
         Pageable thirdPageable = PageRequest.of(2, 10);
-        Page<Beer> thirdPage = beerRepository.findAllByBeerNameContainingIgnoreCase("Test", thirdPageable);
+        Page<Apparel> thirdPage = apparelRepository.findAllByApparelNameContainingIgnoreCase("Test", thirdPageable);
 
         // Then
         assertThat(firstPage.getContent()).hasSize(10);
@@ -238,156 +238,156 @@ class BeerRepositoryTest {
     }
 
     @Test
-    void testFindAllByBeerNameAndBeerStyleContainingIgnoreCase() {
+    void testFindAllByApparelNameAndApparelStyleContainingIgnoreCase() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Test IPA")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Test IPA")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Test Stout")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Test Stout")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        Beer beer3 = Beer.builder()
-                .beerName("Another IPA")
-                .beerStyle("IPA")
+        Apparel apparel3 = Apparel.builder()
+                .apparelName("Another IPA")
+                .apparelStyle("IPA")
                 .upc("333333")
                 .price(new BigDecimal("10.99"))
                 .quantityOnHand(150)
                 .build();
-        Beer beer4 = Beer.builder()
-                .beerName("Not Matching")
-                .beerStyle("Lager")
+        Apparel apparel4 = Apparel.builder()
+                .apparelName("Not Matching")
+                .apparelStyle("Lager")
                 .upc("444444")
                 .price(new BigDecimal("9.99"))
                 .quantityOnHand(120)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2, beer3, beer4));
+        apparelRepository.saveAll(List.of(apparel1, apparel2, apparel3, apparel4));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("Test", "IPA", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("Test", "IPA", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(1);
-        assertThat(beersPage.getTotalElements()).isEqualTo(1);
-        assertThat(beersPage.getContent().get(0).getBeerName()).isEqualTo("Test IPA");
-        assertThat(beersPage.getContent().get(0).getBeerStyle()).isEqualTo("IPA");
+        assertThat(apparelsPage.getContent()).hasSize(1);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(1);
+        assertThat(apparelsPage.getContent().get(0).getApparelName()).isEqualTo("Test IPA");
+        assertThat(apparelsPage.getContent().get(0).getApparelStyle()).isEqualTo("IPA");
     }
 
     @Test
-    void testFindAllByBeerNameAndBeerStyleContainingIgnoreCaseWithEmptyBeerName() {
+    void testFindAllByApparelNameAndApparelStyleContainingIgnoreCaseWithEmptyApparelName() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Test IPA")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Test IPA")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Another IPA")
-                .beerStyle("IPA")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Another IPA")
+                .apparelStyle("IPA")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        Beer beer3 = Beer.builder()
-                .beerName("Test Stout")
-                .beerStyle("Stout")
+        Apparel apparel3 = Apparel.builder()
+                .apparelName("Test Stout")
+                .apparelStyle("Stout")
                 .upc("333333")
                 .price(new BigDecimal("10.99"))
                 .quantityOnHand(150)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2, beer3));
+        apparelRepository.saveAll(List.of(apparel1, apparel2, apparel3));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", "IPA", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", "IPA", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(2);
-        assertThat(beersPage.getTotalElements()).isEqualTo(2);
-        assertThat(beersPage.getContent().get(0).getBeerStyle()).isEqualTo("IPA");
-        assertThat(beersPage.getContent().get(1).getBeerStyle()).isEqualTo("IPA");
+        assertThat(apparelsPage.getContent()).hasSize(2);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(2);
+        assertThat(apparelsPage.getContent().get(0).getApparelStyle()).isEqualTo("IPA");
+        assertThat(apparelsPage.getContent().get(1).getApparelStyle()).isEqualTo("IPA");
     }
 
     @Test
-    void testFindAllByBeerNameAndBeerStyleContainingIgnoreCaseWithEmptyBeerStyle() {
+    void testFindAllByApparelNameAndApparelStyleContainingIgnoreCaseWithEmptyApparelStyle() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Test IPA")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Test IPA")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Test Stout")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Test Stout")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        Beer beer3 = Beer.builder()
-                .beerName("Another Beer")
-                .beerStyle("Lager")
+        Apparel apparel3 = Apparel.builder()
+                .apparelName("Another Apparel")
+                .apparelStyle("Lager")
                 .upc("333333")
                 .price(new BigDecimal("10.99"))
                 .quantityOnHand(150)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2, beer3));
+        apparelRepository.saveAll(List.of(apparel1, apparel2, apparel3));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("Test", "", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("Test", "", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(2);
-        assertThat(beersPage.getTotalElements()).isEqualTo(2);
-        assertThat(beersPage.getContent().get(0).getBeerName()).contains("Test");
-        assertThat(beersPage.getContent().get(1).getBeerName()).contains("Test");
+        assertThat(apparelsPage.getContent()).hasSize(2);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(2);
+        assertThat(apparelsPage.getContent().get(0).getApparelName()).contains("Test");
+        assertThat(apparelsPage.getContent().get(1).getApparelName()).contains("Test");
     }
 
     @Test
-    void testFindAllByBeerNameAndBeerStyleContainingIgnoreCaseWithBothEmpty() {
+    void testFindAllByApparelNameAndApparelStyleContainingIgnoreCaseWithBothEmpty() {
         // Given
-        beerRepository.deleteAll(); // Clear any existing data
-        Beer beer1 = Beer.builder()
-                .beerName("Test IPA")
-                .beerStyle("IPA")
+        apparelRepository.deleteAll(); // Clear any existing data
+        Apparel apparel1 = Apparel.builder()
+                .apparelName("Test IPA")
+                .apparelStyle("IPA")
                 .upc("111111")
                 .price(new BigDecimal("11.99"))
                 .quantityOnHand(100)
                 .build();
-        Beer beer2 = Beer.builder()
-                .beerName("Another Beer")
-                .beerStyle("Stout")
+        Apparel apparel2 = Apparel.builder()
+                .apparelName("Another Apparel")
+                .apparelStyle("Stout")
                 .upc("222222")
                 .price(new BigDecimal("13.99"))
                 .quantityOnHand(200)
                 .build();
-        beerRepository.saveAll(List.of(beer1, beer2));
+        apparelRepository.saveAll(List.of(apparel1, apparel2));
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        Page<Beer> beersPage = beerRepository.findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase("", "", pageable);
+        Page<Apparel> apparelsPage = apparelRepository.findAllByApparelNameContainingIgnoreCaseAndApparelStyleContainingIgnoreCase("", "", pageable);
 
         // Then
-        assertThat(beersPage.getContent()).hasSize(2);
-        assertThat(beersPage.getTotalElements()).isEqualTo(2);
+        assertThat(apparelsPage.getContent()).hasSize(2);
+        assertThat(apparelsPage.getTotalElements()).isEqualTo(2);
     }
 }

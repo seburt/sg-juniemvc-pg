@@ -1,14 +1,14 @@
 package guru.springframework.juniemvc.services;
 
-import guru.springframework.juniemvc.entities.Beer;
-import guru.springframework.juniemvc.entities.BeerOrder;
-import guru.springframework.juniemvc.entities.BeerOrderLine;
-import guru.springframework.juniemvc.mappers.BeerOrderLineMapper;
-import guru.springframework.juniemvc.mappers.BeerOrderMapper;
-import guru.springframework.juniemvc.models.BeerOrderDto;
-import guru.springframework.juniemvc.models.BeerOrderLineDto;
-import guru.springframework.juniemvc.repositories.BeerOrderRepository;
-import guru.springframework.juniemvc.repositories.BeerRepository;
+import guru.springframework.juniemvc.entities.Apparel;
+import guru.springframework.juniemvc.entities.ApparelOrder;
+import guru.springframework.juniemvc.entities.ApparelOrderLine;
+import guru.springframework.juniemvc.mappers.ApparelOrderLineMapper;
+import guru.springframework.juniemvc.mappers.ApparelOrderMapper;
+import guru.springframework.juniemvc.models.ApparelOrderDto;
+import guru.springframework.juniemvc.models.ApparelOrderLineDto;
+import guru.springframework.juniemvc.repositories.ApparelOrderRepository;
+import guru.springframework.juniemvc.repositories.ApparelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,70 +17,70 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of BeerOrderService that uses BeerOrderRepository for persistence
+ * Implementation of ApparelOrderService that uses ApparelOrderRepository for persistence
  */
 @Service
-public class BeerOrderServiceImpl implements BeerOrderService {
+public class ApparelOrderServiceImpl implements ApparelOrderService {
 
-    private final BeerOrderRepository beerOrderRepository;
-    private final BeerRepository beerRepository;
-    private final BeerOrderMapper beerOrderMapper;
-    private final BeerOrderLineMapper beerOrderLineMapper;
+    private final ApparelOrderRepository apparelOrderRepository;
+    private final ApparelRepository apparelRepository;
+    private final ApparelOrderMapper apparelOrderMapper;
+    private final ApparelOrderLineMapper apparelOrderLineMapper;
 
-    public BeerOrderServiceImpl(BeerOrderRepository beerOrderRepository,
-                               BeerRepository beerRepository,
-                               BeerOrderMapper beerOrderMapper,
-                               BeerOrderLineMapper beerOrderLineMapper) {
-        this.beerOrderRepository = beerOrderRepository;
-        this.beerRepository = beerRepository;
-        this.beerOrderMapper = beerOrderMapper;
-        this.beerOrderLineMapper = beerOrderLineMapper;
+    public ApparelOrderServiceImpl(ApparelOrderRepository apparelOrderRepository,
+                               ApparelRepository apparelRepository,
+                               ApparelOrderMapper apparelOrderMapper,
+                               ApparelOrderLineMapper apparelOrderLineMapper) {
+        this.apparelOrderRepository = apparelOrderRepository;
+        this.apparelRepository = apparelRepository;
+        this.apparelOrderMapper = apparelOrderMapper;
+        this.apparelOrderLineMapper = apparelOrderLineMapper;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BeerOrderDto> getAllBeerOrders() {
-        return beerOrderRepository.findAll().stream()
-                .map(beerOrderMapper::beerOrderToBeerOrderDto)
+    public List<ApparelOrderDto> getAllApparelOrders() {
+        return apparelOrderRepository.findAll().stream()
+                .map(apparelOrderMapper::apparelOrderToApparelOrderDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<BeerOrderDto> getBeerOrderById(Integer id) {
-        return beerOrderRepository.findById(id)
-                .map(beerOrderMapper::beerOrderToBeerOrderDto);
+    public Optional<ApparelOrderDto> getApparelOrderById(Integer id) {
+        return apparelOrderRepository.findById(id)
+                .map(apparelOrderMapper::apparelOrderToApparelOrderDto);
     }
 
     @Override
     @Transactional
-    public BeerOrderDto saveBeerOrder(BeerOrderDto beerOrderDto) {
-        BeerOrder beerOrder = beerOrderMapper.beerOrderDtoToBeerOrder(beerOrderDto);
+    public ApparelOrderDto saveApparelOrder(ApparelOrderDto apparelOrderDto) {
+        ApparelOrder apparelOrder = apparelOrderMapper.apparelOrderDtoToApparelOrder(apparelOrderDto);
         
-        // Process beer order lines
-        if (beerOrderDto.getBeerOrderLines() != null) {
-            beerOrderDto.getBeerOrderLines().forEach(lineDto -> {
-                // Create a new beer order line
-                BeerOrderLine line = beerOrderLineMapper.beerOrderLineDtoToBeerOrderLine(lineDto);
+        // Process apparel order lines
+        if (apparelOrderDto.getApparelOrderLines() != null) {
+            apparelOrderDto.getApparelOrderLines().forEach(lineDto -> {
+                // Create a new apparel order line
+                ApparelOrderLine line = apparelOrderLineMapper.apparelOrderLineDtoToApparelOrderLine(lineDto);
                 
-                // Find and set the beer reference
-                if (lineDto.getBeerId() != null) {
-                    Optional<Beer> beerOptional = beerRepository.findById(lineDto.getBeerId());
-                    beerOptional.ifPresent(line::setBeer);
+                // Find and set the apparel reference
+                if (lineDto.getApparelId() != null) {
+                    Optional<Apparel> apparelOptional = apparelRepository.findById(lineDto.getApparelId());
+                    apparelOptional.ifPresent(line::setApparel);
                 }
                 
                 // Add the line to the order
-                beerOrder.addBeerOrderLine(line);
+                apparelOrder.addApparelOrderLine(line);
             });
         }
         
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
-        return beerOrderMapper.beerOrderToBeerOrderDto(savedBeerOrder);
+        ApparelOrder savedApparelOrder = apparelOrderRepository.save(apparelOrder);
+        return apparelOrderMapper.apparelOrderToApparelOrderDto(savedApparelOrder);
     }
 
     @Override
     @Transactional
-    public void deleteBeerOrderById(Integer id) {
-        beerOrderRepository.deleteById(id);
+    public void deleteApparelOrderById(Integer id) {
+        apparelOrderRepository.deleteById(id);
     }
 }

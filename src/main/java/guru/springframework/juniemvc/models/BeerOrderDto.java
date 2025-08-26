@@ -14,14 +14,14 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 /**
- * DTO for BeerOrder entity
+ * DTO for ApparelOrder entity
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class BeerOrderDto extends BaseEntityDto {
+public class ApparelOrderDto extends BaseEntityDto {
 
     @NotNull(message = "Customer is required")
     private CustomerDto customer;
@@ -33,10 +33,10 @@ public class BeerOrderDto extends BaseEntityDto {
     // enum status of the order, NEW, PAID, CANCELLED, INPROCESS, COMPLETE.
     private String status;
 
-    @NotEmpty(message = "Beer order must have at least one beer order line")
+    @NotEmpty(message = "Apparel order must have at least one apparel order line")
     @Valid
-    private Set<BeerOrderLineDto> beerOrderLines;
+    private Set<ApparelOrderLineDto> apparelOrderLines;
 
     @Valid
-    private Set<BeerOrderShipmentDto> shipments;
+    private Set<ApparelOrderShipmentDto> shipments;
 }
