@@ -1,21 +1,21 @@
-# React Frontend Implementation Guide for Spring Boot Beer Service
+# React Frontend Implementation Guide for Spring Boot Apparel Service
 
 ## Introduction
 
-This guide provides detailed, step-by-step instructions for implementing a React frontend for the Spring Boot Beer Service application. The frontend will interact with the existing REST API endpoints to provide a user-friendly interface for managing beers, beer orders, and customers.
+This guide provides detailed, step-by-step instructions for implementing a React frontend for the Spring Boot Apparel Service application. The frontend will interact with the existing REST API endpoints to provide a user-friendly interface for managing Apparels, Apparel orders, and customers.
 
 ## Project Overview
 
 The Spring Boot application provides REST API endpoints for:
-- Beer inventory management
-- Beer order processing
+- Apparel inventory management
+- Apparel order processing
 - Customer management
 
 The React frontend will provide a user interface for these operations, allowing users to:
-- View, create, update, and delete beers
-- View, create, update, and delete beer orders
+- View, create, update, and delete Apparels
+- View, create, update, and delete Apparel orders
 - View, create, update, and delete customers
-- Manage beer order shipments
+- Manage Apparel order shipments
 
 ## Technologies Used
 
@@ -471,56 +471,56 @@ export default apiClient;
 
 Create service modules for each resource type:
 
-#### Beer Service (`src/services/beerService.ts`):
+#### Apparel Service (`src/services/apparelService.ts`):
 
 ```typescript
 import apiClient from './api';
-import { BeerDto, PageOfBeerDto } from '../api/models';
+import { ApparelDto, PageOfApparelDto } from '../api/models';
 
-export const beerService = {
-  getAllBeers: async (
-    beerName?: string,
-    beerStyle?: string,
+export const apparelService = {
+  getAllApparels: async (
+    apparelName?: string,
+    apparelStyle?: string,
     page = 0,
     size = 20
-  ): Promise<PageOfBeerDto> => {
+  ): Promise<PageOfApparelDto> => {
     const params = new URLSearchParams();
-    if (beerName) params.append('beerName', beerName);
-    if (beerStyle) params.append('beerStyle', beerStyle);
+    if (apparelName) params.append('apparelName', apparelName);
+    if (apparelStyle) params.append('apparelStyle', apparelStyle);
     params.append('page', page.toString());
     params.append('size', size.toString());
 
-    const response = await apiClient.get('/beers', { params });
+    const response = await apiClient.get('/apparels', { params });
     return response.data;
   },
 
-  getBeerById: async (id: number): Promise<BeerDto> => {
-    const response = await apiClient.get(`/beers/${id}`);
+  getApparelById: async (id: number): Promise<ApparelDto> => {
+    const response = await apiClient.get(`/apparels/${id}`);
     return response.data;
   },
 
-  createBeer: async (beer: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'>): Promise<BeerDto> => {
-    const response = await apiClient.post('/beers', beer);
+  createApparel: async (apparel: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'>): Promise<ApparelDto> => {
+    const response = await apiClient.post('/apparels', apparel);
     return response.data;
   },
 
-  updateBeer: async (id: number, beer: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'>): Promise<BeerDto> => {
-    const response = await apiClient.put(`/beers/${id}`, beer);
+  updateApparel: async (id: number, apparel: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'>): Promise<ApparelDto> => {
+    const response = await apiClient.put(`/apparels/${id}`, apparel);
     return response.data;
   },
 
-  patchBeer: async (id: number, beer: Partial<BeerDto>): Promise<BeerDto> => {
-    const response = await apiClient.patch(`/beers/${id}`, beer);
+  patchApparel: async (id: number, apparel: Partial<ApparelDto>): Promise<ApparelDto> => {
+    const response = await apiClient.patch(`/apparels/${id}`, apparel);
     return response.data;
   },
 
-  deleteBeer: async (id: number): Promise<void> => {
-    await apiClient.delete(`/beers/${id}`);
+  deleteApparel: async (id: number): Promise<void> => {
+    await apiClient.delete(`/apparels/${id}`);
   }
 };
 ```
 
-#### Similar service modules should be created for BeerOrder and Customer resources.
+#### Similar service modules should be created for ApparelOrder and Customer resources.
 
 ## Part 4: React Components and Routing
 
@@ -531,18 +531,18 @@ export const beerService = {
 ```typescript
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import BeerList from './pages/beer/BeerList';
-import BeerDetail from './pages/beer/BeerDetail';
-import BeerCreate from './pages/beer/BeerCreate';
-import BeerEdit from './pages/beer/BeerEdit';
+import ApparelList from './pages/apparel/ApparelList';
+import ApparelDetail from './pages/apparel/ApparelDetail';
+import ApparelCreate from './pages/apparel/ApparelCreate';
+import ApparelEdit from './pages/apparel/ApparelEdit';
 import CustomerList from './pages/customer/CustomerList';
 import CustomerDetail from './pages/customer/CustomerDetail';
 import CustomerCreate from './pages/customer/CustomerCreate';
 import CustomerEdit from './pages/customer/CustomerEdit';
-import BeerOrderList from './pages/order/BeerOrderList';
-import BeerOrderDetail from './pages/order/BeerOrderDetail';
-import BeerOrderCreate from './pages/order/BeerOrderCreate';
-import BeerOrderEdit from './pages/order/BeerOrderEdit';
+import ApparelOrderList from './pages/order/ApparelOrderList';
+import ApparelOrderDetail from './pages/order/ApparelOrderDetail';
+import ApparelOrderCreate from './pages/order/ApparelOrderCreate';
+import ApparelOrderEdit from './pages/order/ApparelOrderEdit';
 import NotFound from './pages/NotFound';
 
 export const router = createBrowserRouter([
@@ -551,19 +551,19 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <BeerList /> },
-      { path: 'beers', element: <BeerList /> },
-      { path: 'beers/new', element: <BeerCreate /> },
-      { path: 'beers/:id', element: <BeerDetail /> },
-      { path: 'beers/:id/edit', element: <BeerEdit /> },
+      { index: true, element: <ApparelList /> },
+      { path: 'apparels', element: <ApparelList /> },
+      { path: 'apparels/new', element: <ApparelCreate /> },
+      { path: 'apparels/:id', element: <ApparelDetail /> },
+      { path: 'apparels/:id/edit', element: <ApparelEdit /> },
       { path: 'customers', element: <CustomerList /> },
       { path: 'customers/new', element: <CustomerCreate /> },
       { path: 'customers/:id', element: <CustomerDetail /> },
       { path: 'customers/:id/edit', element: <CustomerEdit /> },
-      { path: 'beer-orders', element: <BeerOrderList /> },
-      { path: 'beer-orders/new', element: <BeerOrderCreate /> },
-      { path: 'beer-orders/:id', element: <BeerOrderDetail /> },
-      { path: 'beer-orders/:id/edit', element: <BeerOrderEdit /> },
+      { path: 'apparel-orders', element: <ApparelOrderList /> },
+      { path: 'apparel-orders/new', element: <ApparelOrderCreate /> },
+      { path: 'apparel-orders/:id', element: <ApparelOrderDetail /> },
+      { path: 'apparel-orders/:id/edit', element: <ApparelOrderEdit /> },
     ],
   },
 ]);
@@ -611,7 +611,7 @@ Create a navigation component in `src/components/layout/Navbar.tsx`:
 
 ```typescript
 import { Link } from 'react-router-dom';
-import { Beer, Users, ShoppingCart } from 'lucide-react';
+import { Apparel, Users, ShoppingCart } from 'lucide-react';
 
 export default function Navbar() {
   return (
@@ -620,19 +620,19 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="text-xl font-bold">
-              Beer Service
+              Apparel Service
             </Link>
           </div>
           <div className="flex items-center space-x-6">
-            <Link to="/beers" className="flex items-center space-x-2 hover:text-primary-foreground/80">
-              <Beer size={20} />
-              <span>Beers</span>
+            <Link to="/apparels" className="flex items-center space-x-2 hover:text-primary-foreground/80">
+              <Apparel size={20} />
+              <span>Apparels</span>
             </Link>
             <Link to="/customers" className="flex items-center space-x-2 hover:text-primary-foreground/80">
               <Users size={20} />
               <span>Customers</span>
             </Link>
-            <Link to="/beer-orders" className="flex items-center space-x-2 hover:text-primary-foreground/80">
+            <Link to="/apparel-orders" className="flex items-center space-x-2 hover:text-primary-foreground/80">
               <ShoppingCart size={20} />
               <span>Orders</span>
             </Link>
@@ -658,31 +658,31 @@ export default App;
 
 ### Step 3: Create Custom Hooks for State Management
 
-Create a custom hook for beer data in `src/hooks/useBeer.ts`:
+Create a custom hook for apparel data in `src/hooks/useApparel.ts`:
 
 ```typescript
 import { useState, useEffect, useCallback } from 'react';
-import { beerService } from '../services/beerService';
-import { BeerDto, PageOfBeerDto } from '../api/models';
+import { apparelService } from '../services/apparelService';
+import { ApparelDto, PageOfApparelDto } from '../api/models';
 
-export function useBeers(initialPage = 0, initialSize = 20) {
-  const [beers, setBeers] = useState<PageOfBeerDto | null>(null);
+export function useApparels(initialPage = 0, initialSize = 20) {
+  const [apparels, setApparels] = useState<PageOfApparelDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(initialPage);
   const [size, setSize] = useState(initialSize);
-  const [filters, setFilters] = useState<{ beerName?: string; beerStyle?: string }>({});
+  const [filters, setFilters] = useState<{ apparelName?: string; apparelStyle?: string }>({});
 
-  const fetchBeers = useCallback(async () => {
+  const fetchApparels = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await beerService.getAllBeers(
-        filters.beerName,
-        filters.beerStyle,
+      const data = await apparelService.getAllApparels(
+        filters.apparelName,
+        filters.apparelStyle,
         page,
         size
       );
-      setBeers(data);
+      setApparels(data);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('An error occurred'));
@@ -692,16 +692,16 @@ export function useBeers(initialPage = 0, initialSize = 20) {
   }, [page, size, filters]);
 
   useEffect(() => {
-    fetchBeers();
-  }, [fetchBeers]);
+    fetchApparels();
+  }, [fetchApparels]);
 
-  const updateFilters = useCallback((newFilters: { beerName?: string; beerStyle?: string }) => {
+  const updateFilters = useCallback((newFilters: { apparelName?: string; apparelStyle?: string }) => {
     setFilters(newFilters);
     setPage(0); // Reset to first page when filters change
   }, []);
 
   return {
-    beers,
+    apparels,
     loading,
     error,
     page,
@@ -710,42 +710,42 @@ export function useBeers(initialPage = 0, initialSize = 20) {
     setPage,
     setSize,
     updateFilters,
-    refetch: fetchBeers,
+    refetch: fetchApparels,
   };
 }
 
-export function useBeer(id: number | null) {
-  const [beer, setBeer] = useState<BeerDto | null>(null);
+export function useApparel(id: number | null) {
+  const [apparel, setApparel] = useState<ApparelDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchBeer = useCallback(async () => {
+  const fetchApparel = useCallback(async () => {
     if (id === null) return;
 
     try {
       setLoading(true);
-      const data = await beerService.getBeerById(id);
-      setBeer(data);
+      const data = await apparelService.getApparelById(id);
+      setApparel(data);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('An error occurred'));
-      setBeer(null);
+      setApparel(null);
     } finally {
       setLoading(false);
     }
   }, [id]);
 
   useEffect(() => {
-    fetchBeer();
-  }, [fetchBeer]);
+    fetchApparel();
+  }, [fetchApparel]);
 
-  const updateBeer = useCallback(async (updatedBeer: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
+  const updateApparel = useCallback(async (updatedApparel: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => {
     if (id === null) return null;
 
     try {
       setLoading(true);
-      const data = await beerService.updateBeer(id, updatedBeer);
-      setBeer(data);
+      const data = await apparelService.updateApparel(id, updatedApparel);
+      setApparel(data);
       setError(null);
       return data;
     } catch (err) {
@@ -756,13 +756,13 @@ export function useBeer(id: number | null) {
     }
   }, [id]);
 
-  const deleteBeer = useCallback(async () => {
+  const deleteApparel = useCallback(async () => {
     if (id === null) return false;
 
     try {
       setLoading(true);
-      await beerService.deleteBeer(id);
-      setBeer(null);
+      await apparelService.deleteApparel(id);
+      setApparel(null);
       setError(null);
       return true;
     } catch (err) {
@@ -774,43 +774,43 @@ export function useBeer(id: number | null) {
   }, [id]);
 
   return {
-    beer,
+    apparel,
     loading,
     error,
-    refetch: fetchBeer,
-    updateBeer,
-    deleteBeer,
+    refetch: fetchApparel,
+    updateApparel,
+    deleteApparel,
   };
 }
 ```
 
-Create similar hooks for BeerOrder and Customer resources.
+Create similar hooks for ApparelOrder and Customer resources.
 
 ## Part 5: Implementing CRUD Pages
 
-### Step 1: Create Beer List Page
+### Step 1: Create Apparel List Page
 
-Create `src/pages/beer/BeerList.tsx`:
+Create `src/pages/apparel/ApparelList.tsx`:
 
 ```typescript
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useBeers } from '../../hooks/useBeer';
+import { useApparels } from '../../hooks/useApparel';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Edit, Trash, Plus, Search, RefreshCw } from 'lucide-react';
 
-export default function BeerList() {
+export default function ApparelList() {
   const [nameFilter, setNameFilter] = useState('');
   const [styleFilter, setStyleFilter] = useState('');
-  const { beers, loading, error, page, setPage, updateFilters, refetch } = useBeers();
+  const { apparels, loading, error, page, setPage, updateFilters, refetch } = useApparels();
 
   const handleSearch = () => {
     updateFilters({
-      beerName: nameFilter || undefined,
-      beerStyle: styleFilter || undefined,
+      apparelName: nameFilter || undefined,
+      apparelStyle: styleFilter || undefined,
     });
   };
 
@@ -823,11 +823,11 @@ export default function BeerList() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Beer Inventory</CardTitle>
-        <Link to="/beers/new">
+        <CardTitle>Apparel Inventory</CardTitle>
+        <Link to="/apparels/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Add Beer
+            Add Apparel
           </Button>
         </Link>
       </CardHeader>
@@ -862,7 +862,7 @@ export default function BeerList() {
 
         {error && (
           <div className="mb-4 rounded-md bg-destructive/15 p-3 text-destructive">
-            Error loading beers: {error.message}
+            Error loading apparels: {error.message}
           </div>
         )}
 
@@ -884,22 +884,22 @@ export default function BeerList() {
                   Loading...
                 </TableCell>
               </TableRow>
-            ) : beers?.content?.length ? (
-              beers.content.map((beer) => (
-                <TableRow key={beer.id}>
-                  <TableCell>{beer.beerName}</TableCell>
-                  <TableCell>{beer.beerStyle}</TableCell>
-                  <TableCell>${beer.price?.toFixed(2)}</TableCell>
-                  <TableCell>{beer.quantityOnHand}</TableCell>
-                  <TableCell>{beer.upc}</TableCell>
+            ) : apparels?.content?.length ? (
+              apparels.content.map((apparel) => (
+                <TableRow key={apparel.id}>
+                  <TableCell>{apparel.apparelName}</TableCell>
+                  <TableCell>{apparel.apparelStyle}</TableCell>
+                  <TableCell>${apparel.price?.toFixed(2)}</TableCell>
+                  <TableCell>{apparel.quantityOnHand}</TableCell>
+                  <TableCell>{apparel.upc}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Link to={`/beers/${beer.id}`}>
+                      <Link to={`/apparels/${apparel.id}`}>
                         <Button variant="outline" size="icon">
                           <Search className="h-4 w-4" />
                         </Button>
                       </Link>
-                      <Link to={`/beers/${beer.id}/edit`}>
+                      <Link to={`/apparels/${apparel.id}/edit`}>
                         <Button variant="outline" size="icon">
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -911,30 +911,30 @@ export default function BeerList() {
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="text-center">
-                  No beers found
+                  No apparels found
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
 
-        {beers && beers.totalPages > 1 && (
+        {apparels && apparels.totalPages > 1 && (
           <div className="mt-4 flex items-center justify-between">
             <div>
-              Showing page {beers.number + 1} of {beers.totalPages}
+              Showing page {apparels.number + 1} of {apparels.totalPages}
             </div>
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 onClick={() => setPage(Math.max(0, page - 1))}
-                disabled={beers.first}
+                disabled={apparels.first}
               >
                 Previous
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setPage(page + 1)}
-                disabled={beers.last}
+                disabled={apparels.last}
               >
                 Next
               </Button>
@@ -947,45 +947,45 @@ export default function BeerList() {
 }
 ```
 
-### Step 2: Create Beer Detail Page
+### Step 2: Create Apparel Detail Page
 
-Create `src/pages/beer/BeerDetail.tsx`:
+Create `src/pages/apparel/ApparelDetail.tsx`:
 
 ```typescript
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useBeer } from '../../hooks/useBeer';
+import { useApparel } from '../../hooks/useApparel';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Edit, ArrowLeft, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '../../components/ui/use-toast';
 
-export default function BeerDetail() {
+export default function ApparelDetail() {
   const { id } = useParams<{ id: string }>();
-  const beerId = id ? parseInt(id, 10) : null;
-  const { beer, loading, error, deleteBeer } = useBeer(beerId);
+  const apparelId = id ? parseInt(id, 10) : null;
+  const { apparel, loading, error, deleteApparel } = useApparel(apparelId);
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this beer?')) {
+    if (!window.confirm('Are you sure you want to delete this apparel?')) {
       return;
     }
 
     setIsDeleting(true);
     try {
-      const success = await deleteBeer();
+      const success = await deleteApparel();
       if (success) {
         toast({
-          title: 'Beer deleted',
-          description: 'The beer has been successfully deleted.',
+          title: 'Apparel deleted',
+          description: 'The apparel has been successfully deleted.',
         });
-        navigate('/beers');
+        navigate('/apparels');
       } else {
         toast({
           title: 'Error',
-          description: 'Failed to delete the beer.',
+          description: 'Failed to delete the apparel.',
           variant: 'destructive',
         });
       }
@@ -1012,19 +1012,19 @@ export default function BeerDetail() {
     );
   }
 
-  if (!beer) {
-    return <div className="text-center py-8">Beer not found</div>;
+  if (!apparel) {
+    return <div className="text-center py-8">Apparel not found</div>;
   }
 
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" onClick={() => navigate('/beers')}>
+        <Button variant="outline" onClick={() => navigate('/apparels')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to List
         </Button>
         <div className="flex gap-2">
-          <Link to={`/beers/${beer.id}/edit`}>
+          <Link to={`/apparels/${apparel.id}/edit`}>
             <Button>
               <Edit className="mr-2 h-4 w-4" />
               Edit
@@ -1039,7 +1039,7 @@ export default function BeerDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{beer.beerName}</CardTitle>
+          <CardTitle>{apparel.apparelName}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -1048,19 +1048,19 @@ export default function BeerDetail() {
               <div className="mt-2 space-y-2">
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Style:</span>
-                  <span>{beer.beerStyle}</span>
+                  <span>{apparel.apparelStyle}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Price:</span>
-                  <span>${beer.price?.toFixed(2)}</span>
+                  <span>${apparel.price?.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Quantity on Hand:</span>
-                  <span>{beer.quantityOnHand}</span>
+                  <span>{apparel.quantityOnHand}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">UPC:</span>
-                  <span>{beer.upc}</span>
+                  <span>{apparel.upc}</span>
                 </div>
               </div>
             </div>
@@ -1069,19 +1069,19 @@ export default function BeerDetail() {
               <div className="mt-2 space-y-2">
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">ID:</span>
-                  <span>{beer.id}</span>
+                  <span>{apparel.id}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Version:</span>
-                  <span>{beer.version}</span>
+                  <span>{apparel.version}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Created Date:</span>
-                  <span>{new Date(beer.createdDate!).toLocaleString()}</span>
+                  <span>{new Date(apparel.createdDate!).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Last Updated:</span>
-                  <span>{new Date(beer.updateDate!).toLocaleString()}</span>
+                  <span>{new Date(apparel.updateDate!).toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -1093,22 +1093,22 @@ export default function BeerDetail() {
 }
 ```
 
-### Step 3: Create Beer Form Component
+### Step 3: Create Apparel Form Component
 
-Create a reusable form component in `src/components/beer/BeerForm.tsx`:
+Create a reusable form component in `src/components/apparel/ApparelForm.tsx`:
 
 ```typescript
 import { useState } from 'react';
-import { BeerDto } from '../../api/models';
+import { ApparelDto } from '../../api/models';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Card, CardContent } from '../ui/card';
 
-type BeerFormProps = {
-  initialData?: Partial<BeerDto>;
-  onSubmit: (data: Omit<BeerDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => void;
+type ApparelFormProps = {
+  initialData?: Partial<ApparelDto>;
+  onSubmit: (data: Omit<ApparelDto, 'id' | 'version' | 'createdDate' | 'updateDate'>) => void;
   isSubmitting: boolean;
 };
 
@@ -1125,10 +1125,10 @@ const BEER_STYLES = [
   'SOUR',
 ];
 
-export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFormProps) {
+export default function ApparelForm({ initialData, onSubmit, isSubmitting }: ApparelFormProps) {
   const [formData, setFormData] = useState({
-    beerName: initialData?.beerName || '',
-    beerStyle: initialData?.beerStyle || '',
+    apparelName: initialData?.apparelName || '',
+    apparelStyle: initialData?.apparelStyle || '',
     upc: initialData?.upc || '',
     price: initialData?.price?.toString() || '',
     quantityOnHand: initialData?.quantityOnHand?.toString() || '',
@@ -1151,13 +1151,13 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
   };
 
   const handleStyleChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, beerStyle: value }));
+    setFormData((prev) => ({ ...prev, apparelStyle: value }));
 
     // Clear error when field is edited
-    if (errors.beerStyle) {
+    if (errors.apparelStyle) {
       setErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors.beerStyle;
+        delete newErrors.apparelStyle;
         return newErrors;
       });
     }
@@ -1166,12 +1166,12 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.beerName.trim()) {
-      newErrors.beerName = 'Beer name is required';
+    if (!formData.apparelName.trim()) {
+      newErrors.apparelName = 'Apparel name is required';
     }
 
-    if (!formData.beerStyle) {
-      newErrors.beerStyle = 'Beer style is required';
+    if (!formData.apparelStyle) {
+      newErrors.apparelStyle = 'Apparel style is required';
     }
 
     if (!formData.upc.trim()) {
@@ -1202,8 +1202,8 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
     }
 
     onSubmit({
-      beerName: formData.beerName,
-      beerStyle: formData.beerStyle,
+      apparelName: formData.apparelName,
+      apparelStyle: formData.apparelStyle,
       upc: formData.upc,
       price: parseFloat(formData.price),
       quantityOnHand: parseInt(formData.quantityOnHand),
@@ -1216,24 +1216,24 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="beerName">Beer Name</Label>
+              <Label htmlFor="apparelName">Apparel Name</Label>
               <Input
-                id="beerName"
-                name="beerName"
-                value={formData.beerName}
+                id="apparelName"
+                name="apparelName"
+                value={formData.apparelName}
                 onChange={handleChange}
-                className={errors.beerName ? 'border-destructive' : ''}
+                className={errors.apparelName ? 'border-destructive' : ''}
               />
-              {errors.beerName && (
-                <p className="mt-1 text-sm text-destructive">{errors.beerName}</p>
+              {errors.apparelName && (
+                <p className="mt-1 text-sm text-destructive">{errors.apparelName}</p>
               )}
             </div>
 
             <div>
-              <Label htmlFor="beerStyle">Beer Style</Label>
-              <Select value={formData.beerStyle} onValueChange={handleStyleChange}>
-                <SelectTrigger id="beerStyle" className={errors.beerStyle ? 'border-destructive' : ''}>
-                  <SelectValue placeholder="Select a beer style" />
+              <Label htmlFor="apparelStyle">Apparel Style</Label>
+              <Select value={formData.apparelStyle} onValueChange={handleStyleChange}>
+                <SelectTrigger id="apparelStyle" className={errors.apparelStyle ? 'border-destructive' : ''}>
+                  <SelectValue placeholder="Select a apparel style" />
                 </SelectTrigger>
                 <SelectContent>
                   {BEER_STYLES.map((style) => (
@@ -1243,8 +1243,8 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
                   ))}
                 </SelectContent>
               </Select>
-              {errors.beerStyle && (
-                <p className="mt-1 text-sm text-destructive">{errors.beerStyle}</p>
+              {errors.apparelStyle && (
+                <p className="mt-1 text-sm text-destructive">{errors.apparelStyle}</p>
               )}
             </div>
 
@@ -1294,7 +1294,7 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
 
           <div className="flex justify-end gap-2">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save Beer'}
+              {isSubmitting ? 'Saving...' : 'Save Apparel'}
             </Button>
           </div>
         </form>
@@ -1304,20 +1304,20 @@ export default function BeerForm({ initialData, onSubmit, isSubmitting }: BeerFo
 }
 ```
 
-### Step 4: Create Beer Create and Edit Pages
+### Step 4: Create Apparel Create and Edit Pages
 
-Create `src/pages/beer/BeerCreate.tsx`:
+Create `src/pages/apparel/ApparelCreate.tsx`:
 
 ```typescript
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { beerService } from '../../services/beerService';
-import BeerForm from '../../components/beer/BeerForm';
+import { apparelService } from '../../services/apparelService';
+import ApparelForm from '../../components/apparel/ApparelForm';
 import { Button } from '../../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../../components/ui/use-toast';
 
-export default function BeerCreate() {
+export default function ApparelCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -1325,16 +1325,16 @@ export default function BeerCreate() {
   const handleSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      const newBeer = await beerService.createBeer(data);
+      const newApparel = await apparelService.createApparel(data);
       toast({
-        title: 'Beer created',
-        description: 'The beer has been successfully created.',
+        title: 'Apparel created',
+        description: 'The apparel has been successfully created.',
       });
-      navigate(`/beers/${newBeer.id}`);
+      navigate(`/apparels/${newApparel.id}`);
     } catch (err) {
       toast({
         title: 'Error',
-        description: 'Failed to create the beer.',
+        description: 'Failed to create the apparel.',
         variant: 'destructive',
       });
     } finally {
@@ -1345,33 +1345,33 @@ export default function BeerCreate() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" onClick={() => navigate('/beers')}>
+        <Button variant="outline" onClick={() => navigate('/apparels')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to List
         </Button>
-        <h1 className="text-2xl font-bold">Create New Beer</h1>
+        <h1 className="text-2xl font-bold">Create New Apparel</h1>
       </div>
-      <BeerForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+      <ApparelForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
     </div>
   );
 }
 ```
 
-Create `src/pages/beer/BeerEdit.tsx`:
+Create `src/pages/apparel/ApparelEdit.tsx`:
 
 ```typescript
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useBeer } from '../../hooks/useBeer';
-import BeerForm from '../../components/beer/BeerForm';
+import { useApparel } from '../../hooks/useApparel';
+import ApparelForm from '../../components/apparel/ApparelForm';
 import { Button } from '../../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../../components/ui/use-toast';
 
-export default function BeerEdit() {
+export default function ApparelEdit() {
   const { id } = useParams<{ id: string }>();
-  const beerId = id ? parseInt(id, 10) : null;
-  const { beer, loading, error, updateBeer } = useBeer(beerId);
+  const apparelId = id ? parseInt(id, 10) : null;
+  const { apparel, loading, error, updateApparel } = useApparel(apparelId);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -1379,17 +1379,17 @@ export default function BeerEdit() {
   const handleSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      const updatedBeer = await updateBeer(data);
-      if (updatedBeer) {
+      const updatedApparel = await updateApparel(data);
+      if (updatedApparel) {
         toast({
-          title: 'Beer updated',
-          description: 'The beer has been successfully updated.',
+          title: 'Apparel updated',
+          description: 'The apparel has been successfully updated.',
         });
-        navigate(`/beers/${updatedBeer.id}`);
+        navigate(`/apparels/${updatedApparel.id}`);
       } else {
         toast({
           title: 'Error',
-          description: 'Failed to update the beer.',
+          description: 'Failed to update the apparel.',
           variant: 'destructive',
         });
       }
@@ -1416,20 +1416,20 @@ export default function BeerEdit() {
     );
   }
 
-  if (!beer) {
-    return <div className="text-center py-8">Beer not found</div>;
+  if (!apparel) {
+    return <div className="text-center py-8">Apparel not found</div>;
   }
 
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" onClick={() => navigate(`/beers/${beer.id}`)}>
+        <Button variant="outline" onClick={() => navigate(`/apparels/${apparel.id}`)}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Details
         </Button>
-        <h1 className="text-2xl font-bold">Edit Beer</h1>
+        <h1 className="text-2xl font-bold">Edit Apparel</h1>
       </div>
-      <BeerForm initialData={beer} onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+      <ApparelForm initialData={apparel} onSubmit={handleSubmit} isSubmitting={isSubmitting} />
     </div>
   );
 }
@@ -1464,13 +1464,13 @@ import '@testing-library/jest-dom';
 
 ### Step 2: Write Tests for Components
 
-Create a test for the BeerForm component in `src/components/beer/__tests__/BeerForm.test.tsx`:
+Create a test for the ApparelForm component in `src/components/apparel/__tests__/ApparelForm.test.tsx`:
 
 ```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import BeerForm from '../BeerForm';
+import ApparelForm from '../ApparelForm';
 
-describe('BeerForm', () => {
+describe('ApparelForm', () => {
   const mockOnSubmit = jest.fn();
 
   beforeEach(() => {
@@ -1478,10 +1478,10 @@ describe('BeerForm', () => {
   });
 
   it('renders the form with empty fields when no initial data is provided', () => {
-    render(<BeerForm onSubmit={mockOnSubmit} isSubmitting={false} />);
+    render(<ApparelForm onSubmit={mockOnSubmit} isSubmitting={false} />);
 
-    expect(screen.getByLabelText(/beer name/i)).toHaveValue('');
-    expect(screen.getByText(/select a beer style/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/apparel name/i)).toHaveValue('');
+    expect(screen.getByText(/select a apparel style/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/upc/i)).toHaveValue('');
     expect(screen.getByLabelText(/price/i)).toHaveValue('');
     expect(screen.getByLabelText(/quantity on hand/i)).toHaveValue('');
@@ -1489,29 +1489,29 @@ describe('BeerForm', () => {
 
   it('renders the form with initial data when provided', () => {
     const initialData = {
-      beerName: 'Test Beer',
-      beerStyle: 'IPA',
+      apparelName: 'Test Apparel',
+      apparelStyle: 'IPA',
       upc: '123456789',
       price: 9.99,
       quantityOnHand: 100,
     };
 
-    render(<BeerForm initialData={initialData} onSubmit={mockOnSubmit} isSubmitting={false} />);
+    render(<ApparelForm initialData={initialData} onSubmit={mockOnSubmit} isSubmitting={false} />);
 
-    expect(screen.getByLabelText(/beer name/i)).toHaveValue('Test Beer');
+    expect(screen.getByLabelText(/apparel name/i)).toHaveValue('Test Apparel');
     expect(screen.getByLabelText(/upc/i)).toHaveValue('123456789');
     expect(screen.getByLabelText(/price/i)).toHaveValue('9.99');
     expect(screen.getByLabelText(/quantity on hand/i)).toHaveValue('100');
   });
 
   it('shows validation errors when submitting with empty fields', async () => {
-    render(<BeerForm onSubmit={mockOnSubmit} isSubmitting={false} />);
+    render(<ApparelForm onSubmit={mockOnSubmit} isSubmitting={false} />);
 
-    fireEvent.click(screen.getByText(/save beer/i));
+    fireEvent.click(screen.getByText(/save apparel/i));
 
     await waitFor(() => {
-      expect(screen.getByText(/beer name is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/beer style is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/apparel name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/apparel style is required/i)).toBeInTheDocument();
       expect(screen.getByText(/upc is required/i)).toBeInTheDocument();
       expect(screen.getByText(/price is required/i)).toBeInTheDocument();
       expect(screen.getByText(/quantity is required/i)).toBeInTheDocument();
@@ -1521,24 +1521,24 @@ describe('BeerForm', () => {
   });
 
   it('submits the form with valid data', async () => {
-    render(<BeerForm onSubmit={mockOnSubmit} isSubmitting={false} />);
+    render(<ApparelForm onSubmit={mockOnSubmit} isSubmitting={false} />);
 
-    fireEvent.change(screen.getByLabelText(/beer name/i), { target: { value: 'Test Beer' } });
+    fireEvent.change(screen.getByLabelText(/apparel name/i), { target: { value: 'Test Apparel' } });
 
-    // Select a beer style
-    fireEvent.click(screen.getByText(/select a beer style/i));
+    // Select a apparel style
+    fireEvent.click(screen.getByText(/select a apparel style/i));
     fireEvent.click(screen.getByText(/ipa/i));
 
     fireEvent.change(screen.getByLabelText(/upc/i), { target: { value: '123456789' } });
     fireEvent.change(screen.getByLabelText(/price/i), { target: { value: '9.99' } });
     fireEvent.change(screen.getByLabelText(/quantity on hand/i), { target: { value: '100' } });
 
-    fireEvent.click(screen.getByText(/save beer/i));
+    fireEvent.click(screen.getByText(/save apparel/i));
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
-        beerName: 'Test Beer',
-        beerStyle: 'IPA',
+        apparelName: 'Test Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         price: 9.99,
         quantityOnHand: 100,
@@ -1547,7 +1547,7 @@ describe('BeerForm', () => {
   });
 
   it('disables the submit button when isSubmitting is true', () => {
-    render(<BeerForm onSubmit={mockOnSubmit} isSubmitting={true} />);
+    render(<ApparelForm onSubmit={mockOnSubmit} isSubmitting={true} />);
 
     expect(screen.getByText(/saving/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /saving/i })).toBeDisabled();
@@ -1557,27 +1557,27 @@ describe('BeerForm', () => {
 
 ### Step 3: Write Tests for API Services
 
-Create a test for the Beer Service in `src/services/__tests__/beerService.test.ts`:
+Create a test for the Apparel Service in `src/services/__tests__/apparelService.test.ts`:
 
 ```typescript
-import { beerService } from '../beerService';
+import { apparelService } from '../apparelService';
 import apiClient from '../api';
 
 jest.mock('../api');
 const mockedApiClient = apiClient as jest.Mocked<typeof apiClient>;
 
-describe('beerService', () => {
+describe('apparelService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('getAllBeers', () => {
-    it('should fetch beers with default pagination', async () => {
+  describe('getAllApparels', () => {
+    it('should fetch apparels with default pagination', async () => {
       const mockResponse = {
         data: {
           content: [
-            { id: 1, beerName: 'Test Beer 1' },
-            { id: 2, beerName: 'Test Beer 2' },
+            { id: 1, apparelName: 'Test Apparel 1' },
+            { id: 2, apparelName: 'Test Apparel 2' },
           ],
           totalElements: 2,
           totalPages: 1,
@@ -1590,9 +1590,9 @@ describe('beerService', () => {
 
       mockedApiClient.get.mockResolvedValueOnce(mockResponse);
 
-      const result = await beerService.getAllBeers();
+      const result = await apparelService.getAllApparels();
 
-      expect(mockedApiClient.get).toHaveBeenCalledWith('/beers', {
+      expect(mockedApiClient.get).toHaveBeenCalledWith('/apparels', {
         params: expect.any(URLSearchParams),
       });
 
@@ -1604,10 +1604,10 @@ describe('beerService', () => {
       expect(result).toEqual(mockResponse.data);
     });
 
-    it('should fetch beers with filters and pagination', async () => {
+    it('should fetch apparels with filters and pagination', async () => {
       const mockResponse = {
         data: {
-          content: [{ id: 1, beerName: 'IPA Beer' }],
+          content: [{ id: 1, apparelName: 'IPA Apparel' }],
           totalElements: 1,
           totalPages: 1,
           size: 10,
@@ -1619,15 +1619,15 @@ describe('beerService', () => {
 
       mockedApiClient.get.mockResolvedValueOnce(mockResponse);
 
-      const result = await beerService.getAllBeers('IPA', 'IPA', 2, 10);
+      const result = await apparelService.getAllApparels('IPA', 'IPA', 2, 10);
 
-      expect(mockedApiClient.get).toHaveBeenCalledWith('/beers', {
+      expect(mockedApiClient.get).toHaveBeenCalledWith('/apparels', {
         params: expect.any(URLSearchParams),
       });
 
       const params = new URLSearchParams();
-      params.append('beerName', 'IPA');
-      params.append('beerStyle', 'IPA');
+      params.append('apparelName', 'IPA');
+      params.append('apparelStyle', 'IPA');
       params.append('page', '2');
       params.append('size', '10');
 
@@ -1636,40 +1636,40 @@ describe('beerService', () => {
     });
   });
 
-  describe('getBeerById', () => {
-    it('should fetch a beer by id', async () => {
+  describe('getApparelById', () => {
+    it('should fetch a apparel by id', async () => {
       const mockResponse = {
-        data: { id: 1, beerName: 'Test Beer' },
+        data: { id: 1, apparelName: 'Test Apparel' },
       };
 
       mockedApiClient.get.mockResolvedValueOnce(mockResponse);
 
-      const result = await beerService.getBeerById(1);
+      const result = await apparelService.getApparelById(1);
 
-      expect(mockedApiClient.get).toHaveBeenCalledWith('/beers/1');
+      expect(mockedApiClient.get).toHaveBeenCalledWith('/apparels/1');
       expect(result).toEqual(mockResponse.data);
     });
   });
 
-  describe('createBeer', () => {
-    it('should create a new beer', async () => {
-      const newBeer = {
-        beerName: 'New Beer',
-        beerStyle: 'IPA',
+  describe('createApparel', () => {
+    it('should create a new apparel', async () => {
+      const newApparel = {
+        apparelName: 'New Apparel',
+        apparelStyle: 'IPA',
         upc: '123456789',
         price: 9.99,
         quantityOnHand: 100,
       };
 
       const mockResponse = {
-        data: { id: 1, ...newBeer },
+        data: { id: 1, ...newApparel },
       };
 
       mockedApiClient.post.mockResolvedValueOnce(mockResponse);
 
-      const result = await beerService.createBeer(newBeer);
+      const result = await apparelService.createApparel(newApparel);
 
-      expect(mockedApiClient.post).toHaveBeenCalledWith('/beers', newBeer);
+      expect(mockedApiClient.post).toHaveBeenCalledWith('/apparels', newApparel);
       expect(result).toEqual(mockResponse.data);
     });
   });
@@ -1814,14 +1814,14 @@ The API documentation is available at:
 
 ## Conclusion
 
-This guide has provided detailed instructions for implementing a React frontend for the Spring Boot Beer Service application. By following these steps, you've created a modern, type-safe, and well-tested frontend that integrates seamlessly with the existing backend.
+This guide has provided detailed instructions for implementing a React frontend for the Spring Boot Apparel Service application. By following these steps, you've created a modern, type-safe, and well-tested frontend that integrates seamlessly with the existing backend.
 
 The implementation includes:
 - A complete React application with TypeScript
 - Integration with the Spring Boot backend API
-- CRUD operations for beers, customers, and beer orders
+- CRUD operations for apparels, customers, and apparel orders
 - A responsive UI using Shadcn UI and Tailwind CSS
 - Comprehensive testing with Jest and React Testing Library
 - Maven integration for a unified build process
 
-The resulting application provides a user-friendly interface for managing beer inventory, customers, and orders, while maintaining the robustness and reliability of the Spring Boot backend.
+The resulting application provides a user-friendly interface for managing apparel inventory, customers, and orders, while maintaining the robustness and reliability of the Spring Boot backend.
