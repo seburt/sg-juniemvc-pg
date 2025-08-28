@@ -87,7 +87,7 @@ const CustomerListPage: React.FC = () => {
   // Define table columns
   const columns: Column<CustomerDto>[] = [
     {
-      key: 'customerName',
+      key: 'name',
       header: 'Name',
       sortable: true,
       render: (value, customer) => (
