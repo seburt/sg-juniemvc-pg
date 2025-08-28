@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Button } from '@components/ui';
-import { Menu, X, Home, Apparel, Users, ShoppingCart } from 'lucide-react';
+import { Menu, X, Home, Shirt, Users, ShoppingCart } from 'lucide-react';
 
 /**
  * Root layout component that wraps all pages
@@ -19,7 +19,7 @@ const RootLayout: React.FC = () => {
   // Navigation items
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/apparels', label: 'Apparels', icon: Apparel },
+    { path: '/apparels', label: 'Apparels', icon: Shirt },
     { path: '/customers', label: 'Customers', icon: Users },
     { path: '/apparel-orders', label: 'Apparel Orders', icon: ShoppingCart },
   ];

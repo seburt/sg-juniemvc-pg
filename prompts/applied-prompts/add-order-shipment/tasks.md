@@ -18,7 +18,7 @@
 
 ## 2. Create Flyway Migration Script
 - [x] 2.1. Create Migration Script
-  - [x] Create a new migration script `V3__add_beer_order_shipment_table.sql` in `src/main/resources/db/migration`
+  - [x] Create a new migration script `V3__add_apparel_order_shipment_table.sql` in `src/main/resources/db/migration`
   - [x] Create the beer_order_shipment table with all required columns
   - [x] Add foreign key constraint to reference beer_order table
 

@@ -22,7 +22,7 @@ This document outlines the detailed plan for implementing the BeerOrderShipment 
 ## 2. Create Flyway Migration Script
 
 ### 2.1 Create Migration Script
-- Create a new migration script `V3__add_beer_order_shipment_table.sql` in `src/main/resources/db/migration`
+- Create a new migration script `V3__add_apparel_order_shipment_table.sql` in `src/main/resources/db/migration`
 - Create the beer_order_shipment table with all required columns
 - Add foreign key constraint to reference beer_order table
 
